@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="UTF-8"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+<changeSet author="atila (generated)" id="1531159784719-1">
+<createTable tableName="Answer">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="lastUpdatedAt" type="datetime"/>
+<column name="invisible" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="voteCount" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="author_id" type="BIGINT"/>
+<column name="information_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="lastTouchedBy_id" type="BIGINT"/>
+<column name="question_id" type="BIGINT"/>
+<column defaultValueBoolean="false" name="deleted" type="BIT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-2">
+<createTable tableName="AnswerInformation">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="comment" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="description" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="ip" type="VARCHAR(255)"/>
+<column name="markedDescription" type="LONGTEXT"/>
+<column name="moderatedAt" type="datetime"/>
+<column name="status" type="VARCHAR(255)"/>
+<column name="answer_id" type="BIGINT"/>
+<column name="author_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="moderatedBy_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-3">
+<createTable tableName="Answer_Attachment">
+<column name="Answer_id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="attachments_id" type="BIGINT">
+<constraints primaryKey="true" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-4">
+<createTable tableName="Answer_Comments">
+<column name="Answer_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="comments_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-5">
+<createTable tableName="Answer_Flags">
+<column name="Answer_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="flags_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-6">
+<createTable tableName="Answer_Votes">
+<column name="Answer_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="votes_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-7">
+<createTable tableName="Attachment">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="ip" type="VARCHAR(255)"/>
+<column name="mime" type="VARCHAR(255)"/>
+<column name="name" type="VARCHAR(255)"/>
+<column name="owner_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-8">
+<createTable tableName="BlockedIp">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="ip" type="VARCHAR(255)"/>
+<column name="author_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-9">
+<createTable tableName="Comment">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="comment" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="htmlComment" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="lastUpdatedAt" type="datetime"/>
+<column name="invisible" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="voteCount" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="author_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column defaultValueBoolean="false" name="deleted" type="BIT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-10">
+<createTable tableName="Comment_Flags">
+<column name="Comment_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="flags_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-11">
+<createTable tableName="Comment_Votes">
+<column name="Comment_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="votes_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-12">
+<createTable tableName="Flag">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="reason" type="LONGTEXT"/>
+<column name="type" type="VARCHAR(255)"/>
+<column name="author_id" type="BIGINT"/>
+<column defaultValueBoolean="false" name="deleted" type="BIT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-13">
+<createTable tableName="LoginMethod">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="serviceEmail" type="VARCHAR(100)"/>
+<column name="token" type="VARCHAR(255)"/>
+<column name="type" type="VARCHAR(255)"/>
+<column name="user_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-14">
+<createTable tableName="News">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="approved" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="lastUpdatedAt" type="datetime"/>
+<column name="invisible" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="views" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="voteCount" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="author_id" type="BIGINT"/>
+<column name="information_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="lastTouchedBy_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-15">
+<createTable tableName="NewsInformation">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="comment" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="description" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="ip" type="VARCHAR(255)"/>
+<column name="markedDescription" type="LONGTEXT"/>
+<column name="moderatedAt" type="datetime"/>
+<column name="sluggedTitle" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="status" type="VARCHAR(255)"/>
+<column name="title" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="author_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="moderatedBy_id" type="BIGINT"/>
+<column name="news_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-16">
+<createTable tableName="News_Comments">
+<column name="News_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="comments_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-17">
+<createTable tableName="News_Flags">
+<column name="News_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="flags_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-18">
+<createTable tableName="News_Votes">
+<column name="News_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="votes_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-19">
+<createTable tableName="News_Watchers">
+<column name="News_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="watchers_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-20">
+<createTable tableName="NewsletterSentLog">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="createdAt" type="date"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-21">
+<createTable tableName="Question">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="answerCount" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="lastUpdatedAt" type="datetime"/>
+<column name="invisible" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="views" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="voteCount" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="author_id" type="BIGINT"/>
+<column name="information_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="lastTouchedBy_id" type="BIGINT"/>
+<column name="solution_id" type="BIGINT"/>
+<column defaultValueBoolean="false" name="deleted" type="BIT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-22">
+<createTable tableName="QuestionInformation">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="comment" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="description" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="ip" type="VARCHAR(255)"/>
+<column name="markedDescription" type="LONGTEXT"/>
+<column name="moderatedAt" type="datetime"/>
+<column name="sluggedTitle" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="status" type="VARCHAR(255)"/>
+<column name="title" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="author_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="moderatedBy_id" type="BIGINT"/>
+<column name="question_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-23">
+<createTable tableName="QuestionInformation_Tag">
+<column name="QuestionInformation_id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="tags_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="tag_order" type="INT">
+<constraints primaryKey="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-24">
+<createTable tableName="Question_Attachment">
+<column name="Question_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="attachments_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-25">
+<createTable tableName="Question_Comments">
+<column name="Question_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="comments_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-26">
+<createTable tableName="Question_Flags">
+<column name="Question_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="flags_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-27">
+<createTable tableName="Question_Interactions">
+<column name="Question_id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="userInteractions_id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-28">
+<createTable tableName="Question_Votes">
+<column name="Question_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="votes_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-29">
+<createTable tableName="Question_Watchers">
+<column name="Question_id" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="watchers_id" type="BIGINT">
+<constraints nullable="false" unique="true"/>
+</column>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-30">
+<createTable tableName="ReputationEvent">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="context_type" type="VARCHAR(255)"/>
+<column name="context_id" type="BIGINT"/>
+<column name="date" type="datetime"/>
+<column name="karmaReward" type="INT">
+<constraints nullable="false"/>
+</column>
+<column name="type" type="VARCHAR(255)"/>
+<column name="user_id" type="BIGINT"/>
+<column defaultValueBoolean="false" name="deleted" type="BIT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-31">
+<createTable tableName="Tag">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="description" type="VARCHAR(255)"/>
+<column name="name" type="VARCHAR(255)">
+<constraints nullable="false" unique="true"/>
+</column>
+<column name="usageCount" type="BIGINT"/>
+<column name="author_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-32">
+<createTable tableName="TagPage">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="about" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="markedAbout" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="tag_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-33">
+<createTable tableName="UserSession">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="sessionKey" type="VARCHAR(255)">
+<constraints unique="true"/>
+</column>
+<column name="user_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-34">
+<createTable tableName="Users">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="about" type="VARCHAR(500)"/>
+<column name="birthDate" type="datetime"/>
+<column name="confirmedEmail" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="email" type="VARCHAR(100)"/>
+<column name="forgotPasswordToken" type="VARCHAR(255)"/>
+<column name="isBanned" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="isSubscribed" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="karma" type="BIGINT">
+<constraints nullable="false"/>
+</column>
+<column name="location" type="VARCHAR(100)"/>
+<column name="markedAbout" type="VARCHAR(600)"/>
+<column name="moderator" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="name" type="VARCHAR(100)">
+<constraints nullable="false"/>
+</column>
+<column name="nameLastTouchedAt" type="datetime"/>
+<column name="photoUri" type="VARCHAR(255)"/>
+<column name="sluggedName" type="LONGTEXT">
+<constraints nullable="false"/>
+</column>
+<column name="website" type="VARCHAR(200)"/>
+<column name="lastUpvote" type="datetime"/>
+<column name="avatarImage_id" type="BIGINT"/>
+<column defaultValueBoolean="false" name="receiveAllUpdates" type="BIT"/>
+<column defaultValueBoolean="false" name="deleted" type="BIT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-35">
+<createTable tableName="Vote">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="lastUpdatedAt" type="datetime"/>
+<column name="type" type="VARCHAR(255)"/>
+<column name="author_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-36">
+<createTable tableName="Watcher">
+<column autoIncrement="true" name="id" type="BIGINT">
+<constraints primaryKey="true"/>
+</column>
+<column name="active" type="BIT">
+<constraints nullable="false"/>
+</column>
+<column name="createdAt" type="datetime"/>
+<column name="watcher_id" type="BIGINT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-37">
+<createTable tableName="brutalmigration">
+<column name="number" type="INT"/>
+</createTable>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-38">
+<createIndex indexName="FK_10g8xii7lw9kq0kcsobgmtw72" tableName="Answer">
+<column name="question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-39">
+<createIndex indexName="FK_237rcoro0n05xyxjga1ip7pd8" tableName="AnswerInformation">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-40">
+<createIndex indexName="FK_24u6uwfjr8s8pfk7oyfw8u4o4" tableName="Question_Votes">
+<column name="Question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-41">
+<createIndex indexName="FK_2r3h5i8jc5w2kqqhnhhlvenht" tableName="Answer_Attachment">
+<column name="Answer_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-42">
+<createIndex indexName="FK_3q5s4b88xp78n3c49dtxfs97e" tableName="Answer">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-43">
+<createIndex indexName="FK_5c40gkw8p92hpuy5nnothdhw5" tableName="Answer_Comments">
+<column name="Answer_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-44">
+<createIndex indexName="FK_5qrrq79ar6t4p4vf4djvqf63i" tableName="News">
+<column name="information_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-45">
+<createIndex indexName="FK_6lq2gt46y9974igmh0jxo666" tableName="Answer_Flags">
+<column name="Answer_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-46">
+<createIndex indexName="FK_6nch3y92lphrbsh0o5c7o0jov" tableName="Vote">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-47">
+<createIndex indexName="FK_7u4x47xa5gdhmt650curhu3kx" tableName="QuestionInformation_Tag">
+<column name="QuestionInformation_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-48">
+<createIndex indexName="FK_9a9b8a968n0ejs6yikpgo563r" tableName="Tag">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-49">
+<createIndex indexName="FK_9d3cyy648wfruj9t7556wqgjr" tableName="Question">
+<column name="lastTouchedBy_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-50">
+<createIndex indexName="FK_9nfk2kchvyn69e7gdh798gf" tableName="QuestionInformation">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-51">
+<createIndex indexName="FK_a3dib35x299yvhfk7pau0kw5w" tableName="Question">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-52">
+<createIndex indexName="FK_b942i5pshr99wwqdk03d98ofg" tableName="NewsInformation">
+<column name="news_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-53">
+<createIndex indexName="FK_bywcu6iha3jaici2oiljml8ho" tableName="News_Watchers">
+<column name="News_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-54">
+<createIndex indexName="FK_dbuximcggdn5k2j9svvpwtxrm" tableName="AnswerInformation">
+<column name="moderatedBy_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-55">
+<createIndex indexName="FK_dcofc609g7loixe8pcm3myemd" tableName="News_Comments">
+<column name="News_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-56">
+<createIndex indexName="FK_drifk8pp2s7wsh57nvwna9m1g" tableName="Answer">
+<column name="lastTouchedBy_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-57">
+<createIndex indexName="FK_dshhxt02iww0fxkl2li8l3ao2" tableName="Answer">
+<column name="information_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-58">
+<createIndex indexName="FK_e3k3kapw96m39ma7uus1r6f7m" tableName="News">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-59">
+<createIndex indexName="FK_enrbut32jkvqv2ttop49nkcb4" tableName="Attachment">
+<column name="owner_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-60">
+<createIndex indexName="FK_fm57yvrnidsyeuvls0he5c9pk" tableName="Question_Comments">
+<column name="Question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-61">
+<createIndex indexName="FK_fppkwwg6svwefnnni9ygaefg2" tableName="NewsInformation">
+<column name="moderatedBy_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-62">
+<createIndex indexName="FK_fr0qqkoqj2rai6g9epq0iw4wu" tableName="News_Flags">
+<column name="News_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-63">
+<createIndex indexName="FK_ftntexa7hxbaqo2i2yg4i0yr3" tableName="Question_Flags">
+<column name="Question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-64">
+<createIndex indexName="FK_g1vcu7yf9bjb3kj31y3ghw0jg" tableName="UserSession">
+<column name="user_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-65">
+<createIndex indexName="FK_g45y0rm9o8k7uyoih84rrccra" tableName="Comment_Flags">
+<column name="Comment_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-66">
+<createIndex indexName="FK_gbu6jo147pal18b3q3blpr0of" tableName="ReputationEvent">
+<column name="user_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-67">
+<createIndex indexName="FK_glms254gw9a4kv5qh3ptijiqd" tableName="News">
+<column name="lastTouchedBy_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-68">
+<createIndex indexName="FK_gvmhe2prumyg00npgdawfu7la" tableName="Users">
+<column name="avatarImage_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-69">
+<createIndex indexName="FK_hobtys3mefri57vry8w6o8xyq" tableName="Watcher">
+<column name="watcher_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-70">
+<createIndex indexName="FK_i2xt9jcwfauudnswun94neqyg" tableName="Question">
+<column name="information_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-71">
+<createIndex indexName="FK_ib0aqkj0a4a4l9ku9oai3lw9w" tableName="Question_Attachment">
+<column name="Question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-72">
+<createIndex indexName="FK_j94pith5sd971k29j6ysxuk7" tableName="Comment">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-73">
+<createIndex indexName="FK_jcmikqbikgwump3qo3fnqbext" tableName="TagPage">
+<column name="tag_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-74">
+<createIndex indexName="FK_jx0qq5i8p02d6geh0cp4yl2lh" tableName="BlockedIp">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-75">
+<createIndex indexName="FK_l0vhdtw8ymw1rrxq9usrqjh4x" tableName="LoginMethod">
+<column name="user_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-76">
+<createIndex indexName="FK_lecgqmqj00d06wb8nwaq60rpr" tableName="AnswerInformation">
+<column name="answer_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-77">
+<createIndex indexName="FK_liw3djybv5je7ra806bsipg68" tableName="Question">
+<column name="solution_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-78">
+<createIndex indexName="FK_lumgu8dnorkynxw1l039ovm8q" tableName="Flag">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-79">
+<createIndex indexName="FK_n3hxv49li2jcopaj6dio6b8b6" tableName="NewsInformation">
+<column name="author_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-80">
+<createIndex indexName="FK_nv1tmcost5jqejnlb6u0wrypo" tableName="QuestionInformation_Tag">
+<column name="tags_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-81">
+<createIndex indexName="FK_nydo4x8ey7gnhhwg1gqmikwo6" tableName="Question_Interactions">
+<column name="userInteractions_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-82">
+<createIndex indexName="FK_obxdv4j0ph2swt8r81dx8h0yw" tableName="Comment_Votes">
+<column name="Comment_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-83">
+<createIndex indexName="FK_pl1drgbxhfd4hbmd3smwa3svl" tableName="QuestionInformation">
+<column name="question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-84">
+<createIndex indexName="FK_plnjd89r1mncrtf1vfj65pspt" tableName="Question_Interactions">
+<column name="Question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-85">
+<createIndex indexName="FK_pu72rhjonka0flev96adthdp0" tableName="Question_Watchers">
+<column name="Question_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-86">
+<createIndex indexName="FK_qpawvfihxtc49opw1q5le336l" tableName="Answer_Votes">
+<column name="Answer_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-87">
+<createIndex indexName="FK_rqhl3hox4wntf7oc9y4af5cgv" tableName="News_Votes">
+<column name="News_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-88">
+<createIndex indexName="FK_t1oox0xh74vlikcvhxd5k2kq1" tableName="QuestionInformation">
+<column name="moderatedBy_id"/>
+</createIndex>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-89">
+<addForeignKeyConstraint baseColumnNames="question_id" baseTableName="Answer" constraintName="FK_10g8xii7lw9kq0kcsobgmtw72" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-90">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="AnswerInformation" constraintName="FK_237rcoro0n05xyxjga1ip7pd8" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-91">
+<addForeignKeyConstraint baseColumnNames="Question_id" baseTableName="Question_Votes" constraintName="FK_24u6uwfjr8s8pfk7oyfw8u4o4" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-92">
+<addForeignKeyConstraint baseColumnNames="Answer_id" baseTableName="Answer_Attachment" constraintName="FK_2r3h5i8jc5w2kqqhnhhlvenht" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Answer" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-93">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="Answer" constraintName="FK_3q5s4b88xp78n3c49dtxfs97e" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-94">
+<addForeignKeyConstraint baseColumnNames="Answer_id" baseTableName="Answer_Comments" constraintName="FK_5c40gkw8p92hpuy5nnothdhw5" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Answer" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-95">
+<addForeignKeyConstraint baseColumnNames="information_id" baseTableName="News" constraintName="FK_5qrrq79ar6t4p4vf4djvqf63i" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="NewsInformation" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-96">
+<addForeignKeyConstraint baseColumnNames="comments_id" baseTableName="News_Comments" constraintName="FK_5rrh2dvs1cy19pliwyvb8w8u7" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Comment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-97">
+<addForeignKeyConstraint baseColumnNames="watchers_id" baseTableName="Question_Watchers" constraintName="FK_5twinfe7e6g09gaowkeah0498" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Watcher" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-98">
+<addForeignKeyConstraint baseColumnNames="votes_id" baseTableName="Answer_Votes" constraintName="FK_5ya5d072g3h38tvb9brj7bs8o" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Vote" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-99">
+<addForeignKeyConstraint baseColumnNames="comments_id" baseTableName="Question_Comments" constraintName="FK_6jsfvsef241a3ldcck6pid4vi" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Comment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-100">
+<addForeignKeyConstraint baseColumnNames="Answer_id" baseTableName="Answer_Flags" constraintName="FK_6lq2gt46y9974igmh0jxo666" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Answer" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-101">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="Vote" constraintName="FK_6nch3y92lphrbsh0o5c7o0jov" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-102">
+<addForeignKeyConstraint baseColumnNames="comments_id" baseTableName="Answer_Comments" constraintName="FK_731ugn0r28nit0o73yytcw5oh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Comment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-103">
+<addForeignKeyConstraint baseColumnNames="QuestionInformation_id" baseTableName="QuestionInformation_Tag" constraintName="FK_7u4x47xa5gdhmt650curhu3kx" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="QuestionInformation" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-104">
+<addForeignKeyConstraint baseColumnNames="attachments_id" baseTableName="Question_Attachment" constraintName="FK_7y9vgsl3nbmms94toj87g69lu" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Attachment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-105">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="Tag" constraintName="FK_9a9b8a968n0ejs6yikpgo563r" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-106">
+<addForeignKeyConstraint baseColumnNames="lastTouchedBy_id" baseTableName="Question" constraintName="FK_9d3cyy648wfruj9t7556wqgjr" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-107">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="QuestionInformation" constraintName="FK_9nfk2kchvyn69e7gdh798gf" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-108">
+<addForeignKeyConstraint baseColumnNames="flags_id" baseTableName="Answer_Flags" constraintName="FK_9y4wu81bq6tdthk881o8twros" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Flag" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-109">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="Question" constraintName="FK_a3dib35x299yvhfk7pau0kw5w" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-110">
+<addForeignKeyConstraint baseColumnNames="flags_id" baseTableName="Question_Flags" constraintName="FK_a8brcb8bpevccipiyplquqqjv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Flag" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-111">
+<addForeignKeyConstraint baseColumnNames="news_id" baseTableName="NewsInformation" constraintName="FK_b942i5pshr99wwqdk03d98ofg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="News" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-112">
+<addForeignKeyConstraint baseColumnNames="News_id" baseTableName="News_Watchers" constraintName="FK_bywcu6iha3jaici2oiljml8ho" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="News" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-113">
+<addForeignKeyConstraint baseColumnNames="moderatedBy_id" baseTableName="AnswerInformation" constraintName="FK_dbuximcggdn5k2j9svvpwtxrm" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-114">
+<addForeignKeyConstraint baseColumnNames="News_id" baseTableName="News_Comments" constraintName="FK_dcofc609g7loixe8pcm3myemd" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="News" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-115">
+<addForeignKeyConstraint baseColumnNames="lastTouchedBy_id" baseTableName="Answer" constraintName="FK_drifk8pp2s7wsh57nvwna9m1g" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-116">
+<addForeignKeyConstraint baseColumnNames="information_id" baseTableName="Answer" constraintName="FK_dshhxt02iww0fxkl2li8l3ao2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="AnswerInformation" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-117">
+<addForeignKeyConstraint baseColumnNames="votes_id" baseTableName="Comment_Votes" constraintName="FK_dtgxtqffciorpdsjdshnkbpw6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Vote" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-118">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="News" constraintName="FK_e3k3kapw96m39ma7uus1r6f7m" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-119">
+<addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="Attachment" constraintName="FK_enrbut32jkvqv2ttop49nkcb4" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-120">
+<addForeignKeyConstraint baseColumnNames="Question_id" baseTableName="Question_Comments" constraintName="FK_fm57yvrnidsyeuvls0he5c9pk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-121">
+<addForeignKeyConstraint baseColumnNames="moderatedBy_id" baseTableName="NewsInformation" constraintName="FK_fppkwwg6svwefnnni9ygaefg2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-122">
+<addForeignKeyConstraint baseColumnNames="News_id" baseTableName="News_Flags" constraintName="FK_fr0qqkoqj2rai6g9epq0iw4wu" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="News" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-123">
+<addForeignKeyConstraint baseColumnNames="Question_id" baseTableName="Question_Flags" constraintName="FK_ftntexa7hxbaqo2i2yg4i0yr3" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-124">
+<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="UserSession" constraintName="FK_g1vcu7yf9bjb3kj31y3ghw0jg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-125">
+<addForeignKeyConstraint baseColumnNames="Comment_id" baseTableName="Comment_Flags" constraintName="FK_g45y0rm9o8k7uyoih84rrccra" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Comment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-126">
+<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ReputationEvent" constraintName="FK_gbu6jo147pal18b3q3blpr0of" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-127">
+<addForeignKeyConstraint baseColumnNames="flags_id" baseTableName="Comment_Flags" constraintName="FK_gkehc29f3h04bua96bjurv4vd" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Flag" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-128">
+<addForeignKeyConstraint baseColumnNames="lastTouchedBy_id" baseTableName="News" constraintName="FK_glms254gw9a4kv5qh3ptijiqd" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-129">
+<addForeignKeyConstraint baseColumnNames="avatarImage_id" baseTableName="Users" constraintName="FK_gvmhe2prumyg00npgdawfu7la" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Attachment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-130">
+<addForeignKeyConstraint baseColumnNames="watcher_id" baseTableName="Watcher" constraintName="FK_hobtys3mefri57vry8w6o8xyq" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-131">
+<addForeignKeyConstraint baseColumnNames="information_id" baseTableName="Question" constraintName="FK_i2xt9jcwfauudnswun94neqyg" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="QuestionInformation" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-132">
+<addForeignKeyConstraint baseColumnNames="Question_id" baseTableName="Question_Attachment" constraintName="FK_ib0aqkj0a4a4l9ku9oai3lw9w" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-133">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="Comment" constraintName="FK_j94pith5sd971k29j6ysxuk7" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-134">
+<addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="TagPage" constraintName="FK_jcmikqbikgwump3qo3fnqbext" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Tag" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-135">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="BlockedIp" constraintName="FK_jx0qq5i8p02d6geh0cp4yl2lh" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-136">
+<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="LoginMethod" constraintName="FK_l0vhdtw8ymw1rrxq9usrqjh4x" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-137">
+<addForeignKeyConstraint baseColumnNames="answer_id" baseTableName="AnswerInformation" constraintName="FK_lecgqmqj00d06wb8nwaq60rpr" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Answer" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-138">
+<addForeignKeyConstraint baseColumnNames="solution_id" baseTableName="Question" constraintName="FK_liw3djybv5je7ra806bsipg68" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Answer" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-139">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="Flag" constraintName="FK_lumgu8dnorkynxw1l039ovm8q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-140">
+<addForeignKeyConstraint baseColumnNames="watchers_id" baseTableName="News_Watchers" constraintName="FK_m5koj8lugxy5pp42xk656vqln" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Watcher" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-141">
+<addForeignKeyConstraint baseColumnNames="attachments_id" baseTableName="Answer_Attachment" constraintName="FK_m8lisjgd2lw0uy50bxngkvi5o" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Attachment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-142">
+<addForeignKeyConstraint baseColumnNames="votes_id" baseTableName="News_Votes" constraintName="FK_mecjpg8cg90p1ry4sg4rckb09" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Vote" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-143">
+<addForeignKeyConstraint baseColumnNames="author_id" baseTableName="NewsInformation" constraintName="FK_n3hxv49li2jcopaj6dio6b8b6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-144">
+<addForeignKeyConstraint baseColumnNames="tags_id" baseTableName="QuestionInformation_Tag" constraintName="FK_nv1tmcost5jqejnlb6u0wrypo" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Tag" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-145">
+<addForeignKeyConstraint baseColumnNames="userInteractions_id" baseTableName="Question_Interactions" constraintName="FK_nydo4x8ey7gnhhwg1gqmikwo6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-146">
+<addForeignKeyConstraint baseColumnNames="Comment_id" baseTableName="Comment_Votes" constraintName="FK_obxdv4j0ph2swt8r81dx8h0yw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Comment" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-147">
+<addForeignKeyConstraint baseColumnNames="votes_id" baseTableName="Question_Votes" constraintName="FK_p5sgssf0gw0br66mvu9cctlmq" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Vote" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-148">
+<addForeignKeyConstraint baseColumnNames="question_id" baseTableName="QuestionInformation" constraintName="FK_pl1drgbxhfd4hbmd3smwa3svl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-149">
+<addForeignKeyConstraint baseColumnNames="Question_id" baseTableName="Question_Interactions" constraintName="FK_plnjd89r1mncrtf1vfj65pspt" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-150">
+<addForeignKeyConstraint baseColumnNames="Question_id" baseTableName="Question_Watchers" constraintName="FK_pu72rhjonka0flev96adthdp0" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Question" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-151">
+<addForeignKeyConstraint baseColumnNames="Answer_id" baseTableName="Answer_Votes" constraintName="FK_qpawvfihxtc49opw1q5le336l" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Answer" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-152">
+<addForeignKeyConstraint baseColumnNames="News_id" baseTableName="News_Votes" constraintName="FK_rqhl3hox4wntf7oc9y4af5cgv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="News" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-153">
+<addForeignKeyConstraint baseColumnNames="flags_id" baseTableName="News_Flags" constraintName="FK_s0ugdfyknbgui197dcioqqovi" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Flag" validate="true"/>
+</changeSet>
+<changeSet author="atila (generated)" id="1531159784719-154">
+<addForeignKeyConstraint baseColumnNames="moderatedBy_id" baseTableName="QuestionInformation" constraintName="FK_t1oox0xh74vlikcvhxd5k2kq1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="Users" validate="true"/>
+</changeSet>
+</databaseChangeLog>
