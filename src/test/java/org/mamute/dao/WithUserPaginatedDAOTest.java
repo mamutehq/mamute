@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mamute.builder.QuestionBuilder;
 import org.mamute.dao.InvisibleForUsersRule;
@@ -49,6 +50,7 @@ public class WithUserPaginatedDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_return_only_questions_with_the_provided_user_ordered_by_vote_count() {
 		Question javaEEQuestion = javaEEQuestion();
 		javaEEQuestion.substitute(null, upVote);
@@ -70,6 +72,7 @@ public class WithUserPaginatedDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_return_only_answers_with_the_provided_user_ordered_by_vote_count() {
 		Question androidQuestion = androidQuestion();
 
@@ -100,6 +103,7 @@ public class WithUserPaginatedDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_return_only_questions_with_the_provided_user_ordered_by_date() {
 		DateTimeUtils.setCurrentMillisFixed(new DateTime().minusMonths(2).getMillis());
 		Question javaEEQuestion = javaEEQuestion();

@@ -1,6 +1,7 @@
 package org.mamute.testcase;
 
 import static br.com.caelum.vraptor.environment.ServletBasedEnvironment.ENVIRONMENT_PROPERTY;
+import static org.junit.Assume.assumeTrue;
 
 import javax.enterprise.inject.spi.CDI;
 

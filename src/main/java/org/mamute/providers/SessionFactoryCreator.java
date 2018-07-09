@@ -1,5 +1,8 @@
 package org.mamute.providers;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.tool.schema.TargetType;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
@@ -8,10 +11,9 @@ import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.interceptor.Interceptor;
+import java.util.EnumSet;
 
-import org.hibernate.SessionFactory;
-import org.mamute.model.*;
-import org.mamute.model.watch.Watcher;
+// TODO: Remove this entire class once conversion to Spring Boot is done.
 
 @ApplicationScoped
 @Alternative
@@ -56,15 +58,15 @@ public class SessionFactoryCreator {
 
 	public void dropAndCreate() {
 		destroy(this.factory);
-		cfg.getSchema().drop(true, true);
-		cfg.getSchema().create(true, true);
+		cfg.getSchema().drop(EnumSet.of(TargetType.DATABASE), null);
+		cfg.getSchema().create(EnumSet.of(TargetType.DATABASE), null);
 		init();
 	}
 
 	public void drop() {
 		factory.close();
 		factory = null;
-		cfg.getSchema().drop(true, true);
+		cfg.getSchema().drop(EnumSet.of(TargetType.DATABASE), null);
 		init();
 	}
 

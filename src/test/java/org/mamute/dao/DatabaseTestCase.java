@@ -20,6 +20,8 @@ import org.mamute.testcase.CDITestCase;
 import br.com.caelum.vraptor.environment.DefaultEnvironment;
 import br.com.caelum.vraptor.environment.Environment;
 
+// TODO: All database test cases must be converted to Spring Boot style
+
 @SuppressWarnings("unchecked")
 public abstract class DatabaseTestCase extends CDITestCase{
 	private static Logger LOG = Logger.getLogger(DatabaseTestCase.class);
