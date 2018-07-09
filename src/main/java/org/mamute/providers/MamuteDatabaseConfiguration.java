@@ -1,28 +1,42 @@
 package org.mamute.providers;
 
-import java.net.URL;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.validation.ValidatorFactory;
-
+import br.com.caelum.vraptor.environment.Environment;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.mamute.meta.MamuteMetaInformation;
-import org.mamute.model.*;
+import org.mamute.model.Answer;
+import org.mamute.model.AnswerInformation;
+import org.mamute.model.Attachment;
+import org.mamute.model.Comment;
+import org.mamute.model.Flag;
+import org.mamute.model.LoginMethod;
+import org.mamute.model.News;
+import org.mamute.model.NewsInformation;
+import org.mamute.model.NewsletterSentLog;
+import org.mamute.model.Question;
+import org.mamute.model.QuestionInformation;
+import org.mamute.model.ReputationEvent;
+import org.mamute.model.Tag;
+import org.mamute.model.TagPage;
+import org.mamute.model.User;
+import org.mamute.model.UserSession;
+import org.mamute.model.Vote;
 import org.mamute.model.ban.BlockedIp;
 import org.mamute.model.interfaces.Flaggable;
 import org.mamute.model.watch.Watcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.caelum.vraptor.environment.Environment;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.validation.ValidatorFactory;
+import java.net.URL;
+import java.util.Map;
 
 @ApplicationScoped
 public class MamuteDatabaseConfiguration {
@@ -116,16 +130,18 @@ public class MamuteDatabaseConfiguration {
 	}
 
 	public SessionFactory buildSessionFactory() {
-		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(cfg.getProperties()).buildServiceRegistry();
+		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+				.applySettings(cfg.getProperties())
+				.build();
 		return cfg.buildSessionFactory(serviceRegistry);
 	}
 
 	public SchemaExport getSchema() {
-		return new SchemaExport(cfg);
+		return new SchemaExport();
 	}
 
 	public SchemaUpdate getSchemaUpdate() {
-		return new SchemaUpdate(cfg);
+		return new SchemaUpdate();
 	}
 
 }

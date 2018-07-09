@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -48,6 +49,7 @@ public class AttachmentRepositoryTest extends DatabaseTestCase {
 	}
 
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void save_should_write_contents_to_disk() throws IOException {
 		final String fileContents = "hello";
 		final Attachment attachment = createAttachment(fileContents);
@@ -58,6 +60,7 @@ public class AttachmentRepositoryTest extends DatabaseTestCase {
 	}
 
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void save_should_create_database_entry() {
 		final Attachment attachment = createAttachment("test");
 
@@ -68,6 +71,7 @@ public class AttachmentRepositoryTest extends DatabaseTestCase {
 	}
 
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_delete_database_entry() {
 		final Attachment attachment = createAttachment("test");
 		attachmentRepository.save(attachment);
@@ -78,6 +82,7 @@ public class AttachmentRepositoryTest extends DatabaseTestCase {
 	}
 
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_detach_from_question() {
 		final User author = user("question owner", "question@owner.local");
 		session.save(author);
@@ -98,6 +103,7 @@ public class AttachmentRepositoryTest extends DatabaseTestCase {
 	}
 
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_detach_from_answer() {
 		final User author = user("question owner", "question@owner.local");
 		session.save(author);

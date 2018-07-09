@@ -57,7 +57,7 @@ public abstract class AcceptanceTestBase implements ServerInfo.AcceptanceTest {
 
 	@SuppressWarnings("unused")
 	private static WebDriver htmlUnitDriver() {
-		HtmlUnitDriver driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_24);
+		HtmlUnitDriver driver = new HtmlUnitDriver(BrowserVersion.FIREFOX_52);
 		driver.setJavascriptEnabled(true);
 		return driver;
 	}
@@ -145,13 +145,7 @@ public abstract class AcceptanceTestBase implements ServerInfo.AcceptanceTest {
 
 	private static void waitForFirstBodyPresence() {
 		driver.get(SERVER.urlFor(""));
-		ExpectedCondition<WebElement> homeAppear = new ExpectedCondition<WebElement>() {
-			@Override
-			public WebElement apply(WebDriver d) {
-				return d.findElement(By.tagName("body"));
-			}
-		};
-		new WebDriverWait(driver, 40).until(homeAppear);
+		new WebDriverWait(driver, 40).until((driver) -> driver.findElement(By.tagName("body")));
 	}
 
 	protected String message(String text) {

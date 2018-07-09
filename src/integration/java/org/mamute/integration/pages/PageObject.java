@@ -2,6 +2,7 @@ package org.mamute.integration.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -63,7 +64,7 @@ public abstract class PageObject {
 	}
 	private void waitFor(int time, ExpectedCondition<WebElement> expectedCondition, String elementName) {
 		try {
-	        new WebDriverWait(driver, time).until(expectedCondition);
+	        new WebDriverWait(driver, time).until((d) -> expectedCondition.apply(d));
         } catch (TimeoutException e) {
             LOG.warn("waited for element " + elementName + " but it didn't show up");
         }
@@ -71,7 +72,7 @@ public abstract class PageObject {
 	
 	
 	protected void waitForTextIn(final By by, String text, int time) {
-	    new WebDriverWait(driver, time).until(ExpectedConditions.textToBePresentInElement(by, text));
+	    new WebDriverWait(driver, time).until((d) -> ExpectedConditions.textToBePresentInElement(by, text).apply(d));
 	}
 
     public List<String> confirmationMessages() {

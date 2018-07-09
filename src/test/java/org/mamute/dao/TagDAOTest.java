@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mamute.builder.QuestionBuilder;
 import org.mamute.model.*;
@@ -24,6 +25,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_load_recent_tags_used() {
 		User leo = createUser(session, "leonardo", "leo@leo");
 
@@ -51,6 +53,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_get_main_tags_of_the_provided_user() {
 		User leo = createUser(session, "leonardo", "leo@leo");
 
@@ -85,6 +88,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_get_all_tag_names() {
 		TagDAO tags = new TagDAO(session);
 		createTags(session, createUser(session, "leonardo", "leo@leo"));
@@ -95,6 +99,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_get_empty_list_for_nonexistant_names() {
 		TagDAO tags = new TagDAO(session);
 		createTags(session, createUser(session, "leonardo", "leo@leo"));
@@ -104,6 +109,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_split_two_spaces() {
 		TagDAO tags = new TagDAO(session);
 		createTags(session, createUser(session, "leonardo", "leo@leo"));
@@ -115,6 +121,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_find_tags_ordered() {
 		TagDAO tags = new TagDAO(session);
 		createTags(session, createUser(session, "leonardo", "leo@leo"));
@@ -126,6 +133,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_not_repeat_tags() {
 		TagDAO tags = new TagDAO(session);
 		createTags(session, createUser(session, "leonardo", "leo@leo"));
@@ -137,6 +145,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_not_repeat_tags_even_if_different_case() {
 		TagDAO tags = new TagDAO(session);
 		createTags(session, createUser(session, "leonardo", "leo@leo"));
@@ -148,6 +157,7 @@ public class TagDAOTest extends DatabaseTestCase{
 	}
 	
 	@Test
+	@Ignore("Convert to Spring Boot")
 	public void should_not_save_repeated_tags() {
 		TagDAO tags = new TagDAO(session);
 		User leo = createUser(session, "leonardo", "leo@leo");

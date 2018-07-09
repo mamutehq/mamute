@@ -2,6 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.3.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
 	<groupId>br.com.caelum</groupId>
 	<artifactId>mamute</artifactId>
 	<version>1.5.0</version>
@@ -10,8 +17,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<jetty.version>8.1.0.v20120127</jetty.version>
-		<jetty.jsp.version>8.1.4.v20120524</jetty.jsp.version>
+		<java.version>1.8</java.version>
+		<jetty.version>9.4.11.v20180605</jetty.version>
 		<mamute.database>mysql</mamute.database>
 		<mamute.grunt.task>build</mamute.grunt.task>
 		<solr.version>4.10.0</solr.version>
@@ -24,6 +31,26 @@
 		<developerConnection>scm:git:git@github.com:caelum/mamute.git</developerConnection>
 	</scm>
 	<dependencies>
+		<!-- Spring Boot -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- VRaptor -->
 		<dependency>
 			<groupId>br.com.caelum</groupId>
 			<artifactId>vraptor</artifactId>
@@ -180,8 +207,9 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator-cdi</artifactId>
-			<version>5.0.0.Final</version>
+			<version>6.0.10.Final</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -198,22 +226,26 @@
 		        </exclusion>
 			</exclusions>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>4.2.3.Final</version>
+			<version>5.2.17.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>4.0.0.Final</version>
+			<version>5.2.17.Final</version>
 		</dependency>
+
 		<!-- joda time hibernate support -->
+<!--
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.jodatime</artifactId>
 			<version>2.0.1</version>
 		</dependency>
+-->
 		<!-- end of hibernate deps -->
 
 		<!-- LDAP support -->
@@ -374,11 +406,13 @@
 			<artifactId>xstream</artifactId>
 			<version>1.3.1</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time-hibernate</artifactId>
 			<version>1.3</version>
-		</dependency>
+n		</dependency>
+-->
 		<dependency>
 			<groupId>org.ocpsoft.prettytime</groupId>
 			<artifactId>prettytime</artifactId>
@@ -430,6 +464,7 @@
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.joda</groupId>
 			<artifactId>joda-convert</artifactId>
@@ -440,6 +475,7 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.0</version>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.apache.axis</groupId>
 			<artifactId>axis</artifactId>
@@ -509,7 +545,8 @@
 
         <!-- end of etc -->
 
-		<!-- Jetty, jsp, jstl, etc -->
+<!--
+		&lt;!&ndash; Jetty, jsp, jstl, etc &ndash;&gt;
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
@@ -535,6 +572,7 @@
 			<artifactId>jetty-http</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
+-->
 
 
 
@@ -578,6 +616,29 @@
 			</exclusions>
 		</dependency>
 		<!-- end of jetty/container deps -->
+
+		<!-- JAXB APIs -->
+		<!-- see: https://stackoverflow.com/questions/43574426/how-to-resolve-java-lang-noclassdeffounderror-javax-xml-bind-jaxbexception-in-j/43574427#43574427 -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 
 		<!-- TEST DEPENDENCIES -->
 		<dependency>
@@ -685,6 +746,11 @@
 	<build>
 		<outputDirectory>src/main/webapp/WEB-INF/classes/</outputDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
 			<plugin>
 			    <groupId>pl.allegro</groupId>
 			    <artifactId>grunt-maven-plugin</artifactId>
@@ -839,8 +905,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>8</source>
+					<target>8</target>
 					<encoding>UTF-8</encoding>
 					<generatedTestSourcesDirectory>src/integration/java</generatedTestSourcesDirectory>
 				</configuration>
@@ -980,6 +1046,10 @@
 		</plugins>
 	</reporting>
 	<repositories>
+		<repository>
+			<id>maven-central</id>
+			<url>https://repo1.maven.org/maven2</url>
+		</repository>
 		<repository>
 			<id>sonatype-oss-snapshot</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
