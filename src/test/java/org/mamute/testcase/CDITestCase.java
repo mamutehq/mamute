@@ -1,14 +1,12 @@
 package org.mamute.testcase;
 
-import static br.com.caelum.vraptor.environment.ServletBasedEnvironment.ENVIRONMENT_PROPERTY;
-import static org.junit.Assume.assumeTrue;
+import br.com.caelum.vraptor.ioc.cdi.CDIBasedContainer;
+import br.com.caelum.vraptor.test.container.CdiContainer;
+import org.mamute.dao.TestCase;
 
 import javax.enterprise.inject.spi.CDI;
 
-import org.mamute.dao.TestCase;
-
-import br.com.caelum.vraptor.ioc.cdi.CDIBasedContainer;
-import br.com.caelum.vraptor.test.container.CdiContainer;
+import static br.com.caelum.vraptor.environment.ServletBasedEnvironment.ENVIRONMENT_PROPERTY;
 
 public abstract class CDITestCase extends TestCase{
 
