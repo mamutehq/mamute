@@ -41,6 +41,7 @@ import org.mamute.model.Updater;
 import org.mamute.model.User;
 import org.mamute.model.post.PostViewCounter;
 import org.mamute.model.watch.Watcher;
+import org.mamute.providers.ClockProvider;
 import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.search.QuestionIndex;
 import org.mamute.util.TagsSplitter;
@@ -104,6 +105,8 @@ public class QuestionController {
 	private AttachmentRepository attachmentRepository;
 	@Inject
 	private EnvironmentKarma environmentKarma;
+	@Inject
+	private ClockProvider clockProvider;
 
 	@Get
 	@IncludeAllTags
@@ -127,7 +130,7 @@ public class QuestionController {
 		List<Tag> loadedTags = tagsManager.findOrCreate(splitedTags);
 		validate(loadedTags, splitedTags);
 
-		QuestionInformation information = new QuestionInformation(title, description, this.currentUser, loadedTags, comment);
+		QuestionInformation information = new QuestionInformation(clockProvider, title, description, this.currentUser, loadedTags, comment);
 		brutalValidator.validate(information);
 		UpdateStatus status = original.updateWith(information, new Updater(environmentKarma));
 
@@ -185,7 +188,7 @@ public class QuestionController {
 		List<Tag> foundTags = tagsManager.findOrCreate(splitedTags);
 		validate(foundTags, splitedTags);
 
-		QuestionInformation information = new QuestionInformation(title, description, currentUser, foundTags, "new question");
+		QuestionInformation information = new QuestionInformation(clockProvider, title, description, currentUser, foundTags, "new question");
 		brutalValidator.validate(information);
 		User author = currentUser.getCurrent();
 		Question question = new Question(new SystemUtcClockProvider(), information, author);

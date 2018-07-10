@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mamute.brutauth.auth.rules.EnvironmentKarma;
 import org.mamute.builder.QuestionBuilder;
 import org.mamute.dao.TestCase;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.util.MockClockProvider;
 import org.mamute.vraptor.environment.MamuteEnvironment;
 
@@ -56,7 +57,7 @@ public class UserTest extends TestCase {
 	@Test
 	public void moderator_should_approve_question_information()
 			throws Exception {
-		Information approvedInfo = new QuestionInformation("edited title",
+		Information approvedInfo = new QuestionInformation(new SystemUtcClockProvider(), "edited title",
 				notMarked("edited desc"), new LoggedUser(otherUser, null),
 				new ArrayList<Tag>(), "comment");
 
@@ -71,7 +72,7 @@ public class UserTest extends TestCase {
 	@Test
 	public void user_with_enough_karma_should_approve_question_information()
 			throws Exception {
-		Information approvedInfo = new QuestionInformation("edited title",
+		Information approvedInfo = new QuestionInformation(new SystemUtcClockProvider(), "edited title",
 				notMarked("edited desc"), new LoggedUser(otherUser, null),
 				new ArrayList<Tag>(), "comment");
 

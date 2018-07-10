@@ -1,19 +1,6 @@
 package org.mamute.util;
 
-import static java.util.Arrays.asList;
-import static org.mamute.model.MarkedText.notMarked;
-import static org.mockito.Mockito.mock;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-
 import net.vidageek.mirror.dsl.Mirror;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -22,10 +9,35 @@ import org.mamute.brutauth.auth.rules.EnvironmentKarma;
 import org.mamute.builder.QuestionBuilder;
 import org.mamute.dao.QuestionDAO;
 import org.mamute.dao.TestCase;
-import org.mamute.model.*;
+import org.mamute.model.Answer;
+import org.mamute.model.AnswerInformation;
+import org.mamute.model.Comment;
+import org.mamute.model.Flag;
+import org.mamute.model.FlagType;
+import org.mamute.model.Information;
+import org.mamute.model.LoggedUser;
+import org.mamute.model.News;
+import org.mamute.model.NewsInformation;
+import org.mamute.model.Question;
+import org.mamute.model.QuestionInformation;
+import org.mamute.model.Tag;
+import org.mamute.model.Updater;
+import org.mamute.model.User;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.vraptor.environment.MamuteEnvironment;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
+import static org.mamute.model.MarkedText.notMarked;
+import static org.mockito.Mockito.mock;
 
 public class DataImport extends TestCase {
 	private Updater updater;
@@ -202,7 +214,7 @@ public class DataImport extends TestCase {
 		setId(editor, 1l);
 		setId(question.getAuthor(), 2l);
 		List<Tag> tagsEdited = asList(getTag("java"));
-		QuestionInformation information = new QuestionInformation("question question question question question", 
+		QuestionInformation information = new QuestionInformation(new SystemUtcClockProvider(), "question question question question question",
 				notMarked("edit edit edit edit edit edit edit edit edit edit edit"), new LoggedUser(editor, null), tagsEdited, "blablablab");
 		edits.add(information);
 		question.updateWith(information, updater);
@@ -214,7 +226,7 @@ public class DataImport extends TestCase {
 		User editor = newUser(userWithPassword("some editor", "editor@email.com.br"), false);
 		setId(editor, 1l);
 		setId(answer.getAuthor(), 2l);
-		AnswerInformation information = new AnswerInformation(notMarked("edited edited edited edited edited edited"), new LoggedUser(editor, null),
+		AnswerInformation information = new AnswerInformation(new SystemUtcClockProvider(), notMarked("edited edited edited edited edited edited"), new LoggedUser(editor, null),
 				answer, "bla bla bla blabla");
 		edits.add(information);
 		answer.updateWith(information, updater);

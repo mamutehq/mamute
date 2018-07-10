@@ -3,12 +3,12 @@ package org.mamute.model;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
 import org.mamute.model.interfaces.Moderatable;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -39,7 +39,7 @@ public class AnswerInformation implements Information {
 	@ManyToOne(optional = false, fetch = EAGER)
 	private final User author;
 
-	private final LocalDateTime createdAt = LocalDateTime.now();
+	private final LocalDateTime createdAt;
 
 	@Embedded
 	private Moderation moderation;
@@ -57,15 +57,19 @@ public class AnswerInformation implements Information {
 
 	@ManyToOne
     private Answer answer;
-	
+
+	private final ClockProvider clockProvider;
+
 	/**
 	 * @deprecated hibernate only
 	 */
 	AnswerInformation() {
-		this(MarkedText.notMarked(""), null, "");
+		this(new SystemUtcClockProvider(), MarkedText.notMarked(""), null, "");
 	}
 
-	public AnswerInformation(MarkedText description, LoggedUser  currentUser, String comment) {
+	public AnswerInformation(ClockProvider clockProvider, MarkedText description, LoggedUser  currentUser, String comment) {
+		this.clockProvider = clockProvider;
+		this.createdAt = LocalDateTime.now(clockProvider.get());
         if (currentUser == null) {
 			this.author = null;
 			this.ip = null;
@@ -77,8 +81,8 @@ public class AnswerInformation implements Information {
 		setDescription(description);
 	}
 	
-	public AnswerInformation(MarkedText description, LoggedUser currentUser, Answer existentAnswer, String comment) {
-	    this(description, currentUser, comment);
+	public AnswerInformation(ClockProvider clockProvider, MarkedText description, LoggedUser currentUser, Answer existentAnswer, String comment) {
+	    this(clockProvider, description, currentUser, comment);
 	    setAnswer(existentAnswer);
 	}
 

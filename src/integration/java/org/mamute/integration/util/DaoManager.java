@@ -1,10 +1,5 @@
 package org.mamute.integration.util;
 
-import static org.mamute.model.MarkedText.notMarked;
-
-import java.util.Arrays;
-import java.util.Random;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.mamute.builder.QuestionBuilder;
@@ -24,6 +19,11 @@ import org.mamute.model.Tag;
 import org.mamute.model.User;
 import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.util.ScriptSessionCreator;
+
+import java.util.Arrays;
+import java.util.Random;
+
+import static org.mamute.model.MarkedText.notMarked;
 
 public class DaoManager {
 
@@ -80,7 +80,7 @@ public class DaoManager {
 		this.session.beginTransaction();
 
 		LoggedUser loggedUser = new LoggedUser(author, null);
-		AnswerInformation information = new AnswerInformation(notMarked(description),
+		AnswerInformation information = new AnswerInformation(new SystemUtcClockProvider(), notMarked(description),
 				loggedUser, "new answer");
 		Answer answer = new Answer(information, question, author);
 

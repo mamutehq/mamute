@@ -1,20 +1,15 @@
 package org.mamute.model;
 
+import org.junit.Test;
+import org.mamute.builder.QuestionBuilder;
+import org.mamute.dao.TestCase;
+import org.mamute.providers.SystemUtcClockProvider;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mamute.model.MarkedText.notMarked;
 import static org.mamute.model.UpdateStatus.PENDING;
-
-import org.junit.Test;
-import org.mamute.builder.QuestionBuilder;
-import org.mamute.dao.TestCase;
-import org.mamute.model.Answer;
-import org.mamute.model.AnswerInformation;
-import org.mamute.model.Information;
-import org.mamute.model.LoggedUser;
-import org.mamute.model.Question;
-import org.mamute.model.User;
 
 public class AnswerTest extends TestCase {
     private User author = user("name", "email", 1l);
@@ -51,7 +46,7 @@ public class AnswerTest extends TestCase {
 		Question myQuestion = question.withTitle("question title").withDescription("description").withAuthor(author).build();
 		Answer answer = answer("blablablab", myQuestion, author);
 		
-		Information approved = new AnswerInformation(notMarked("blablabalblab"), new LoggedUser(editUser, null), answer, "");
+		Information approved = new AnswerInformation(new SystemUtcClockProvider(), notMarked("blablabalblab"), new LoggedUser(editUser, null), answer, "");
 		answer.approve(approved);
 		
 		assertEquals(approved, answer.getInformation());
@@ -64,7 +59,7 @@ public class AnswerTest extends TestCase {
 		Answer answer = answer("blablablab", myQuestion, author);
 		assertFalse(answer.hasPendingEdits());
 		
-		AnswerInformation approved = new AnswerInformation(notMarked("blablabalblab"), new LoggedUser(editUser, null), answer, "");
+		AnswerInformation approved = new AnswerInformation(new SystemUtcClockProvider(), notMarked("blablabalblab"), new LoggedUser(editUser, null), answer, "");
 		answer.enqueueChange(approved, PENDING);
 		assertTrue(answer.hasPendingEdits());
 		

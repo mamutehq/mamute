@@ -1,15 +1,22 @@
 package org.mamute.controllers;
 
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
-import br.com.caelum.vraptor.*;
+import br.com.caelum.vraptor.Controller;
+import br.com.caelum.vraptor.Delete;
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.hibernate.extra.Load;
 import br.com.caelum.vraptor.routes.annotation.Routed;
 import br.com.caelum.vraptor.simplemail.template.BundleFormatter;
 import br.com.caelum.vraptor.validator.Validator;
 import br.com.caelum.vraptor.view.Results;
-import org.mamute.brutauth.auth.rules.*;
+import org.mamute.brutauth.auth.rules.EditAnswerRule;
+import org.mamute.brutauth.auth.rules.EnvironmentKarma;
+import org.mamute.brutauth.auth.rules.InactiveQuestionRequiresMoreKarmaRule;
+import org.mamute.brutauth.auth.rules.InputRule;
+import org.mamute.brutauth.auth.rules.LoggedRule;
 import org.mamute.dao.AnswerDAO;
 import org.mamute.dao.AttachmentDao;
 import org.mamute.dao.ReputationEventDAO;
@@ -17,9 +24,20 @@ import org.mamute.dao.WatcherDAO;
 import org.mamute.factory.MessageFactory;
 import org.mamute.filesystem.AttachmentRepository;
 import org.mamute.mail.action.EmailAction;
-import org.mamute.model.*;
+import org.mamute.model.Answer;
+import org.mamute.model.AnswerInformation;
+import org.mamute.model.Attachment;
+import org.mamute.model.EventType;
+import org.mamute.model.LoggedUser;
+import org.mamute.model.MarkedText;
+import org.mamute.model.Question;
+import org.mamute.model.ReputationEvent;
+import org.mamute.model.UpdateStatus;
+import org.mamute.model.Updater;
+import org.mamute.model.User;
 import org.mamute.model.watch.Watcher;
 import org.mamute.notification.NotificationManager;
+import org.mamute.providers.ClockProvider;
 import org.mamute.reputation.rules.KarmaCalculator;
 import org.mamute.validators.AnsweredByValidator;
 
@@ -48,6 +66,7 @@ public class AnswerController {
 	@Inject private EnvironmentKarma environmentKarma;
 	@Inject private AttachmentRepository attachmentRepository;
 	@Inject private Environment environment;
+	@Inject private ClockProvider clockProvider;
 
 	@Get
 	@CustomBrutauthRules(EditAnswerRule.class)
@@ -58,7 +77,7 @@ public class AnswerController {
 	@Post
 	@CustomBrutauthRules(EditAnswerRule.class)
 	public void edit(@Load Answer original, MarkedText description, String comment, List<Long> attachmentsIds) {
-		AnswerInformation information = new AnswerInformation(description, currentUser, comment);
+		AnswerInformation information = new AnswerInformation(clockProvider, description, currentUser, comment);
 		brutalValidator.validate(information);
 		
 		validator.onErrorRedirectTo(this).answerEditForm(original);
@@ -80,7 +99,7 @@ public class AnswerController {
 		User current = currentUser.getCurrent();
 		boolean canAnswer = answeredByValidator.validate(question);
 		boolean isUserWithKarma = current.hasKarma();
-		AnswerInformation information = new AnswerInformation(description, currentUser, "new answer");
+		AnswerInformation information = new AnswerInformation(clockProvider, description, currentUser, "new answer");
 		Answer answer  = new Answer(information, question, current);
 		List<Attachment> attachmentsLoaded = attachments.load(attachmentsIds);
 		answer.add(attachmentsLoaded);
