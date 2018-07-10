@@ -1,6 +1,12 @@
 package org.mamute.model;
 
 
+import org.hibernate.annotations.Any;
+import org.hibernate.annotations.AnyMetaDef;
+import org.hibernate.annotations.MetaValue;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,14 +15,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.*;
-import org.joda.time.DateTime;
-import org.mamute.providers.SessionFactoryCreator;
+import java.time.LocalDateTime;
 
 @SQLDelete(sql = "update ReputationEvent set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-@Entity
+//@Entity
 public class ReputationEvent {
 
 	public static final ReputationEvent IGNORED_EVENT = new ReputationEvent(EventType.IGNORED, null, null);
@@ -40,8 +43,7 @@ public class ReputationEvent {
 	@ManyToOne
 	private User user;
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime date = new DateTime();
+	private LocalDateTime date = LocalDateTime.now();
 
 	private boolean deleted;
 

@@ -38,7 +38,7 @@ public class QuestionTest  extends TestCase{
 	@Before
 	public void setup() throws IOException {
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		this.updater = new Updater(env);
 	}
 

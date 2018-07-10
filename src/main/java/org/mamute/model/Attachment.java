@@ -1,14 +1,16 @@
 package org.mamute.model;
 
 import br.com.caelum.vraptor.observer.upload.UploadedFile;
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.mamute.providers.SessionFactoryCreator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
 
-@Entity
+//@Entity
 public class Attachment {
 
 	@GeneratedValue
@@ -20,8 +22,7 @@ public class Attachment {
 	@Transient
 	private BufferedImage image;
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 
 	@ManyToOne
 	private User owner;

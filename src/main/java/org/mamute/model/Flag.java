@@ -13,7 +13,7 @@ import org.hibernate.annotations.Where;
 
 @SQLDelete(sql = "update Flag set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-@Entity
+//@Entity
 public class Flag {
 
 	@Id

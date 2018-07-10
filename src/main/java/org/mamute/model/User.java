@@ -1,5 +1,37 @@
 package org.mamute.model;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.mamute.auth.rules.PermissionRules;
+import org.mamute.brutauth.auth.rules.EnvironmentKarma;
+import org.mamute.dto.UserPersonalInfo;
+import org.mamute.infra.Digester;
+import org.mamute.model.interfaces.Identifiable;
+import org.mamute.model.interfaces.Moderatable;
+import org.mamute.model.interfaces.Votable;
+import org.mamute.model.watch.Watcher;
+
+import javax.enterprise.inject.Vetoed;
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mamute.infra.Digester.hashFor;
 import static org.mamute.infra.NormalizerBrutal.toSlug;
 import static org.mamute.model.SanitizedText.fromTrustedText;
@@ -17,44 +49,16 @@ import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_LENGTH_MES
 import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_MAX_LENGHT;
 import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_MIN_LENGTH;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.enterprise.inject.Vetoed;
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.joda.time.Years;
-import org.mamute.auth.rules.PermissionRules;
-import org.mamute.brutauth.auth.rules.EnvironmentKarma;
-import org.mamute.dto.UserPersonalInfo;
-import org.mamute.infra.Digester;
-import org.mamute.model.interfaces.Identifiable;
-import org.mamute.model.interfaces.Moderatable;
-import org.mamute.model.interfaces.Votable;
-import org.mamute.model.watch.Watcher;
-import org.mamute.providers.SessionFactoryCreator;
-
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="cache")
 @Table(name="Users")
 @SQLDelete(sql = "update Users set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-@Entity
+//@Entity
 @Vetoed
 public class User implements Identifiable {
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 	
 	@Id
 	@GeneratedValue
@@ -74,8 +78,7 @@ public class User implements Identifiable {
 	
 	private String markedAbout;
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime birthDate;
+	private LocalDateTime birthDate;
 	
 	private long karma = 0;
 	
@@ -91,8 +94,7 @@ public class User implements Identifiable {
 	@NotEmpty
 	private String sluggedName;
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime nameLastTouchedAt;
+	private LocalDateTime nameLastTouchedAt;
 
 	@OneToMany(mappedBy="user")
 	private final List<LoginMethod> loginMethods = new ArrayList<>();
@@ -110,8 +112,7 @@ public class User implements Identifiable {
 	@OneToMany(mappedBy = "watcher")
 	private final List<Watcher> watches = new ArrayList<>();
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime lastUpvote = new DateTime();
+	private LocalDateTime lastUpvote = LocalDateTime.now();
 
 	@ManyToOne
 	private Attachment avatarImage;
@@ -137,7 +138,7 @@ public class User implements Identifiable {
 		this.email = email;
 	}
 
-	public DateTime getNameLastTouchedAt() {
+	public LocalDateTime getNameLastTouchedAt() {
 		return nameLastTouchedAt;
 	}
 
@@ -151,7 +152,7 @@ public class User implements Identifiable {
     public void setName(SanitizedText name) {
 		this.name = name.getText();
 		this.sluggedName = toSlug(this.name);
-		this.nameLastTouchedAt = new DateTime();
+		this.nameLastTouchedAt = LocalDateTime.now();
 	}
 
     public void setId(Long id) {
@@ -214,7 +215,7 @@ public class User implements Identifiable {
 		return sluggedName;
 	}
 	
-	public DateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 	
@@ -226,16 +227,16 @@ public class User implements Identifiable {
 		return location;
 	}
 	
-	public DateTime getBirthDate() {
+	public LocalDateTime getBirthDate() {
 		return birthDate;
 	}
 	
-	public Integer getAge() {
-		DateTime now = new DateTime();
+	public Long getAge() {
+		LocalDateTime now = LocalDateTime.now();
 		if (birthDate == null){
 			return null;
 		}
-		return Years.yearsBetween(birthDate, now).getYears();
+		return birthDate.until(now, ChronoUnit.YEARS);
 	}
 	
 	public LoginMethod getBrutalLogin() {
@@ -415,11 +416,11 @@ public class User implements Identifiable {
 	}
 
 	public void votedUp() {
-		this.lastUpvote = new DateTime();
+		this.lastUpvote = LocalDateTime.now();
 	}
 	
 	public boolean isVotingEnough(){
-		return !lastUpvote.isBefore(new DateTime().minusWeeks(1));
+		return !lastUpvote.isBefore(LocalDateTime.now().minusWeeks(1));
 	}
 
 	public boolean hasKarma() {

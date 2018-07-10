@@ -1,5 +1,6 @@
 package org.mamute.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ import org.mamute.providers.SessionFactoryCreator;
 
 @SQLDelete(sql = "update Comment set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-@Entity
+//@Entity
 public class Comment implements Notifiable, Votable, Flaggable {
     
 	public static final int COMMENT_MIN_LENGTH = 15;
@@ -50,11 +51,9 @@ public class Comment implements Notifiable, Votable, Flaggable {
     @ManyToOne(optional = false)
     private final User author;
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private final DateTime createdAt = new DateTime();
+    private final LocalDateTime createdAt = LocalDateTime.now();
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private DateTime lastUpdatedAt = new DateTime();
+    private LocalDateTime lastUpdatedAt = LocalDateTime.now();
     
 	@JoinTable(name = "Comment_Votes")
 	@OneToMany
@@ -121,7 +120,7 @@ public class Comment implements Notifiable, Votable, Flaggable {
     }
 
     @Override
-    public DateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -130,7 +129,7 @@ public class Comment implements Notifiable, Votable, Flaggable {
         return "comment.type_name";
     }
 
-	public DateTime getLastUpdatedAt() {
+	public LocalDateTime getLastUpdatedAt() {
 		return lastUpdatedAt;
 	}
 

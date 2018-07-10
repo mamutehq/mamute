@@ -20,8 +20,6 @@ import java.util.EnumSet;
 @Priority(Interceptor.Priority.APPLICATION)
 public class SessionFactoryCreator {
 
-	public static final String JODA_TIME_TYPE = "org.jadira.usertype.dateandtime.joda.PersistentDateTime";
-
 	private final MamuteDatabaseConfiguration cfg;
 	private SessionFactory factory;
 

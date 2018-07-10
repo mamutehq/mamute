@@ -1,12 +1,13 @@
 package org.mamute.model;
 
-import static javax.persistence.FetchType.EAGER;
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.mamute.model.interfaces.Moderatable;
+import org.mamute.model.interfaces.Notifiable;
+import org.mamute.model.interfaces.Votable;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
@@ -17,26 +18,26 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.hibernate.annotations.*;
-import org.joda.time.DateTime;
-import org.mamute.model.interfaces.Moderatable;
-import org.mamute.model.interfaces.Notifiable;
-import org.mamute.model.interfaces.Votable;
-import org.mamute.providers.SessionFactoryCreator;
+import static javax.persistence.FetchType.EAGER;
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="cache")
 @SQLDelete(sql = "update Answer set deleted = true, question_id=NULL where id = ?")
 @Where(clause = "deleted = 0")
-@Entity
+//@Entity
 public class Answer extends Moderatable implements Post, Notifiable {
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 
 	@ManyToOne
 	private User author;
@@ -49,8 +50,7 @@ public class Answer extends Moderatable implements Post, Notifiable {
 	@NotNull
 	private AnswerInformation information = null;
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime lastUpdatedAt = new DateTime();
+	private LocalDateTime lastUpdatedAt = LocalDateTime.now();
 
 	@ManyToOne
 	private User lastTouchedBy = null;
@@ -198,7 +198,7 @@ public class Answer extends Moderatable implements Post, Notifiable {
 
 	public void touchedBy(User author) {
 		this.lastTouchedBy = author;
-		this.lastUpdatedAt = new DateTime();
+		this.lastUpdatedAt = LocalDateTime.now();
 	}
 
     @Override
@@ -210,7 +210,7 @@ public class Answer extends Moderatable implements Post, Notifiable {
     }
 
     @Override
-    public DateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -225,7 +225,7 @@ public class Answer extends Moderatable implements Post, Notifiable {
 	}
 
 	@Override
-    public DateTime getLastUpdatedAt() {
+    public LocalDateTime getLastUpdatedAt() {
     	return lastUpdatedAt;
     }
     

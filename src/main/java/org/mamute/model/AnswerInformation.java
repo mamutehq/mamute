@@ -1,6 +1,10 @@
 package org.mamute.model;
 
-import static javax.persistence.FetchType.EAGER;
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
+import org.mamute.model.interfaces.Moderatable;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
@@ -12,16 +16,12 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.mamute.model.interfaces.Moderatable;
-import org.mamute.providers.SessionFactoryCreator;
+import static javax.persistence.FetchType.EAGER;
 
 @Cacheable
-@Entity
+//@Entity
 public class AnswerInformation implements Information {
 
 	@Id
@@ -39,8 +39,7 @@ public class AnswerInformation implements Information {
 	@ManyToOne(optional = false, fetch = EAGER)
 	private final User author;
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 
 	@Embedded
 	private Moderation moderation;
@@ -120,7 +119,7 @@ public class AnswerInformation implements Information {
         this.answer = answer;
     }
     
-    public DateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
     
@@ -163,7 +162,7 @@ public class AnswerInformation implements Information {
 		return createdAt.isBefore(getAnswer().getInformation().createdAt);
 	}
 
-	public DateTime moderatedAt() {
+	public LocalDateTime moderatedAt() {
 		return moderation.getModeratedAt();
 	}
 	

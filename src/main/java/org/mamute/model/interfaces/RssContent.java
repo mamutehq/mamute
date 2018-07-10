@@ -3,6 +3,8 @@ package org.mamute.model.interfaces;
 import org.joda.time.DateTime;
 import org.mamute.model.User;
 
+import java.time.LocalDateTime;
+
 public interface RssContent {
 
 	User getAuthor();
@@ -11,7 +13,7 @@ public interface RssContent {
 
 	Long getId();
 
-	DateTime getCreatedAt();
+	LocalDateTime getCreatedAt();
 
 	String getLinkPath();
 	

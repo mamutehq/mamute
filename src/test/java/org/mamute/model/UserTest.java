@@ -14,7 +14,9 @@ import javax.servlet.ServletContext;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mamute.model.MarkedText.notMarked;
 import static org.mockito.Mockito.mock;
 
@@ -57,7 +59,7 @@ public class UserTest extends TestCase {
 				new ArrayList<Tag>(), "comment");
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderator.approve(myQuestion, approvedInfo, env);
 
 		assertEquals(approvedInfo, myQuestion.getInformation());
@@ -72,7 +74,7 @@ public class UserTest extends TestCase {
 				new ArrayList<Tag>(), "comment");
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderatorWannabe.approve(myQuestion, approvedInfo, env);
 		
 		assertEquals(approvedInfo, myQuestion.getInformation());
@@ -86,7 +88,7 @@ public class UserTest extends TestCase {
 				otherUser, answer);
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderator.approve(answer, approvedInfo, env);
 
 		assertEquals(approvedInfo, answer.getInformation());
@@ -100,7 +102,7 @@ public class UserTest extends TestCase {
 				otherUser, answer);
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderatorWannabe.approve(answer, approvedInfo, env);
 		
 		assertEquals(approvedInfo, answer.getInformation());

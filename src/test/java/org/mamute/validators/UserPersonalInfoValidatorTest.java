@@ -1,15 +1,8 @@
 package org.mamute.validators;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mamute.model.SanitizedText.fromTrustedText;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ResourceBundle;
-
-import javax.validation.Validation;
-
+import br.com.caelum.vraptor.simplemail.template.BundleFormatter;
+import br.com.caelum.vraptor.util.test.MockValidator;
+import br.com.caelum.vraptor.validator.Validator;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.After;
@@ -20,12 +13,17 @@ import org.mamute.dao.TestCase;
 import org.mamute.dao.UserDAO;
 import org.mamute.dto.UserPersonalInfo;
 import org.mamute.factory.MessageFactory;
-import org.mamute.model.SanitizedText;
 import org.mamute.model.User;
 
-import br.com.caelum.vraptor.simplemail.template.BundleFormatter;
-import br.com.caelum.vraptor.util.test.MockValidator;
-import br.com.caelum.vraptor.validator.Validator;
+import javax.validation.Validation;
+import java.time.LocalDateTime;
+import java.util.ResourceBundle;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mamute.model.SanitizedText.fromTrustedText;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class UserPersonalInfoValidatorTest extends TestCase{
 
@@ -63,7 +61,7 @@ public class UserPersonalInfoValidatorTest extends TestCase{
 	@Test
 	public void should_not_validate_under_twelve_years_old_user() {
 		User artur = user("artur com seis caracteres", validEmail);
-		DateTime hoje = DateTime.now();
+		LocalDateTime hoje = LocalDateTime.now();
 		UserPersonalInfo info = new UserPersonalInfo(artur)
 				.withName(fromTrustedText(artur.getName()))
 				.withEmail(artur.getEmail())

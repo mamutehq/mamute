@@ -1,17 +1,15 @@
 package org.mamute.model;
 
+import org.hibernate.annotations.Index;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.mamute.providers.SessionFactoryCreator;
-
-@Entity
+//@Entity
 public class UserSession {
 	
 	@Id
@@ -25,8 +23,7 @@ public class UserSession {
 	@ManyToOne
 	private User user;
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 	
 	/**
 	 * @deprecated

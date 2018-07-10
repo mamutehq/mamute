@@ -1,9 +1,5 @@
 package org.mamute.auth.rules;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mamute.brutauth.auth.rules.EditAnswerRule;
@@ -15,6 +11,10 @@ import org.mamute.vraptor.environment.MamuteEnvironment;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class EditAnswerRuleTest extends TestCase{
 	private static final long NOT_AUTHOR = 2l;
@@ -31,7 +31,7 @@ public class EditAnswerRuleTest extends TestCase{
 	@Test
 	public void author_should_be_allowed_to_edit_moderatable() throws IOException {
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		assertTrue(new EditAnswerRule(author, env).isAllowed(answer));
 	}
 	
@@ -40,7 +40,7 @@ public class EditAnswerRuleTest extends TestCase{
 		LoggedUser loggedUserWithEnoughKarma = loggedUser("loggedUser", "loggedUser@brutal.com", NOT_AUTHOR);
 		loggedUserWithEnoughKarma.getCurrent().increaseKarma(20);
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		
 		assertTrue(new EditAnswerRule(loggedUserWithEnoughKarma, env).isAllowed(answer));
 	}
@@ -51,7 +51,7 @@ public class EditAnswerRuleTest extends TestCase{
 		loggedUser.getCurrent().asModerator();
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		assertTrue(new EditAnswerRule(loggedUser, env).isAllowed(answer));
 	}
 	
@@ -60,7 +60,7 @@ public class EditAnswerRuleTest extends TestCase{
 		LoggedUser other = loggedUser("other", "other@brutal.com", NOT_AUTHOR);
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		assertFalse(new EditAnswerRule(other, env).isAllowed(answer));
 	}
 

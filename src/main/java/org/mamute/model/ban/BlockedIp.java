@@ -1,14 +1,16 @@
 package org.mamute.model.ban;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
 import org.mamute.model.User;
-import org.mamute.providers.SessionFactoryCreator;
 
-import javax.persistence.*;
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Cacheable
-@Entity
+//@Entity
 public class BlockedIp {
 
 	@Id
@@ -17,8 +19,7 @@ public class BlockedIp {
 
 	private String ip;
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 
 	@ManyToOne
 	private User author;

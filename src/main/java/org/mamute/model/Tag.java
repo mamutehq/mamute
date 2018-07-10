@@ -2,6 +2,7 @@ package org.mamute.model;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ import org.mamute.providers.SessionFactoryCreator;
 
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="cache")
-@Entity
+//@Entity
 public class Tag {
 	@Id
 	@GeneratedValue
@@ -31,8 +32,7 @@ public class Tag {
 	
 	private String description;
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 	
 	@ManyToOne
 	private final User author;

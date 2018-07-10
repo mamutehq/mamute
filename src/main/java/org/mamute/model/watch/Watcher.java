@@ -1,16 +1,14 @@
 package org.mamute.model.watch;
 
+import org.mamute.model.User;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.mamute.model.User;
-import org.mamute.providers.SessionFactoryCreator;
-
-@Entity
+//@Entity
 public class Watcher {
 	@GeneratedValue @Id
 	private Long id;
@@ -20,8 +18,7 @@ public class Watcher {
 	@ManyToOne
 	private final User watcher;
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt;
+	private final LocalDateTime createdAt;
 
 	/**
 	 * @deprecated hibernate eyes only
@@ -32,7 +29,7 @@ public class Watcher {
 	
 	public Watcher(User watcher){
 		this.watcher = watcher;
-		this.createdAt = new DateTime();
+		this.createdAt = LocalDateTime.now();
 	}
 
 	public void inactivate() {
@@ -51,7 +48,7 @@ public class Watcher {
 		return watcher;
 	}
 
-	public DateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 

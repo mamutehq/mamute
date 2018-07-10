@@ -1,12 +1,20 @@
 package org.mamute.model;
 
-import static com.google.common.collect.Collections2.transform;
-import static com.google.common.collect.Iterables.concat;
-import static javax.persistence.FetchType.EAGER;
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
-import static org.mamute.sanitizer.QuotesSanitizer.sanitize;
-
-import java.util.*;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.mamute.model.interfaces.Moderatable;
+import org.mamute.model.interfaces.RssContent;
+import org.mamute.model.interfaces.Taggable;
+import org.mamute.model.interfaces.ViewCountable;
+import org.mamute.model.interfaces.Votable;
+import org.mamute.model.interfaces.Watchable;
+import org.mamute.model.watch.Watcher;
 
 import javax.annotation.Nullable;
 import javax.persistence.Cacheable;
@@ -20,27 +28,23 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import org.hibernate.annotations.*;
-import org.joda.time.DateTime;
-import org.mamute.model.interfaces.Moderatable;
-import org.mamute.model.interfaces.RssContent;
-import org.mamute.model.interfaces.Taggable;
-import org.mamute.model.interfaces.ViewCountable;
-import org.mamute.model.interfaces.Votable;
-import org.mamute.model.interfaces.Watchable;
-import org.mamute.model.watch.Watcher;
-import org.mamute.providers.SessionFactoryCreator;
+import static com.google.common.collect.Collections2.transform;
+import static com.google.common.collect.Iterables.concat;
+import static javax.persistence.FetchType.EAGER;
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
+import static org.mamute.sanitizer.QuotesSanitizer.sanitize;
 
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="cache")
 @SQLDelete(sql = "update Question set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-@Entity
+//@Entity
 public class Question extends Moderatable implements Post, Taggable, ViewCountable, Watchable, RssContent, ReputationEventContext {
 	@Id
 	@GeneratedValue
@@ -55,11 +59,9 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 	@Cascade(SAVE_UPDATE)
 	private List<QuestionInformation> history = new ArrayList<>();
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime lastUpdatedAt = new DateTime();
+	private LocalDateTime lastUpdatedAt = LocalDateTime.now();
 
 	@ManyToOne
 	private User lastTouchedBy = null;
@@ -139,7 +141,7 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 
 	public void touchedBy(User author) {
 		this.lastTouchedBy = author;
-		this.lastUpdatedAt = new DateTime();
+		this.lastUpdatedAt = LocalDateTime.now();
 	}
 
 	void setId(Long id) {
@@ -167,7 +169,8 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 		this.views = views;
 	}
 
-	public DateTime getLastUpdatedAt() {
+	@Override
+	public LocalDateTime getLastUpdatedAt() {
 		return lastUpdatedAt;
 	}
 
@@ -316,8 +319,9 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 		}
         this.information = newInformation;
     }
-	
-	public DateTime getCreatedAt() {
+
+    @Override
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
@@ -452,7 +456,7 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 	}
 
 	public boolean isInactiveForOneMonth() {
-		return lastUpdatedAt.isBefore(new DateTime().minusMonths(1));
+		return lastUpdatedAt.isBefore(LocalDateTime.now().minusMonths(1));
 	}
 	
 	public boolean canMarkAsSolution (User user) {

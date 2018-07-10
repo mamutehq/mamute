@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
-@Entity
+//@Entity
 public class LoginMethod {
 	
 	@Id

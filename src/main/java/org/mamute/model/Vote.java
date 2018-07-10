@@ -1,19 +1,15 @@
 package org.mamute.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.mamute.providers.SessionFactoryCreator;
-
-@Entity
+//@Entity
 public class Vote {
     
     @Id @GeneratedValue
@@ -25,13 +21,11 @@ public class Vote {
     @ManyToOne
     private final User author;
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private final DateTime createdAt = new DateTime();
+    private final LocalDateTime createdAt = LocalDateTime.now();
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private DateTime lastUpdatedAt = new DateTime();
+    private LocalDateTime lastUpdatedAt = LocalDateTime.now();
     
-    public DateTime getLastUpdatedAt() {
+    public LocalDateTime getLastUpdatedAt() {
 		return lastUpdatedAt;
 	}
 
@@ -101,7 +95,7 @@ public class Vote {
 		return type.equals(VoteType.DOWN);
 	}
 	
-	public DateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
     

@@ -2,10 +2,7 @@ package org.mamute.model;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.mamute.providers.SessionFactoryCreator;
+import java.time.LocalDateTime;
 
 @Embeddable
 public class Moderation {
@@ -20,13 +17,12 @@ public class Moderation {
 		this.moderatedBy = moderator;
 	}
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime moderatedAt = new DateTime();
+	private LocalDateTime moderatedAt = LocalDateTime.now();
 
 	@ManyToOne(optional = true)
 	private User moderatedBy;
 	
-	public DateTime getModeratedAt() {
+	public LocalDateTime getModeratedAt() {
 		return moderatedAt;
 	}
 
