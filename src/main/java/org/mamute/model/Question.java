@@ -476,7 +476,8 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 	}
 
 	public boolean isInactiveForOneMonth() {
-		return lastUpdatedAt.isBefore(LocalDateTime.now(clockProvider.get()).minusMonths(1));
+        LocalDateTime oneMonthAgo = LocalDateTime.now(clockProvider.get()).minusMonths(1);
+		return lastUpdatedAt.isBefore(oneMonthAgo);
 	}
 	
 	public boolean canMarkAsSolution (User user) {
