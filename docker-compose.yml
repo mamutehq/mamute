@@ -9,6 +9,10 @@ services:
       MYSQL_DATABASE: "mamute-local"
       MYSQL_USER: "mamute-user"
       MYSQL_PASSWORD: "eel5ohnau6oy0eme0gohRahxeebuWa"
+      #
       # Look for "GENERATED ROOT PASSWORD" in the Docker container logs
-      # to find randomly generated password
+      # to find the randomly generated password:
+      #
+      # > docker-compose logs db | grep "GENERATED ROOT PASSWORD"
+      #
       MYSQL_RANDOM_ROOT_PASSWORD: "true"
