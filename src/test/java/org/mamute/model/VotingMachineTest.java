@@ -19,6 +19,7 @@ import org.mamute.model.VoteType;
 import org.mamute.model.interfaces.Votable;
 import org.mamute.model.vote.MassiveVote;
 import org.mamute.model.vote.VotingMachine;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.reputation.rules.KarmaCalculator;
 
 public class VotingMachineTest extends TestCase {

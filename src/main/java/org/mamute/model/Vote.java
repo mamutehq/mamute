@@ -1,6 +1,8 @@
 package org.mamute.model;
 
-import javax.persistence.Entity;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -21,9 +23,9 @@ public class Vote {
     @ManyToOne
     private final User author;
     
-    private final LocalDateTime createdAt = LocalDateTime.now();
+    private final LocalDateTime createdAt;
     
-    private LocalDateTime lastUpdatedAt = LocalDateTime.now();
+    private LocalDateTime lastUpdatedAt;
     
     public LocalDateTime getLastUpdatedAt() {
 		return lastUpdatedAt;
@@ -33,12 +35,22 @@ public class Vote {
      * @deprecated hibernate eyes
      */
     Vote() {
-    	this(null, null);
+    	this(new SystemUtcClockProvider(), null, null);
     }
-    
+
     public Vote(User author, VoteType type) {
         this.author = author;
         this.type = type;
+        ClockProvider clockProvider = new SystemUtcClockProvider();
+        this.createdAt = LocalDateTime.now(clockProvider.get());
+        this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
+    }
+
+    public Vote(ClockProvider clockProvider, User author, VoteType type) {
+        this.author = author;
+        this.type = type;
+        this.createdAt = LocalDateTime.now(clockProvider.get());
+        this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
     }
 
 	public int getCountValue() {

@@ -30,6 +30,7 @@ import org.mamute.model.VoteType;
 
 import br.com.caelum.timemachine.Block;
 import br.com.caelum.timemachine.TimeMachine;
+import org.mamute.providers.ClockProvider;
 import org.mamute.providers.SystemUtcClockProvider;
 
 /**
@@ -77,9 +78,15 @@ public abstract class TestCase {
 		user.add(brutalLogin);
 		return user;
 	}
-	
+
 	protected Vote vote(User author, VoteType type, Long id) {
-	    Vote v = new Vote(author, type);
+		Vote v = new Vote(new SystemUtcClockProvider(), author, type);
+		setId(v, id);
+		return v;
+	}
+
+	protected Vote vote(ClockProvider clockProvider, User author, VoteType type, Long id) {
+	    Vote v = new Vote(clockProvider, author, type);
 	    setId(v, id);
 	    return v;
 	}
