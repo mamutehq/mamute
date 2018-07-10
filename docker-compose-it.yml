@@ -6,4 +6,9 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: "mamute-local"
+      MYSQL_USER: "mamute-user"
+      MYSQL_PASSWORD: "eel5ohnau6oy0eme0gohRahxeebuWa"
+      # Look for "GENERATED ROOT PASSWORD" in the Docker container logs
+      # to find randomly generated password
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
