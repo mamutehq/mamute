@@ -61,7 +61,13 @@ public abstract class TestCase {
 	protected Question question(User author, List<Tag> tags){
 		return question(author, tags.toArray(new Tag[tags.size()]));
 	}
-	
+
+	protected User user(ClockProvider clockProvider, String name, String email) {
+		User user = new User(clockProvider, SanitizedText.fromTrustedText(name), email);
+		user.confirmEmail();
+		return user;
+	}
+
 	protected User user(String name, String email) {
 	    User user = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText(name), email);
 	    user.confirmEmail();

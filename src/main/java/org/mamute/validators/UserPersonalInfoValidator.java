@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 import org.mamute.controllers.BrutalValidator;
 import org.mamute.dto.UserPersonalInfo;
 import org.mamute.factory.MessageFactory;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -36,14 +38,28 @@ public class UserPersonalInfoValidator {
 	private MessageFactory messageFactory;
 	private BundleFormatter bundle;
 	private BrutalValidator brutalValidator;
+	private final ClockProvider clockProvider;
 
 	@Deprecated
 	public UserPersonalInfoValidator() {
+		this.clockProvider = new SystemUtcClockProvider();
+	}
+
+	@Inject
+	public UserPersonalInfoValidator(ClockProvider clockProvider, Validator validator, EmailValidator emailValidator,
+									 MessageFactory messageFactory, BundleFormatter bundle, BrutalValidator brutalValidator){
+		this.clockProvider = clockProvider;
+		this.validator = validator;
+		this.emailValidator = emailValidator;
+		this.messageFactory = messageFactory;
+		this.bundle = bundle;
+		this.brutalValidator = brutalValidator;
 	}
 
 	@Inject
 	public UserPersonalInfoValidator(Validator validator, EmailValidator emailValidator, 
 			MessageFactory messageFactory, BundleFormatter bundle, BrutalValidator brutalValidator){
+		this.clockProvider = new SystemUtcClockProvider();
 		this.validator = validator;
 		this.emailValidator = emailValidator;
 		this.messageFactory = messageFactory;
@@ -72,7 +88,8 @@ public class UserPersonalInfoValidator {
 	
 		if(!info.getUser().getName().equals(info.getName())){
 			LocalDateTime nameLastTouchedAt = info.getUser().getNameLastTouchedAt();
-			if (nameLastTouchedAt != null && nameLastTouchedAt.isAfter(LocalDateTime.now().minusDays(30))) {
+			LocalDateTime thirtyDaysAgo = LocalDateTime.now(clockProvider.get()).minusDays(30);
+			if (nameLastTouchedAt != null && nameLastTouchedAt.isAfter(thirtyDaysAgo)) {
 				validator.add(messageFactory.build(
 						"error", 
 						"user.errors.name.min_time", 

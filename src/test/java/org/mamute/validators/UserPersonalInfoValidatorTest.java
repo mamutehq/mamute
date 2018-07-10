@@ -14,9 +14,14 @@ import org.mamute.dao.UserDAO;
 import org.mamute.dto.UserPersonalInfo;
 import org.mamute.factory.MessageFactory;
 import org.mamute.model.User;
+import org.mamute.providers.ClockProvider;
+import org.mamute.util.MockClockProvider;
 
 import javax.validation.Validation;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertFalse;
@@ -34,6 +39,7 @@ public class UserPersonalInfoValidatorTest extends TestCase{
 	private UserDAO users;
 	private UserPersonalInfoValidator infoValidator;
 	private BundleFormatter bundle;
+	private MockClockProvider clockProvider;
 	
 	@Before
 	public void setup() {
@@ -44,8 +50,10 @@ public class UserPersonalInfoValidatorTest extends TestCase{
 		this.messageFactory = new MessageFactory(mock(ResourceBundle.class));
 		this.emailValidator = new EmailValidator(validator, users, messageFactory);
 		javax.validation.Validator javaxValidator = Validation.buildDefaultValidatorFactory().getValidator();
+		this.clockProvider = new MockClockProvider();
+		this.clockProvider.set(Clock.systemUTC());
 		BrutalValidator brutalValidator = new BrutalValidator(javaxValidator, validator, messageFactory);
-		this.infoValidator = new UserPersonalInfoValidator(validator, emailValidator, messageFactory, bundle, brutalValidator);
+		this.infoValidator = new UserPersonalInfoValidator(clockProvider, validator, emailValidator, messageFactory, bundle, brutalValidator);
 	}
 
 	@Test
@@ -84,14 +92,16 @@ public class UserPersonalInfoValidatorTest extends TestCase{
 	
 	@Test
 	public void should_validate_user_trying_to_update_name_after_allowed_time() {
-		User artur = user("artur com seis caracteres", validEmail);
-		
-		DateTimeUtils.setCurrentMillisFixed(new DateTime().plusDays(31).getMillis());
+		clockProvider.set(Clock.systemUTC());
+		User artur = user(clockProvider, "artur com seis caracteres", validEmail);
+
 		UserPersonalInfo info = new UserPersonalInfo(artur)
 				.withName(fromTrustedText("newName"))
 				.withEmail(artur.getEmail());
 		
 		when(bundle.getMessage("date.joda.simple.pattern")).thenReturn("dd/MM/YYYY");
+
+		clockProvider.set(Clock.fixed(LocalDateTime.now().plusDays(31).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
 		assertTrue(infoValidator.validate(info));
 	}
 	
