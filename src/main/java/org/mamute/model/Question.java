@@ -15,11 +15,12 @@ import org.mamute.model.interfaces.ViewCountable;
 import org.mamute.model.interfaces.Votable;
 import org.mamute.model.interfaces.Watchable;
 import org.mamute.model.watch.Watcher;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
 import javax.annotation.Nullable;
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -59,9 +60,9 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 	@Cascade(SAVE_UPDATE)
 	private List<QuestionInformation> history = new ArrayList<>();
 	
-	private final LocalDateTime createdAt = LocalDateTime.now();
+	private final LocalDateTime createdAt;
 
-	private LocalDateTime lastUpdatedAt = LocalDateTime.now();
+	private LocalDateTime lastUpdatedAt;
 
 	@ManyToOne
 	private User lastTouchedBy = null;
@@ -113,15 +114,34 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
     public static final long SPAM_BOUNDARY = -5;
 
 	private boolean deleted;
+
+	private final ClockProvider clockProvider;
     
 	/**
 	 * @deprecated hibernate eyes only
 	 */
 	public Question() {
-		this.information = null;
+		this(new SystemUtcClockProvider());
 	}
 
-	public Question(QuestionInformation questionInformation, User author) {
+	public Question(ClockProvider clockProvider) {
+		this.clockProvider = clockProvider;
+		this.createdAt = LocalDateTime.now(clockProvider.get());
+		this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
+	}
+
+    public Question(QuestionInformation questionInformation, User author) {
+        this.clockProvider = new SystemUtcClockProvider();
+        this.createdAt = LocalDateTime.now(clockProvider.get());
+        this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
+        setAuthor(author);
+        enqueueChange(questionInformation, UpdateStatus.NO_NEED_TO_APPROVE);
+    }
+
+    public Question(ClockProvider clockProvider, QuestionInformation questionInformation, User author) {
+		this.clockProvider = clockProvider;
+		this.createdAt = LocalDateTime.now(clockProvider.get());
+		this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
 		setAuthor(author);
 		enqueueChange(questionInformation, UpdateStatus.NO_NEED_TO_APPROVE);
 	}
@@ -141,7 +161,7 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 
 	public void touchedBy(User author) {
 		this.lastTouchedBy = author;
-		this.lastUpdatedAt = LocalDateTime.now();
+		this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
 	}
 
 	void setId(Long id) {
@@ -456,7 +476,7 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 	}
 
 	public boolean isInactiveForOneMonth() {
-		return lastUpdatedAt.isBefore(LocalDateTime.now().minusMonths(1));
+		return lastUpdatedAt.isBefore(LocalDateTime.now(clockProvider.get()).minusMonths(1));
 	}
 	
 	public boolean canMarkAsSolution (User user) {

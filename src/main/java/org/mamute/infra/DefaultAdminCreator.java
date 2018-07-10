@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.mamute.model.LoginMethod;
 import org.mamute.model.User;
+import org.mamute.providers.SystemUtcClockProvider;
 
 @ApplicationScoped
 public class DefaultAdminCreator {
@@ -28,7 +29,7 @@ public class DefaultAdminCreator {
 		if (result == 0) {
 			Random random = new Random(System.currentTimeMillis());
 			String email = "moderator@mamuteqa.org";
-			User newUser = new User(fromTrustedText("moderator"), email).asModerator();
+			User newUser = new User(new SystemUtcClockProvider(), fromTrustedText("moderator"), email).asModerator();
 			
 			String number = Long.toString(random.nextLong());
 			String password = Digester.md5(number);

@@ -1,17 +1,19 @@
 package org.mamute.model;
 
-import br.com.caelum.timemachine.Block;
-import br.com.caelum.timemachine.TimeMachine;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mamute.brutauth.auth.rules.EnvironmentKarma;
 import org.mamute.builder.QuestionBuilder;
 import org.mamute.dao.TestCase;
+import org.mamute.util.MockClockProvider;
 import org.mamute.vraptor.environment.MamuteEnvironment;
 
 import javax.servlet.ServletContext;
 import java.net.URL;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -166,16 +168,14 @@ public class UserTest extends TestCase {
 	
 	@Test
 	public void should_not_show_upvote_banner() throws Exception {
-		User user = TimeMachine.goTo(new DateTime().minusWeeks(1)).andExecute(new Block<User>() {
-			@Override
-			public User run() {
-				return new User(SanitizedText.fromTrustedText("name"), "name@brutal.com");
-			}
-		});
-		Thread.sleep(1);
-		
+		MockClockProvider clockProvider = new MockClockProvider();
+		clockProvider.set(Clock.fixed(LocalDateTime.now(Clock.systemUTC()).minusWeeks(1).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+
+		User user = new User(clockProvider, SanitizedText.fromTrustedText("name"), "name@brutal.com");
+
+		clockProvider.set(Clock.systemUTC());
 		assertFalse(user.isVotingEnough());
-		
+
 		user.votedUp();
 		
 		assertTrue(user.isVotingEnough());

@@ -18,6 +18,7 @@ import org.mamute.model.*;
 import org.mamute.model.interfaces.Watchable;
 import org.mamute.model.watch.Watcher;
 import org.mamute.notification.NotificationManager;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.validators.CommentValidator;
 
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
@@ -49,7 +50,7 @@ public class CommentController {
 	@Post
 	public void comment(Long id, String onWhat, MarkedText comment, boolean watching) {
 		User current = currentUser.getCurrent();
-		Comment newComment = new Comment(current, comment);
+		Comment newComment = new Comment(new SystemUtcClockProvider(), current, comment);
 		Class<?> type = getType(onWhat);
 		
 		validator.validate(newComment);

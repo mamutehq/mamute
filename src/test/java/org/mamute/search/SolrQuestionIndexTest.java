@@ -14,6 +14,7 @@ import org.mamute.builder.QuestionBuilder;
 import org.mamute.model.Question;
 import org.mamute.model.Tag;
 import org.mamute.model.User;
+import org.mamute.providers.SystemUtcClockProvider;
 
 public class SolrQuestionIndexTest extends SolrTestCase {
 	private QuestionIndex sut = new SolrQuestionIndex(solrServer);
@@ -30,7 +31,7 @@ public class SolrQuestionIndexTest extends SolrTestCase {
 
 	@Before
 	public void setup() throws IOException, SolrServerException, InterruptedException {
-		author = new User(fromTrustedText("Leonardo"), "leo@leo");
+		author = new User(new SystemUtcClockProvider(), fromTrustedText("Leonardo"), "leo@leo");
 
 		eli5 = new Tag("eli5", "Explain Like I'm 5", author);
 		eli12 = new Tag("eli12", "Explain Like I'm 12", author);

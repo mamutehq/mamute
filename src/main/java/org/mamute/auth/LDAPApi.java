@@ -1,18 +1,7 @@
 package org.mamute.auth;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.mamute.model.SanitizedText.fromTrustedText;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.naming.directory.InvalidAttributeValueException;
-
+import br.com.caelum.vraptor.environment.Environment;
+import br.com.caelum.vraptor.observer.upload.DefaultUploadedFile;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
@@ -32,11 +21,21 @@ import org.mamute.infra.ClientIp;
 import org.mamute.model.Attachment;
 import org.mamute.model.LoginMethod;
 import org.mamute.model.User;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.caelum.vraptor.environment.Environment;
-import br.com.caelum.vraptor.observer.upload.DefaultUploadedFile;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.naming.directory.InvalidAttributeValueException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.mamute.model.SanitizedText.fromTrustedText;
 
 /**
  * LDAP authentication API
@@ -257,7 +256,7 @@ public class LDAPApi {
 				fullName += " " + ldap.getAttribute(ldapUser, surnameAttr);
 			}
 
-			user = new User(fromTrustedText(fullName.trim()), email);
+			user = new User(new SystemUtcClockProvider(), fromTrustedText(fullName.trim()), email);
 
 
 			LoginMethod brutalLogin = LoginMethod.brutalLogin(user, email, PLACHOLDER_PASSWORD);

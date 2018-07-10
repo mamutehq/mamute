@@ -16,10 +16,11 @@ import org.mamute.model.interfaces.Identifiable;
 import org.mamute.model.interfaces.Moderatable;
 import org.mamute.model.interfaces.Votable;
 import org.mamute.model.watch.Watcher;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.Cacheable;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -57,8 +58,9 @@ import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_MIN_LENGTH
 //@Entity
 @Vetoed
 public class User implements Identifiable {
-	
-	private final LocalDateTime createdAt = LocalDateTime.now();
+	private final ClockProvider clockProvider;
+
+	private final LocalDateTime createdAt;
 	
 	@Id
 	@GeneratedValue
@@ -112,7 +114,7 @@ public class User implements Identifiable {
 	@OneToMany(mappedBy = "watcher")
 	private final List<Watcher> watches = new ArrayList<>();
 	
-	private LocalDateTime lastUpvote = LocalDateTime.now();
+	private LocalDateTime lastUpvote;
 
 	@ManyToOne
 	private Attachment avatarImage;
@@ -122,7 +124,7 @@ public class User implements Identifiable {
 	private boolean deleted = false;
 
 	static {
-		GHOST = new User(fromTrustedText("GHOST"), "");
+		GHOST = new User(new SystemUtcClockProvider(), fromTrustedText("GHOST"), "");
 		GHOST.setId(1000l);
 	}
 	
@@ -130,12 +132,15 @@ public class User implements Identifiable {
 	 * @deprecated hibernate eyes only
 	 */
 	protected User() {
-		this(fromTrustedText(""), "");
+		this(new SystemUtcClockProvider(), fromTrustedText(""), "");
 	}
 
-	public User(SanitizedText name, String email) {
+	public User(ClockProvider clockProvider, SanitizedText name, String email) {
+		this.clockProvider = clockProvider;
 		setName(name);
 		this.email = email;
+		lastUpvote = LocalDateTime.now(clockProvider.get());
+		createdAt = LocalDateTime.now(clockProvider.get());
 	}
 
 	public LocalDateTime getNameLastTouchedAt() {
@@ -152,7 +157,7 @@ public class User implements Identifiable {
     public void setName(SanitizedText name) {
 		this.name = name.getText();
 		this.sluggedName = toSlug(this.name);
-		this.nameLastTouchedAt = LocalDateTime.now();
+		this.nameLastTouchedAt = LocalDateTime.now(clockProvider.get());
 	}
 
     public void setId(Long id) {
@@ -232,7 +237,7 @@ public class User implements Identifiable {
 	}
 	
 	public Long getAge() {
-		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now(clockProvider.get());
 		if (birthDate == null){
 			return null;
 		}
@@ -416,11 +421,11 @@ public class User implements Identifiable {
 	}
 
 	public void votedUp() {
-		this.lastUpvote = LocalDateTime.now();
+		this.lastUpvote = LocalDateTime.now(clockProvider.get());
 	}
 	
 	public boolean isVotingEnough(){
-		return !lastUpvote.isBefore(LocalDateTime.now().minusWeeks(1));
+		return !lastUpvote.isBefore(LocalDateTime.now(clockProvider.get()).minusWeeks(1));
 	}
 
 	public boolean hasKarma() {

@@ -22,6 +22,7 @@ import org.mamute.model.Question;
 import org.mamute.model.SanitizedText;
 import org.mamute.model.Tag;
 import org.mamute.model.User;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.util.ScriptSessionCreator;
 
 public class DaoManager {
@@ -93,7 +94,7 @@ public class DaoManager {
 		this.session.beginTransaction();
 
 		String email = String.format("acceptance%d@brutal.com", randomizer.nextLong());
-		User user = new User(SanitizedText.fromTrustedText("Acceptance Test User"), email);
+		User user = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText("Acceptance Test User"), email);
 		LoginMethod brutalLogin = LoginMethod.brutalLogin(user, email, "123456");
 		user.add(brutalLogin);
 

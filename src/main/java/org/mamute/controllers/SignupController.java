@@ -1,9 +1,12 @@
 package org.mamute.controllers;
 
-import static java.util.Arrays.asList;
-
-import javax.inject.Inject;
-
+import br.com.caelum.brutauth.auth.annotations.Public;
+import br.com.caelum.vraptor.Controller;
+import br.com.caelum.vraptor.Get;
+import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.environment.Environment;
+import br.com.caelum.vraptor.routes.annotation.Routed;
 import org.mamute.auth.FacebookAuthService;
 import org.mamute.auth.GoogleAuthService;
 import org.mamute.dao.LoginMethodDAO;
@@ -12,16 +15,13 @@ import org.mamute.factory.MessageFactory;
 import org.mamute.model.LoginMethod;
 import org.mamute.model.SanitizedText;
 import org.mamute.model.User;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.validators.SignupValidator;
 import org.mamute.vraptor.Linker;
 
-import br.com.caelum.brutauth.auth.annotations.Public;
-import br.com.caelum.vraptor.Controller;
-import br.com.caelum.vraptor.Get;
-import br.com.caelum.vraptor.Post;
-import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.environment.Environment;
-import br.com.caelum.vraptor.routes.annotation.Routed;
+import javax.inject.Inject;
+
+import static java.util.Arrays.asList;
 
 @Public
 @Routed
@@ -50,7 +50,7 @@ public class SignupController {
 	public void signup(String email, String password, SanitizedText name, String passwordConfirmation) {
 		checkSignup();
 
-		User newUser = new User(name, email);
+		User newUser = new User(new SystemUtcClockProvider(), name, email);
 		LoginMethod brutalLogin = LoginMethod.brutalLogin(newUser, email, password);
 		newUser.add(brutalLogin);
 		

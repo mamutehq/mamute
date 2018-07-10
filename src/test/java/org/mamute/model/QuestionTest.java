@@ -1,35 +1,25 @@
 package org.mamute.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mamute.model.UpdateStatus.PENDING;
-import static org.mockito.Mockito.mock;
-
-import org.joda.time.DateTime;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mamute.brutauth.auth.rules.EnvironmentKarma;
 import org.mamute.builder.QuestionBuilder;
 import org.mamute.dao.TestCase;
-import org.mamute.model.Answer;
-import org.mamute.model.Flag;
-import org.mamute.model.FlagType;
-import org.mamute.model.Question;
-import org.mamute.model.QuestionInformation;
-import org.mamute.model.QuestionInformationBuilder;
-import org.mamute.model.Tag;
-import org.mamute.model.User;
-import org.mamute.model.Vote;
-import org.mamute.model.VoteType;
-
-import br.com.caelum.timemachine.Block;
-import br.com.caelum.timemachine.TimeMachine;
+import org.mamute.util.MockClockProvider;
 import org.mamute.vraptor.environment.MamuteEnvironment;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mamute.model.UpdateStatus.PENDING;
+import static org.mockito.Mockito.mock;
 
 public class QuestionTest  extends TestCase{
 	private QuestionBuilder question = new QuestionBuilder();
@@ -232,20 +222,21 @@ public class QuestionTest  extends TestCase{
 
 	@Test
 	public void return_true_if_answer_was_last_touched_two_months_ago() throws Exception {
-		Question inactiveQuestion = TimeMachine.goTo(new DateTime().minusMonths(2)).andExecute(new Block<Question>() {
-			@Override
-			public Question run() {
-				return question.withTitle("question title").withDescription("description").build();
-			}
-		});
-		
+		Question inactiveQuestion = question.withTitle("question title").withDescription("description").build();
 		assertTrue(inactiveQuestion.isInactiveForOneMonth());
 	}
 	
 	@Test
 	public void return_false_if_answer_was_last_touched_today() throws Exception {
-		final Question myQuestion = question.withTitle("question title").withDescription("description").build();
-		
+		MockClockProvider clockProvider = new MockClockProvider();
+		clockProvider.set(Clock.fixed(LocalDateTime.now().minusMonths(2).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+		final Question myQuestion = question
+				.withTitle("question title")
+				.withDescription("description")
+				.withClockProvider(clockProvider)
+				.build();
+
+		clockProvider.set(Clock.fixed(LocalDateTime.now().toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
 		assertFalse(myQuestion.isInactiveForOneMonth());
 	}
 

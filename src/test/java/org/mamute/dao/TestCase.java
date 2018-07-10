@@ -30,6 +30,7 @@ import org.mamute.model.VoteType;
 
 import br.com.caelum.timemachine.Block;
 import br.com.caelum.timemachine.TimeMachine;
+import org.mamute.providers.SystemUtcClockProvider;
 
 /**
  * Constructor from this class should not be used anywhere beside tests.
@@ -61,7 +62,7 @@ public abstract class TestCase {
 	}
 	
 	protected User user(String name, String email) {
-	    User user = new User(SanitizedText.fromTrustedText(name), email);
+	    User user = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText(name), email);
 	    user.confirmEmail();
 	    return user;
 	}

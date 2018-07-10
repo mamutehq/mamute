@@ -1,5 +1,8 @@
 package org.mamute.model;
 
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +16,17 @@ public class NewsletterSentLog {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private final LocalDateTime createdAt = LocalDateTime.now();
+
+	private final ClockProvider clockProvider;
+
+	public NewsletterSentLog() {
+		this(new SystemUtcClockProvider());
+	}
+
+	public NewsletterSentLog(ClockProvider clockProvider) {
+		this.clockProvider = clockProvider;
+		this.createdAt = LocalDateTime.now(clockProvider.get());
+	}
+
+	private final LocalDateTime createdAt;
 }
