@@ -56,8 +56,7 @@ public class UserPersonalInfoValidator {
 		this.brutalValidator = brutalValidator;
 	}
 
-	@Inject
-	public UserPersonalInfoValidator(Validator validator, EmailValidator emailValidator, 
+	public UserPersonalInfoValidator(Validator validator, EmailValidator emailValidator,
 			MessageFactory messageFactory, BundleFormatter bundle, BrutalValidator brutalValidator){
 		this.clockProvider = new SystemUtcClockProvider();
 		this.validator = validator;
