@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
-@Specializes
 @ApplicationScoped
 public class MamuteEnvironment extends AbstractEnvironment {
 
