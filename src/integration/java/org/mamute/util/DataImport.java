@@ -58,7 +58,7 @@ public class DataImport extends TestCase {
 		ServletContext ctx = mock(ServletContext.class);
 		EnvironmentKarma env = null;
 		try {
-			env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+			env = new EnvironmentKarma(new MamuteEnvironment());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
