@@ -3,6 +3,7 @@ package org.mamute.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mamute.model.UpdateStatus.PENDING;
+import static org.mamute.util.ClockUtils.fixedClock;
 
 import br.com.caelum.timemachine.Block;
 import br.com.caelum.timemachine.TimeMachine;
@@ -41,7 +42,7 @@ public class QuestionInformationTest {
 	
 	@Test
 	public void should_verify_if_is_before_current_information() throws InterruptedException {
-		clockProvider.set(Clock.fixed(LocalDateTime.now().minusSeconds(10).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+		clockProvider.set(fixedClock(LocalDateTime.now().minusSeconds(10)));
 		QuestionInformation version = builder.build();
 		clockProvider.set(Clock.systemUTC());
 
@@ -54,12 +55,9 @@ public class QuestionInformationTest {
 	
 	@Test
 	public void should_verify_if_is_before_current_information_without_edits() throws InterruptedException {
-		QuestionInformation version = TimeMachine.goTo(new DateTime().minusSeconds(10)).andExecute(new Block<QuestionInformation>() {
-			@Override
-			public QuestionInformation run() {
-				return builder.build();
-			}
-		});
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(10)));
+		QuestionInformation version = builder.build();
+		clockProvider.set(Clock.systemUTC());
 
 		ruby.enqueueChange(version, PENDING);
 		QuestionInformation infoByModerator = builder.build();
