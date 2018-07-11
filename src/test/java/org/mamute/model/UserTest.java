@@ -170,7 +170,7 @@ public class UserTest extends TestCase {
 	@Test
 	public void should_not_show_upvote_banner() throws Exception {
 		MockClockProvider clockProvider = new MockClockProvider();
-		clockProvider.set(Clock.fixed(LocalDateTime.now(Clock.systemUTC()).minusWeeks(1).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+		clockProvider.set(Clock.fixed(LocalDateTime.now(Clock.systemUTC()).minusWeeks(2).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
 
 		User user = new User(clockProvider, SanitizedText.fromTrustedText("name"), "name@brutal.com");
 
