@@ -1,6 +1,8 @@
 package org.mamute.vraptor.environment;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.stereotype.Service;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Specializes;
@@ -11,7 +13,8 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 
 @ApplicationScoped
-public class MamuteEnvironment extends AbstractEnvironment {
+@Service
+public class MamuteEnvironment {
 
 	private final Properties properties = new Properties();
 	
