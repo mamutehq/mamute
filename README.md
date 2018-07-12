@@ -12,16 +12,21 @@ This project makes use of the following technologies to simplify setup:
 
 ## How to set up an instance of Mamute
 
-First of all, you need to setup an MySQL database. The default database name is 
-`mamute_development`, the username is `root` and the password must be blank.
+First of all, you need to setup a MySQL database. The default database configuration is defined in [docker-compose.yml](docker-compose.yml), under the `db` service.
 
-You may also use Docker Compose to run your MySQL database:
+Using Docker Compose, run your MySQL database:
 
+```bash
+docker-compose up -d
 ```
-docker-compose -f docker-compose-it.yml up -d
+
+Then you can start run Mamute with:
+
+```bash
+mvn spring-boot:run
 ```
 
-This is useful for running the tests.
+You can then access Mamute at [http://localhost:8080](http://localhost:8080).
 
 ## To use Mamute
 
@@ -61,7 +66,7 @@ Then you can access Mamute on [http://localhost:80](http://localhost:80).
 3. Install node and npm
 4. Run `npm install`
 5. Run `npm install -g grunt-cli`
-6. Run `Main.java` to start mamute
+6. Run `MamuteApplication.java` to start mamute
 7. Develop and do your pull request
 
 ## FAQ
