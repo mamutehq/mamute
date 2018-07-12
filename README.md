@@ -10,7 +10,7 @@ This project makes use of the following technologies to simplify setup:
 * [Docker CE](https://docs.docker.com/install/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
-## How to set up an instance of Mamute
+## MySQL database
 
 First of all, you need to setup a MySQL database. The default database configuration is defined in [docker-compose.yml](docker-compose.yml), under the `db` service.
 
@@ -20,7 +20,11 @@ Using Docker Compose, run your MySQL database:
 docker-compose up -d
 ```
 
-Then you can start run Mamute with:
+## To run Mamute
+
+### Using Spring Boot Maven Plugin
+
+Once you have your database started, you can start Mamute with:
 
 ```bash
 mvn spring-boot:run
@@ -28,9 +32,8 @@ mvn spring-boot:run
 
 You can then access Mamute at [http://localhost:8080](http://localhost:8080).
 
-## To use Mamute
 
-### Using docker-compose:
+### Using docker-compose (latest release)
 
 To start an instance of the latest Mamute release and its dependencies:
 
@@ -41,7 +44,7 @@ docker-compose up --build
 
 Then you can access Mamute on [http://localhost:80](http://localhost:80).
 
-### Using a compiled war file:
+### Using a compiled war file (latest release)
 
 1. Download the war of the latest version at http://www.mamute.org
 2. Unpack it to a folder named `yourproject/mamute`
