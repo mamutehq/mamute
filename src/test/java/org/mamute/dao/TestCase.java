@@ -1,14 +1,6 @@
 package org.mamute.dao;
 
-import static org.mamute.model.MarkedText.notMarked;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.vidageek.mirror.dsl.Mirror;
-
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.junit.Before;
 import org.mamute.builder.QuestionBuilder;
@@ -27,9 +19,14 @@ import org.mamute.model.Tag;
 import org.mamute.model.User;
 import org.mamute.model.Vote;
 import org.mamute.model.VoteType;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
-import br.com.caelum.timemachine.Block;
-import br.com.caelum.timemachine.TimeMachine;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mamute.model.MarkedText.notMarked;
 
 /**
  * Constructor from this class should not be used anywhere beside tests.
@@ -44,7 +41,7 @@ public abstract class TestCase {
 	private QuestionBuilder questionBuilder = new QuestionBuilder();
 	
 	protected Answer answer(String description, Question question, User author) {
-		Answer q = new Answer(new AnswerInformation(notMarked(description), new LoggedUser(author, null), "default commentdefault commentdefault commentdefault comment")
+		Answer q = new Answer(new AnswerInformation(new SystemUtcClockProvider(), notMarked(description), new LoggedUser(author, null), "default commentdefault commentdefault commentdefault comment")
 							, question, author);
 		return q;
 	}
@@ -59,9 +56,15 @@ public abstract class TestCase {
 	protected Question question(User author, List<Tag> tags){
 		return question(author, tags.toArray(new Tag[tags.size()]));
 	}
-	
+
+	protected User user(ClockProvider clockProvider, String name, String email) {
+		User user = new User(clockProvider, SanitizedText.fromTrustedText(name), email);
+		user.confirmEmail();
+		return user;
+	}
+
 	protected User user(String name, String email) {
-	    User user = new User(SanitizedText.fromTrustedText(name), email);
+	    User user = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText(name), email);
 	    user.confirmEmail();
 	    return user;
 	}
@@ -76,9 +79,15 @@ public abstract class TestCase {
 		user.add(brutalLogin);
 		return user;
 	}
-	
+
 	protected Vote vote(User author, VoteType type, Long id) {
-	    Vote v = new Vote(author, type);
+		Vote v = new Vote(new SystemUtcClockProvider(), author, type);
+		setId(v, id);
+		return v;
+	}
+
+	protected Vote vote(ClockProvider clockProvider, User author, VoteType type, Long id) {
+	    Vote v = new Vote(clockProvider, author, type);
 	    setId(v, id);
 	    return v;
 	}
@@ -94,20 +103,15 @@ public abstract class TestCase {
 	}
 	
     protected AnswerInformation answerInformation(String description, User otherUser, Answer answer) {
-        return new AnswerInformation(notMarked(description), new LoggedUser(otherUser, null), answer, "comment");
+        return new AnswerInformation(new SystemUtcClockProvider(), notMarked(description), new LoggedUser(otherUser, null), answer, "comment");
     }
     
     protected Comment comment(User author, String comment) {
-    	return comment(author, comment, DateTime.now());
+    	return comment(author, comment, new SystemUtcClockProvider());
     }
     
-    protected Comment comment(final User author, final String comment, DateTime when) {
-    	return TimeMachine.goTo(when).andExecute(new Block<Comment>() {
-			@Override
-			public Comment run() {
-				return new Comment(author, notMarked(comment));
-			}
-		});
+    protected Comment comment(final User author, final String comment, ClockProvider clockProvider) {
+		return new Comment(clockProvider, author, notMarked(comment));
     }
     
     protected void setId(Object o, Long id) {

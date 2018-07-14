@@ -13,6 +13,7 @@ import org.mamute.model.LoggedUser;
 import org.mamute.model.Question;
 import org.mamute.model.User;
 import org.mamute.providers.SessionFactoryCreator;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,7 @@ public class IndexSyncJob {
 	}
 
 	private InvisibleForUsersRule generateUser() {
-		User user = new User(fromTrustedText("System"), "system");
+		User user = new User(new SystemUtcClockProvider(), fromTrustedText("System"), "system");
 		LoggedUser loggedUser = new LoggedUser(user, null);
 		return new InvisibleForUsersRule(loggedUser);
 	}

@@ -1,52 +1,39 @@
 package org.mamute.vraptor.environment;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.stereotype.Service;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Specializes;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Specializes;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
-
-import br.com.caelum.vraptor.environment.ServletBasedEnvironment;
-
-@Specializes
 @ApplicationScoped
-public class MamuteEnvironment extends ServletBasedEnvironment {
+@Service
+public class MamuteEnvironment {
 
 	private final Properties properties = new Properties();
 	
 	@Inject
-	public MamuteEnvironment(ServletContext context) throws IOException {
-		super(context);
+	public MamuteEnvironment() throws IOException {
 		InputStream stream = MamuteEnvironment.class.getResourceAsStream("/mamute.properties");
 		properties.load(stream);
 	}
 	
-	/**
-	 * @deprecated 
-	 */
-	public MamuteEnvironment() throws IOException {
-	}
-	
-	@Override
 	public boolean has(String key) {
-		return super.has(key) || properties.containsKey(key);
+		return properties.containsKey(key);
 	}
 	
-	@Override
 	public String get(String key) {
-		if (super.has(key)) {
-			return resolveEnv(super.get(key));
-		}
-		
 		if (has(key)) {
 			return resolveEnv(properties.get(key).toString());
 		}
 			
-		throw new NoSuchElementException("Key " + key + " not found in environment " + getName());
+		throw new NoSuchElementException("Key " + key + " not found in environment");
 			
 	}
 

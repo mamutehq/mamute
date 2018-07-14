@@ -1,7 +1,8 @@
 package org.mamute.brutauth.auth.rules;
 
-import br.com.caelum.vraptor.environment.Environment;
 import org.mamute.auth.rules.PermissionRules;
+import org.mamute.vraptor.environment.MamuteEnvironment;
+import org.springframework.core.env.Environment;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,14 +10,14 @@ import javax.inject.Named;
 @Named("environmentKarma")
 public class EnvironmentKarma {
 
-	private Environment environment;
+	private MamuteEnvironment environment;
 
 	@Deprecated
 	EnvironmentKarma() {
 	}
 
 	@Inject
-	public EnvironmentKarma(Environment environment) {
+	public EnvironmentKarma(MamuteEnvironment environment) {
 		this.environment = environment;
 	}
 

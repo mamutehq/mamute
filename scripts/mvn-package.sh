@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 APPLICATION_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
 TEMP_FOLDER_NAME=".mamute-build"
 TEMP_FOLDER="${APPLICATION_DIR}/${TEMP_FOLDER_NAME}"

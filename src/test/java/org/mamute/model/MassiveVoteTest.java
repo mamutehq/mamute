@@ -14,6 +14,14 @@ import org.mamute.model.vote.MassiveVote;
 
 import br.com.caelum.timemachine.Block;
 import br.com.caelum.timemachine.TimeMachine;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
+import org.mamute.util.MockClockProvider;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 public class MassiveVoteTest extends TestCase {
 	
@@ -30,29 +38,25 @@ public class MassiveVoteTest extends TestCase {
 
 	@Test
 	public void should_not_increase_karma_for_massive_votes() {
+		ClockProvider clockProvider = new SystemUtcClockProvider();
 		for (int i = 0; i < massiveVote.getMaxVotesAllowed(); i++) {
-			Vote currentVote = vote(massiveVoter, VoteType.DOWN, 1l);
+			Vote currentVote = vote(clockProvider, massiveVoter, VoteType.DOWN, 1l);
 			assertTrue(massiveVote.shouldCountKarma(massiveVoter, author, currentVote));
 		}
-		Vote deniedVote = vote(massiveVoter, VoteType.DOWN, 1l);
+		Vote deniedVote = vote(clockProvider, massiveVoter, VoteType.DOWN, 1l);
 		assertFalse(massiveVote.shouldCountKarma(massiveVoter, author, deniedVote));
 	}
 	
 	@Test
 	public void should_count_karma_if_vote_was_created_before_min_date() throws Exception {
-		DateTime antantonte = new DateTime().minusDays(3);
-		
-		TimeMachine.goTo(antantonte).andExecute(new Block<Vote>() {
-			@Override
-			public Vote run() {
-				for (int i = 0; i < massiveVote.getMaxVotesAllowed(); i++) {
-					massiveVote.shouldCountKarma(massiveVoter, author, vote(massiveVoter, VoteType.DOWN, 1l));
-				}
-				return null;
-			}
-		});
-		
-		Vote acceptedVote = vote(massiveVoter, VoteType.DOWN, 1l);
+		MockClockProvider clockProvider = new MockClockProvider();
+		clockProvider.set(Clock.fixed(LocalDateTime.now().minusDays(3).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+		for (int i = 0; i < massiveVote.getMaxVotesAllowed(); i++) {
+			massiveVote.shouldCountKarma(massiveVoter, author, vote(clockProvider, massiveVoter, VoteType.DOWN, 1l));
+		}
+
+		clockProvider.set(Clock.fixed(LocalDateTime.now().toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+		Vote acceptedVote = vote(clockProvider, massiveVoter, VoteType.DOWN, 1l);
 		assertTrue(massiveVote.shouldCountKarma(massiveVoter, author, acceptedVote));
 
 	}

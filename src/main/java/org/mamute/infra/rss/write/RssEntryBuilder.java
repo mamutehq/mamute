@@ -1,8 +1,9 @@
 package org.mamute.infra.rss.write;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class RssEntryBuilder {
 
@@ -10,10 +11,10 @@ public class RssEntryBuilder {
 	private String title;
 	private String link;
 	private String guid;
-	private DateTime date;
+	private ZonedDateTime date;
 	private RssImageEntry image;
 	private static final String PATTERN = "EEE, dd MMM yyy HH:mm:ss Z";
-	static final DateTimeFormatter RSS_DATE_FORMATTER = DateTimeFormat.forPattern(PATTERN);
+	static final DateTimeFormatter RSS_DATE_FORMATTER = DateTimeFormatter.ofPattern(PATTERN);
 
 	public RssEntryBuilder withAuthor(String name) {
 		this.name = name;
@@ -35,8 +36,8 @@ public class RssEntryBuilder {
 		return this;
 	}
 	
-	public RssEntryBuilder withDate(DateTime date) {
-		this.date = date;
+	public RssEntryBuilder withDate(LocalDateTime date) {
+		this.date = date.atZone(ZoneId.systemDefault());
 		return this;
 	}
 	
@@ -46,7 +47,7 @@ public class RssEntryBuilder {
 	}
 
 	public RssEntry build() {
-		return new RssEntry(title, link, guid, RSS_DATE_FORMATTER.print(date), name, image);
+		return new RssEntry(title, link, guid, RSS_DATE_FORMATTER.format(date), name, image);
 	}
 	
 }

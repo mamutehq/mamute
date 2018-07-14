@@ -22,6 +22,7 @@ import org.mamute.model.User;
 import com.google.common.base.Optional;
 
 import br.com.caelum.vraptor.validator.I18nMessage;
+import org.mamute.providers.SystemUtcClockProvider;
 
 public class LoginMethodManager {
 	@Inject private UserDAO users;
@@ -62,7 +63,7 @@ public class LoginMethodManager {
 	}
 	
 	private void createNewUser(String rawToken, SignupInfo signupInfo, MethodType type) {
-		User user = new User(fromTrustedText(signupInfo.getName()), signupInfo.getEmail());
+		User user = new User(new SystemUtcClockProvider(), fromTrustedText(signupInfo.getName()), signupInfo.getEmail());
 		LoginMethod googleLogin = new LoginMethod(type, signupInfo.getEmail(), rawToken, user);
 		if (signupInfo.containsPhotoUrl()) {
 			user.setPhotoUri(signupInfo.getPhotoUri());

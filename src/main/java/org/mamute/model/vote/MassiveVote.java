@@ -1,14 +1,13 @@
 package org.mamute.model.vote;
 
-import java.util.List;
-
-import javax.enterprise.context.ApplicationScoped;
-
-import org.joda.time.DateTime;
 import org.mamute.model.User;
 import org.mamute.model.Vote;
 import org.mamute.model.VoteType;
 import org.mamute.model.VotesToTarget;
+
+import javax.enterprise.context.ApplicationScoped;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @ApplicationScoped
 public class MassiveVote {
@@ -46,7 +45,7 @@ public class MassiveVote {
 	}
 
 	private boolean isExpired(Vote oldestVote) {
-		DateTime expirationDate = new DateTime().minusDays(MIN_DAY);
+		LocalDateTime expirationDate = LocalDateTime.now().minusDays(MIN_DAY);
 		return oldestVote.getCreatedAt().isBefore(expirationDate);
 	}
 

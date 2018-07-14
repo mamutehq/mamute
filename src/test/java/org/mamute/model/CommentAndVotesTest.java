@@ -1,13 +1,15 @@
 package org.mamute.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.mamute.util.ClockUtils.fixedClock;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.junit.Test;
 import org.mamute.dao.TestCase;
+import org.mamute.util.MockClockProvider;
 
 public class CommentAndVotesTest extends TestCase{
 	
@@ -17,7 +19,9 @@ public class CommentAndVotesTest extends TestCase{
 		Vote vote2 = vote(null, VoteType.UP, 2l);
 
 		final User zeh = user("Zé", "x@x.com", 1l);
-		Comment comment1 = comment(zeh, "blablablablablabla",DateTime.now().minusHours(1));
+		MockClockProvider clockProvider = new MockClockProvider();
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(1)));
+		Comment comment1 = comment(zeh, "blablablablablabla", clockProvider);
 		
 		Comment comment2 = comment(zeh, "blablablablablabla");
 		Object[] commentAndVote1 = new Object[]{comment1, vote1};

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mamute.controllers.QuestionController;
 import org.mamute.model.*;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.vraptor.Linker;
 import org.mockito.internal.verification.VerificationModeFactory;
 
@@ -48,7 +49,7 @@ public class NewQuestionMailerTest {
 
 	@Test
 	public void should_not_send_to_question_author() {
-		User author = new User(SanitizedText.fromTrustedText("author"), "author@mamute.org");
+		User author = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText("author"), "author@mamute.org");
 		List<User> users = asList(author);
 		QuestionInformation info = new QuestionInformation("title", MarkedText.notMarked("content"), new LoggedUser(author, request));
 		Question question = new Question(info, author);
@@ -59,9 +60,9 @@ public class NewQuestionMailerTest {
 
 	@Test
 	public void should_send_to_subscribed_user() {
-		User author = new User(SanitizedText.fromTrustedText("author"), "author@mamute.org");
+		User author = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText("author"), "author@mamute.org");
 		author.setId(1l);
-		User subscribed = new User(SanitizedText.fromTrustedText("subscribed"), "subscribed@mamute.org");
+		User subscribed = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText("subscribed"), "subscribed@mamute.org");
 		subscribed.setId(2l);
 
 		QuestionInformation info = new QuestionInformation("title", MarkedText.notMarked("content"), new LoggedUser(author, request));

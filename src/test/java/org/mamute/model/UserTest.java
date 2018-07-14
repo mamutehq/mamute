@@ -1,20 +1,25 @@
 package org.mamute.model;
 
-import br.com.caelum.timemachine.Block;
-import br.com.caelum.timemachine.TimeMachine;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mamute.brutauth.auth.rules.EnvironmentKarma;
 import org.mamute.builder.QuestionBuilder;
 import org.mamute.dao.TestCase;
+import org.mamute.providers.SystemUtcClockProvider;
+import org.mamute.util.MockClockProvider;
 import org.mamute.vraptor.environment.MamuteEnvironment;
 
 import javax.servlet.ServletContext;
 import java.net.URL;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mamute.model.MarkedText.notMarked;
 import static org.mockito.Mockito.mock;
 
@@ -52,12 +57,12 @@ public class UserTest extends TestCase {
 	@Test
 	public void moderator_should_approve_question_information()
 			throws Exception {
-		Information approvedInfo = new QuestionInformation("edited title",
+		Information approvedInfo = new QuestionInformation(new SystemUtcClockProvider(), "edited title",
 				notMarked("edited desc"), new LoggedUser(otherUser, null),
 				new ArrayList<Tag>(), "comment");
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderator.approve(myQuestion, approvedInfo, env);
 
 		assertEquals(approvedInfo, myQuestion.getInformation());
@@ -67,12 +72,12 @@ public class UserTest extends TestCase {
 	@Test
 	public void user_with_enough_karma_should_approve_question_information()
 			throws Exception {
-		Information approvedInfo = new QuestionInformation("edited title",
+		Information approvedInfo = new QuestionInformation(new SystemUtcClockProvider(), "edited title",
 				notMarked("edited desc"), new LoggedUser(otherUser, null),
 				new ArrayList<Tag>(), "comment");
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderatorWannabe.approve(myQuestion, approvedInfo, env);
 		
 		assertEquals(approvedInfo, myQuestion.getInformation());
@@ -86,7 +91,7 @@ public class UserTest extends TestCase {
 				otherUser, answer);
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderator.approve(answer, approvedInfo, env);
 
 		assertEquals(approvedInfo, answer.getInformation());
@@ -100,7 +105,7 @@ public class UserTest extends TestCase {
 				otherUser, answer);
 
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		moderatorWannabe.approve(answer, approvedInfo, env);
 		
 		assertEquals(approvedInfo, answer.getInformation());
@@ -164,16 +169,14 @@ public class UserTest extends TestCase {
 	
 	@Test
 	public void should_not_show_upvote_banner() throws Exception {
-		User user = TimeMachine.goTo(new DateTime().minusWeeks(1)).andExecute(new Block<User>() {
-			@Override
-			public User run() {
-				return new User(SanitizedText.fromTrustedText("name"), "name@brutal.com");
-			}
-		});
-		Thread.sleep(1);
-		
+		MockClockProvider clockProvider = new MockClockProvider();
+		clockProvider.set(Clock.fixed(LocalDateTime.now(Clock.systemUTC()).minusWeeks(2).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+
+		User user = new User(clockProvider, SanitizedText.fromTrustedText("name"), "name@brutal.com");
+
+		clockProvider.set(Clock.systemUTC());
 		assertFalse(user.isVotingEnough());
-		
+
 		user.votedUp();
 		
 		assertTrue(user.isVotingEnough());

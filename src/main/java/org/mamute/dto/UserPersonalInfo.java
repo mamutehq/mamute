@@ -1,15 +1,20 @@
 package org.mamute.dto;
 
-import static org.mamute.validators.UserPersonalInfoValidator.ABOUT_LENGTH_MESSAGE;
-import static org.mamute.validators.UserPersonalInfoValidator.ABOUT_MAX_LENGTH;
-import static org.mamute.validators.UserPersonalInfoValidator.ABOUT_MIN_LENGTH;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.mamute.model.MarkedText;
+import org.mamute.model.SanitizedText;
+import org.mamute.model.User;
+
+import java.time.LocalDateTime;
+
 import static org.mamute.validators.UserPersonalInfoValidator.EMAIL_LENGTH_MESSAGE;
 import static org.mamute.validators.UserPersonalInfoValidator.EMAIL_MAX_LENGTH;
 import static org.mamute.validators.UserPersonalInfoValidator.EMAIL_MIN_LENGTH;
 import static org.mamute.validators.UserPersonalInfoValidator.EMAIL_NOT_VALID;
 import static org.mamute.validators.UserPersonalInfoValidator.LOCATION_LENGTH_MESSAGE;
 import static org.mamute.validators.UserPersonalInfoValidator.LOCATION_MAX_LENGTH;
-import static org.mamute.validators.UserPersonalInfoValidator.MARKED_ABOUT_MAX_LENGTH;
 import static org.mamute.validators.UserPersonalInfoValidator.NAME_LENGTH_MESSAGE;
 import static org.mamute.validators.UserPersonalInfoValidator.NAME_MAX_LENGTH;
 import static org.mamute.validators.UserPersonalInfoValidator.NAME_MIN_LENGTH;
@@ -17,14 +22,6 @@ import static org.mamute.validators.UserPersonalInfoValidator.NAME_REQUIRED;
 import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_LENGTH_MESSAGE;
 import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_MAX_LENGHT;
 import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_MIN_LENGTH;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.mamute.model.MarkedText;
-import org.mamute.model.SanitizedText;
-import org.mamute.model.User;
 
 public class UserPersonalInfo {
 	private final User user;
@@ -43,7 +40,7 @@ public class UserPersonalInfo {
 	@Length(max = LOCATION_MAX_LENGTH, message = LOCATION_LENGTH_MESSAGE)
 	private String location;
 	
-	private DateTime birthDate;
+	private LocalDateTime birthDate;
 	
 	private String about;
 
@@ -58,7 +55,7 @@ public class UserPersonalInfo {
 		this.user = user;
 	}
 
-	public UserPersonalInfo withBirthDate(DateTime birthDate) {
+	public UserPersonalInfo withBirthDate(LocalDateTime birthDate) {
 		this.birthDate = birthDate;
 		return this;
 	}
@@ -109,7 +106,7 @@ public class UserPersonalInfo {
 		return this.location;
 	}
 
-	public DateTime getBirthDate() {
+	public LocalDateTime getBirthDate() {
 		return this.birthDate;
 	}
 

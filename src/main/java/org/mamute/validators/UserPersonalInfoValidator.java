@@ -1,15 +1,17 @@
 package org.mamute.validators;
 
-import javax.inject.Inject;
-
+import br.com.caelum.vraptor.simplemail.template.BundleFormatter;
+import br.com.caelum.vraptor.validator.Validator;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.mamute.controllers.BrutalValidator;
 import org.mamute.dto.UserPersonalInfo;
 import org.mamute.factory.MessageFactory;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
-import br.com.caelum.vraptor.simplemail.template.BundleFormatter;
-import br.com.caelum.vraptor.validator.Validator;
+import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class UserPersonalInfoValidator {
 	
@@ -36,14 +38,27 @@ public class UserPersonalInfoValidator {
 	private MessageFactory messageFactory;
 	private BundleFormatter bundle;
 	private BrutalValidator brutalValidator;
+	private final ClockProvider clockProvider;
 
 	@Deprecated
 	public UserPersonalInfoValidator() {
+		this.clockProvider = new SystemUtcClockProvider();
 	}
 
 	@Inject
-	public UserPersonalInfoValidator(Validator validator, EmailValidator emailValidator, 
+	public UserPersonalInfoValidator(ClockProvider clockProvider, Validator validator, EmailValidator emailValidator,
+									 MessageFactory messageFactory, BundleFormatter bundle, BrutalValidator brutalValidator){
+		this.clockProvider = clockProvider;
+		this.validator = validator;
+		this.emailValidator = emailValidator;
+		this.messageFactory = messageFactory;
+		this.bundle = bundle;
+		this.brutalValidator = brutalValidator;
+	}
+
+	public UserPersonalInfoValidator(Validator validator, EmailValidator emailValidator,
 			MessageFactory messageFactory, BundleFormatter bundle, BrutalValidator brutalValidator){
+		this.clockProvider = new SystemUtcClockProvider();
 		this.validator = validator;
 		this.emailValidator = emailValidator;
 		this.messageFactory = messageFactory;
@@ -71,12 +86,13 @@ public class UserPersonalInfoValidator {
 		}
 	
 		if(!info.getUser().getName().equals(info.getName())){
-			DateTime nameLastTouchedAt = info.getUser().getNameLastTouchedAt();
-			if (nameLastTouchedAt != null && nameLastTouchedAt.isAfter(new DateTime().minusDays(30))) {
+			LocalDateTime nameLastTouchedAt = info.getUser().getNameLastTouchedAt();
+			LocalDateTime thirtyDaysAgo = LocalDateTime.now(clockProvider.get()).minusDays(30);
+			if (nameLastTouchedAt != null && nameLastTouchedAt.isAfter(thirtyDaysAgo)) {
 				validator.add(messageFactory.build(
 						"error", 
 						"user.errors.name.min_time", 
-						nameLastTouchedAt.plusDays(30).toString(DateTimeFormat.forPattern(bundle.getMessage("date.joda.simple.pattern")))
+						DateTimeFormatter.ofPattern(bundle.getMessage("date.joda.simple.pattern")).format(nameLastTouchedAt.plusDays(30))
 				));
 			}
 		}

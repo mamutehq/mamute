@@ -1,57 +1,47 @@
 package org.mamute.model;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.mamute.brutauth.auth.rules.EnvironmentKarma;
+import org.mamute.builder.QuestionBuilder;
+import org.mamute.dao.TestCase;
+import org.mamute.util.MockClockProvider;
+import org.mamute.vraptor.environment.MamuteEnvironment;
+
+import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mamute.model.UpdateStatus.PENDING;
 import static org.mockito.Mockito.mock;
 
-import org.joda.time.DateTime;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mamute.brutauth.auth.rules.EnvironmentKarma;
-import org.mamute.builder.QuestionBuilder;
-import org.mamute.dao.TestCase;
-import org.mamute.model.Answer;
-import org.mamute.model.Flag;
-import org.mamute.model.FlagType;
-import org.mamute.model.Question;
-import org.mamute.model.QuestionInformation;
-import org.mamute.model.QuestionInformationBuilder;
-import org.mamute.model.Tag;
-import org.mamute.model.User;
-import org.mamute.model.Vote;
-import org.mamute.model.VoteType;
-
-import br.com.caelum.timemachine.Block;
-import br.com.caelum.timemachine.TimeMachine;
-import org.mamute.vraptor.environment.MamuteEnvironment;
-
-import javax.servlet.ServletContext;
-import java.io.IOException;
-
 public class QuestionTest  extends TestCase{
-	private QuestionBuilder question = new QuestionBuilder();
+	private QuestionBuilder questionBuilder = new QuestionBuilder();
 	private Updater updater;
 
 	@Before
 	public void setup() throws IOException {
 		ServletContext ctx = mock(ServletContext.class);
-		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment(ctx));
+		EnvironmentKarma env = new EnvironmentKarma(new MamuteEnvironment());
 		this.updater = new Updater(env);
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void can_not_be_marked_as_solved_by_the_an_answer_that_is_not_mine() {
-		Question shouldILiveForever = question.build();
+		Question shouldILiveForever = questionBuilder.build();
 		Answer yes = answer("", null, null);
 		shouldILiveForever.markAsSolvedBy(yes);
 	}
 
 	@Test
 	public void can_be_marked_as_solved_by_the_an_answer_that_is_mine() {
-		Question shouldILiveForever = question.build();
+		Question shouldILiveForever = questionBuilder.build();
 		Answer yes = answer("my answer", shouldILiveForever, null);
 		
 		shouldILiveForever.markAsSolvedBy(yes);
@@ -61,7 +51,7 @@ public class QuestionTest  extends TestCase{
 	
 	@Test
 	public void should_not_be_touched_when_marked_as_solved() {
-		Question shouldILiveForever = question.build();
+		Question shouldILiveForever = questionBuilder.build();
 		User touchedBy = shouldILiveForever.getLastTouchedBy();
 		User leo = user("", "");
 		Answer yes = answer("my answer", shouldILiveForever, leo);
@@ -75,7 +65,7 @@ public class QuestionTest  extends TestCase{
 
 	@Test
 	public void should_remove_vote_values_and_update_vote_count() {
-		Question myQuestion = question.build();
+		Question myQuestion = questionBuilder.build();
 		assertEquals(0l, myQuestion.getVoteCount());
 		Vote firstVote = new Vote(null, VoteType.UP);
 		myQuestion.substitute(null, firstVote);
@@ -90,7 +80,7 @@ public class QuestionTest  extends TestCase{
 	public void should_be_touched_by_original_author_after_edit() throws Exception {
 		User artur = user("artur", "artur@x.com");
 		artur.setId(1l);
-		Question comoFaz = question.withTitle("titulo").withDescription("descricao").withAuthor(artur).build();
+		Question comoFaz = questionBuilder.withTitle("titulo").withDescription("descricao").withAuthor(artur).build();
 		User leo = user("leo", "leo@x.com");
 		leo.setId(2l);
 		QuestionInformation info = new QuestionInformationBuilder().with(leo).build();
@@ -105,7 +95,7 @@ public class QuestionTest  extends TestCase{
 		artur.setId(1l);
 		leo.setId(2l);
 		
-		Question comoFaz = question.withTitle("titulo").withDescription("descricao").withAuthor(artur).build();
+		Question comoFaz = questionBuilder.withTitle("titulo").withDescription("descricao").withAuthor(artur).build();
 		QuestionInformation comoFazEditedInformation = new QuestionInformationBuilder().with(leo).build();
 		comoFaz.updateWith(comoFazEditedInformation, updater);
 		comoFaz.approve(comoFazEditedInformation);
@@ -115,7 +105,7 @@ public class QuestionTest  extends TestCase{
 	
 	@Test
 	public void should_set_author_only_once() throws Exception {
-		Question q = question.build();
+		Question q = questionBuilder.build();
 		User original = user("original", "original@brutal.com");
 		q.setAuthor(original);
 		User other = user("other", "other@brutal.com");
@@ -126,7 +116,7 @@ public class QuestionTest  extends TestCase{
 	
 	@Test
 	public void should_verify_that_a_user_already_flagged_question() throws Exception {
-		Question q = question.build();
+		Question q = questionBuilder.build();
 		User author = user("author", "author@brutal.com", 1l);
 		User other = user("other", "other@brutal.com", 2l);
 		Flag flag = flag(FlagType.OTHER, author);
@@ -138,7 +128,7 @@ public class QuestionTest  extends TestCase{
 	
 	@Test
 	public void should_verify_that_a_user_already_answered_question() throws Exception {
-		Question q = question.build();
+		Question q = questionBuilder.build();
 		User author = user("author", "author@brutal.com", 1l);
 		User other = user("other", "other@brutal.com", 2l);
 		answer("my answer", q, author);
@@ -151,7 +141,7 @@ public class QuestionTest  extends TestCase{
 	public void should_update_information_and_tag_usage_count() throws Exception {
 		Tag ruby = tag("ruby");
 		Tag java = tag("java");
-		Question q = question.withTag(ruby).build();
+		Question q = questionBuilder.withTag(ruby).build();
 		QuestionInformation approved = new QuestionInformationBuilder().withTag(java).build();
 		q.updateApproved(approved);
 		
@@ -163,7 +153,7 @@ public class QuestionTest  extends TestCase{
 	public void should_return_true_if_question_has_pending_edits() throws Exception {
 		Tag ruby = tag("ruby");
 		Tag java = tag("java");
-		Question q = question.withTag(ruby).build();
+		Question q = questionBuilder.withTag(ruby).build();
 		assertFalse(q.hasPendingEdits());
 
 		QuestionInformation approved = new QuestionInformationBuilder().withTag(java).build();
@@ -175,7 +165,7 @@ public class QuestionTest  extends TestCase{
 	@Test
 	public void should_verify_if_is_visible_for_author() {
 		User author = user("leo", "leo@leo");
-		Question shouldILiveForever = question.withAuthor(author).build();
+		Question shouldILiveForever = questionBuilder.withAuthor(author).build();
 		shouldILiveForever.remove();
 		boolean isVisibleForAuthor = shouldILiveForever.isVisibleFor(author);
 		assertTrue(isVisibleForAuthor);
@@ -183,7 +173,7 @@ public class QuestionTest  extends TestCase{
 	
 	@Test
 	public void should_verify_if_is_visible_for_moderator() {
-		Question shouldILiveForever = question.build();
+		Question shouldILiveForever = questionBuilder.build();
 		shouldILiveForever.remove();
 		boolean isVisibleForModerator = shouldILiveForever.isVisibleFor(user("leo", "leo@leo").asModerator());
 		assertTrue(isVisibleForModerator);
@@ -191,7 +181,7 @@ public class QuestionTest  extends TestCase{
 	
 	@Test
 	public void should_verify_if_is_visible_for_null() {
-		Question shouldILiveForever = question.build();
+		Question shouldILiveForever = questionBuilder.build();
 		shouldILiveForever.remove();
 		boolean isVisibleForNull = shouldILiveForever.isVisibleFor(null);
 		assertFalse(isVisibleForNull);
@@ -199,7 +189,7 @@ public class QuestionTest  extends TestCase{
 	
 	@Test
 	public void should_verify_if_is_visible_when_visible() {
-		Question shouldILiveForever = question.build();
+		Question shouldILiveForever = questionBuilder.build();
 		boolean isVisibleForModerator = shouldILiveForever.isVisibleFor(null);
 		assertTrue(isVisibleForModerator);
 	}
@@ -208,7 +198,7 @@ public class QuestionTest  extends TestCase{
 	public void should_not_trim_short_meta() throws Exception {
 		String title = "0123456789";
 		String description = "description";
-		Question q = question
+		Question q = questionBuilder
 				.withTitle(title)
 				.withDescription(description)
 				.build();
@@ -220,7 +210,7 @@ public class QuestionTest  extends TestCase{
 	public void should_trim_big_meta() throws Exception {
 		String title = bigString('a', 100);
 		String description = bigString('b', 10000);
-		Question q = question
+		Question q = questionBuilder
 				.withTitle(title)
 				.withDescription(description)
 				.build();
@@ -232,20 +222,25 @@ public class QuestionTest  extends TestCase{
 
 	@Test
 	public void return_true_if_answer_was_last_touched_two_months_ago() throws Exception {
-		Question inactiveQuestion = TimeMachine.goTo(new DateTime().minusMonths(2)).andExecute(new Block<Question>() {
-			@Override
-			public Question run() {
-				return question.withTitle("question title").withDescription("description").build();
-			}
-		});
-		
+		MockClockProvider clockProvider = new MockClockProvider();
+		clockProvider.set(Clock.fixed(LocalDateTime.now().minusMonths(5).toInstant(ZoneOffset.UTC), ZoneId.systemDefault()));
+		Question inactiveQuestion = questionBuilder
+				.withTitle("questionBuilder title")
+				.withDescription("description")
+				.withClockProvider(clockProvider)
+				.build();
+
+		clockProvider.set(Clock.systemUTC());
 		assertTrue(inactiveQuestion.isInactiveForOneMonth());
 	}
 	
 	@Test
 	public void return_false_if_answer_was_last_touched_today() throws Exception {
-		final Question myQuestion = question.withTitle("question title").withDescription("description").build();
-		
+		final Question myQuestion = questionBuilder
+				.withTitle("questionBuilder title")
+				.withDescription("description")
+				.build();
+
 		assertFalse(myQuestion.isInactiveForOneMonth());
 	}
 

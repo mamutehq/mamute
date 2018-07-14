@@ -1,27 +1,48 @@
 package org.mamute.controllers;
 
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
-import br.com.caelum.vraptor.*;
+import br.com.caelum.vraptor.Controller;
+import br.com.caelum.vraptor.Delete;
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.hibernate.extra.Load;
 import br.com.caelum.vraptor.routes.annotation.Routed;
 import br.com.caelum.vraptor.validator.I18nMessage;
 import br.com.caelum.vraptor.validator.Validator;
 import br.com.caelum.vraptor.view.Results;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import org.mamute.auth.FacebookAuthService;
-import org.mamute.brutauth.auth.rules.*;
-import org.mamute.dao.*;
+import org.mamute.brutauth.auth.rules.EditQuestionRule;
+import org.mamute.brutauth.auth.rules.EnvironmentKarma;
+import org.mamute.brutauth.auth.rules.InputRule;
+import org.mamute.brutauth.auth.rules.LoggedRule;
+import org.mamute.brutauth.auth.rules.ModeratorOnlyRule;
+import org.mamute.dao.AttachmentDao;
+import org.mamute.dao.QuestionDAO;
+import org.mamute.dao.ReputationEventDAO;
+import org.mamute.dao.VoteDAO;
+import org.mamute.dao.WatcherDAO;
 import org.mamute.event.QuestionCreated;
 import org.mamute.factory.MessageFactory;
 import org.mamute.filesystem.AttachmentRepository;
 import org.mamute.interceptors.IncludeAllTags;
 import org.mamute.managers.TagsManager;
-import org.mamute.model.*;
+import org.mamute.model.Attachment;
+import org.mamute.model.EventType;
+import org.mamute.model.LoggedUser;
+import org.mamute.model.MarkedText;
+import org.mamute.model.Question;
+import org.mamute.model.QuestionInformation;
+import org.mamute.model.ReputationEvent;
+import org.mamute.model.Tag;
+import org.mamute.model.UpdateStatus;
+import org.mamute.model.Updater;
+import org.mamute.model.User;
 import org.mamute.model.post.PostViewCounter;
 import org.mamute.model.watch.Watcher;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 import org.mamute.search.QuestionIndex;
 import org.mamute.util.TagsSplitter;
 import org.mamute.validators.AttachmentsValidator;
@@ -30,10 +51,8 @@ import org.mamute.vraptor.Linker;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static br.com.caelum.vraptor.view.Results.http;
 import static java.util.Arrays.asList;
@@ -86,6 +105,8 @@ public class QuestionController {
 	private AttachmentRepository attachmentRepository;
 	@Inject
 	private EnvironmentKarma environmentKarma;
+	@Inject
+	private ClockProvider clockProvider;
 
 	@Get
 	@IncludeAllTags
@@ -109,7 +130,7 @@ public class QuestionController {
 		List<Tag> loadedTags = tagsManager.findOrCreate(splitedTags);
 		validate(loadedTags, splitedTags);
 
-		QuestionInformation information = new QuestionInformation(title, description, this.currentUser, loadedTags, comment);
+		QuestionInformation information = new QuestionInformation(clockProvider, title, description, this.currentUser, loadedTags, comment);
 		brutalValidator.validate(information);
 		UpdateStatus status = original.updateWith(information, new Updater(environmentKarma));
 
@@ -167,10 +188,10 @@ public class QuestionController {
 		List<Tag> foundTags = tagsManager.findOrCreate(splitedTags);
 		validate(foundTags, splitedTags);
 
-		QuestionInformation information = new QuestionInformation(title, description, currentUser, foundTags, "new question");
+		QuestionInformation information = new QuestionInformation(clockProvider, title, description, currentUser, foundTags, "new question");
 		brutalValidator.validate(information);
 		User author = currentUser.getCurrent();
-		Question question = new Question(information, author);
+		Question question = new Question(new SystemUtcClockProvider(), information, author);
 		result.include("question", question);
 		validator.onErrorUse(Results.page()).of(this.getClass()).questionForm();
 

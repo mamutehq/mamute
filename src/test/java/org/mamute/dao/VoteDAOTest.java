@@ -1,19 +1,11 @@
 package org.mamute.dao;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mamute.builder.NewsBuilder;
 import org.mamute.controllers.RetrieveKarmaDownvote;
-import org.mamute.dao.InvisibleForUsersRule;
-import org.mamute.dao.ReputationEventDAO;
-import org.mamute.dao.VoteDAO;
 import org.mamute.dto.SuspectMassiveVote;
 import org.mamute.model.Answer;
 import org.mamute.model.Comment;
@@ -30,6 +22,14 @@ import org.mamute.model.interfaces.Votable;
 import org.mamute.model.vote.MassiveVote;
 import org.mamute.model.vote.VotingMachine;
 import org.mamute.reputation.rules.KarmaCalculator;
+import org.mamute.util.MockClockProvider;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mamute.util.ClockUtils.fixedClock;
 
 public class VoteDAOTest extends DatabaseTestCase{
 	
@@ -61,18 +61,25 @@ public class VoteDAOTest extends DatabaseTestCase{
 		Question question = question(currentUser, tags);
 		
 		Answer answer = answer("blablablablablablablablablablbalblabla", question, currentUser);
-		
-		Comment answerComment1 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", DateTime.now().minusHours(1));
-		Comment answerComment2 = comment(currentUser, "comentariocomentariocomentariocomentariocomentario", DateTime.now().minusHours(2));
-		Comment answerComment3 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", DateTime.now().minusHours(3));
+
+		MockClockProvider clockProvider = new MockClockProvider();
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(1)));
+		Comment answerComment1 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", clockProvider);
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(2)));
+		Comment answerComment2 = comment(currentUser, "comentariocomentariocomentariocomentariocomentario", clockProvider);
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(3)));
+		Comment answerComment3 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", clockProvider);
 		
 		answer.add(answerComment1);
 		answer.add(answerComment2);
 		answer.add(answerComment3);
-		
-		Comment questionComment1 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", DateTime.now().minusHours(4));
-		Comment questionComment2 = comment(currentUser, "comentariocomentariocomentariocomentariocomentario", DateTime.now().minusHours(5));
-		Comment questionComment3 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", DateTime.now().minusHours(6));
+
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(4)));
+		Comment questionComment1 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", clockProvider);
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(5)));
+		Comment questionComment2 = comment(currentUser, "comentariocomentariocomentariocomentariocomentario", clockProvider);
+		clockProvider.set(fixedClock(LocalDateTime.now().minusHours(6)));
+		Comment questionComment3 = comment(otherUser, "comentariocomentariocomentariocomentariocomentario", clockProvider);
 		
 		question.add(questionComment1);
 		question.add(questionComment2);

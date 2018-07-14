@@ -1,14 +1,5 @@
 package org.mamute.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.mamute.model.MarkedText.notMarked;
-import static org.mamute.model.UpdateStatus.APPROVED;
-import static org.mamute.model.UpdateStatus.NO_NEED_TO_APPROVE;
-import static org.mamute.model.UpdateStatus.PENDING;
-import static org.mamute.model.UpdateStatus.REFUSED;
-
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,6 +16,17 @@ import org.mamute.model.Tag;
 import org.mamute.model.UpdateStatus;
 import org.mamute.model.User;
 import org.mamute.model.interfaces.Moderatable;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mamute.model.MarkedText.notMarked;
+import static org.mamute.model.UpdateStatus.APPROVED;
+import static org.mamute.model.UpdateStatus.NO_NEED_TO_APPROVE;
+import static org.mamute.model.UpdateStatus.PENDING;
+import static org.mamute.model.UpdateStatus.REFUSED;
 
 public class InformationDAOTest extends DatabaseTestCase {
 
@@ -138,8 +140,9 @@ public class InformationDAOTest extends DatabaseTestCase {
     }
 	
 	private void newPendingChangesAnswer(Answer answer, int times) {
+        ClockProvider clockProvider = new SystemUtcClockProvider();
 		for (int i = 0; i < times; i++) {
-	        AnswerInformation pendingInfo = new AnswerInformation(notMarked("info2 info2 info2 info2 info2 info2 info2 "), currentAuthor, answer, "new answer");
+	        AnswerInformation pendingInfo = new AnswerInformation(clockProvider, notMarked("info2 info2 info2 info2 info2 info2 info2 "), currentAuthor, answer, "new answer");
 	        answer.enqueueChange(pendingInfo, PENDING);
 		}
 	}

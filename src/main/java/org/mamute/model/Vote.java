@@ -1,19 +1,17 @@
 package org.mamute.model;
 
-import java.util.List;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
+import java.util.List;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.mamute.providers.SessionFactoryCreator;
-
-@Entity
+//@Entity
 public class Vote {
     
     @Id @GeneratedValue
@@ -25,13 +23,11 @@ public class Vote {
     @ManyToOne
     private final User author;
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private final DateTime createdAt = new DateTime();
+    private final LocalDateTime createdAt;
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private DateTime lastUpdatedAt = new DateTime();
+    private LocalDateTime lastUpdatedAt;
     
-    public DateTime getLastUpdatedAt() {
+    public LocalDateTime getLastUpdatedAt() {
 		return lastUpdatedAt;
 	}
 
@@ -39,12 +35,22 @@ public class Vote {
      * @deprecated hibernate eyes
      */
     Vote() {
-    	this(null, null);
+    	this(new SystemUtcClockProvider(), null, null);
     }
-    
+
     public Vote(User author, VoteType type) {
         this.author = author;
         this.type = type;
+        ClockProvider clockProvider = new SystemUtcClockProvider();
+        this.createdAt = LocalDateTime.now(clockProvider.get());
+        this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
+    }
+
+    public Vote(ClockProvider clockProvider, User author, VoteType type) {
+        this.author = author;
+        this.type = type;
+        this.createdAt = LocalDateTime.now(clockProvider.get());
+        this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
     }
 
 	public int getCountValue() {
@@ -101,7 +107,7 @@ public class Vote {
 		return type.equals(VoteType.DOWN);
 	}
 	
-	public DateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
     

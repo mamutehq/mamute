@@ -1,32 +1,30 @@
 package org.mamute.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.mamute.model.interfaces.Flaggable;
+import org.mamute.model.interfaces.Notifiable;
+import org.mamute.model.interfaces.Votable;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
 
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.mamute.model.interfaces.Flaggable;
-import org.mamute.model.interfaces.Notifiable;
-import org.mamute.model.interfaces.Votable;
-import org.mamute.providers.SessionFactoryCreator;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @SQLDelete(sql = "update Comment set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-@Entity
+//@Entity
 public class Comment implements Notifiable, Votable, Flaggable {
     
 	public static final int COMMENT_MIN_LENGTH = 15;
@@ -50,11 +48,9 @@ public class Comment implements Notifiable, Votable, Flaggable {
     @ManyToOne(optional = false)
     private final User author;
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private final DateTime createdAt = new DateTime();
+    private final LocalDateTime createdAt;
     
-    @Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-    private DateTime lastUpdatedAt = new DateTime();
+    private LocalDateTime lastUpdatedAt;
     
 	@JoinTable(name = "Comment_Votes")
 	@OneToMany
@@ -71,14 +67,27 @@ public class Comment implements Notifiable, Votable, Flaggable {
 
 	private boolean deleted;
 
+	private final ClockProvider clockProvider;
+
 	/**
      * @deprecated hibernate eyes
      */
     Comment() {
-    	this(null, MarkedText.notMarked(""));
+    	this(new SystemUtcClockProvider(), null, MarkedText.notMarked(""));
     }
-    
-    public Comment(User author, MarkedText comment) {
+
+	public Comment(User author, MarkedText comment) {
+		this.clockProvider = new SystemUtcClockProvider();
+		this.createdAt = LocalDateTime.now(clockProvider.get());
+		this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
+		this.author = author;
+		setComment(comment);
+	}
+
+	public Comment(ClockProvider clockProvider, User author, MarkedText comment) {
+    	this.clockProvider = clockProvider;
+    	this.createdAt = LocalDateTime.now(clockProvider.get());
+    	this.lastUpdatedAt = LocalDateTime.now(clockProvider.get());
 		this.author = author;
 		setComment(comment);
     }
@@ -121,7 +130,7 @@ public class Comment implements Notifiable, Votable, Flaggable {
     }
 
     @Override
-    public DateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -130,7 +139,7 @@ public class Comment implements Notifiable, Votable, Flaggable {
         return "comment.type_name";
     }
 
-	public DateTime getLastUpdatedAt() {
+	public LocalDateTime getLastUpdatedAt() {
 		return lastUpdatedAt;
 	}
 

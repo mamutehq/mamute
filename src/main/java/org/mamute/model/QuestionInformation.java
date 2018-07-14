@@ -1,14 +1,17 @@
 package org.mamute.model;
 
-import static javax.persistence.FetchType.EAGER;
-import static org.mamute.infra.NormalizerBrutal.toSlug;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.mamute.model.interfaces.Moderatable;
+import org.mamute.model.interfaces.Taggable;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
+import org.mamute.validators.OptionallyEmptyTags;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -18,19 +21,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.mamute.model.interfaces.Moderatable;
-import org.mamute.model.interfaces.Taggable;
-import org.mamute.providers.SessionFactoryCreator;
-import org.mamute.validators.OptionallyEmptyTags;
+import static javax.persistence.FetchType.EAGER;
+import static org.mamute.infra.NormalizerBrutal.toSlug;
 	
 @Cacheable
-@Entity
+//@Entity
 public class QuestionInformation implements Information, Taggable {
 
 	private static final int COMMENT_MIN_LENGTH = 5;
@@ -65,8 +64,7 @@ public class QuestionInformation implements Information, Taggable {
 	@ManyToOne(optional = false, fetch = EAGER)
 	private final User author;
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt;
 
 	@Embedded
 	private Moderation moderation;
@@ -88,15 +86,18 @@ public class QuestionInformation implements Information, Taggable {
 	@ManyToOne
 	private Question question;
 
+	private final ClockProvider clockProvider;
 	/**
 	 * @deprecated hibernate only
 	 */
 	QuestionInformation() {
-		this("", MarkedText.notMarked(""), null, new ArrayList<Tag>(), "");
+		this(new SystemUtcClockProvider(), "", MarkedText.notMarked(""), null, new ArrayList<Tag>(), "");
 	}
 
-	public QuestionInformation(String title, MarkedText description, LoggedUser user,
+	public QuestionInformation(ClockProvider clockProvider, String title, MarkedText description, LoggedUser user,
 			List<Tag> tags, String comment) {
+		this.clockProvider = clockProvider;
+		this.createdAt = LocalDateTime.now(clockProvider.get());
         if (user == null) {
 			this.author = null;
 			this.ip = null;
@@ -111,7 +112,7 @@ public class QuestionInformation implements Information, Taggable {
 	}
 
 	public QuestionInformation(String title, MarkedText description, LoggedUser author) {
-		this(title, description, author, new ArrayList<Tag>(), "");
+		this(new SystemUtcClockProvider(), title, description, author, new ArrayList<Tag>(), "");
 	}
 
 	public void moderate(User moderator, UpdateStatus status) {
@@ -182,7 +183,7 @@ public class QuestionInformation implements Information, Taggable {
 		return tags;
 	}
 	
-	public DateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 	
@@ -220,7 +221,7 @@ public class QuestionInformation implements Information, Taggable {
 		return createdAt.isBefore(question.getInformation().getCreatedAt());
 	}
 
-	public DateTime moderatedAt() {
+	public LocalDateTime moderatedAt() {
 		return moderation.getModeratedAt();
 	}
 

@@ -1,17 +1,19 @@
 package org.mamute.builder;
 
-import static java.util.Arrays.asList;
-import static org.mamute.model.MarkedText.notMarked;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mamute.model.MarkedText;
 import org.mamute.model.Question;
 import org.mamute.model.QuestionInformation;
 import org.mamute.model.QuestionInformationBuilder;
 import org.mamute.model.Tag;
 import org.mamute.model.User;
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.mamute.model.MarkedText.notMarked;
 
 
 public class QuestionBuilder extends ModelBuilder{
@@ -23,6 +25,7 @@ public class QuestionBuilder extends ModelBuilder{
 	private List<Tag> tags = new ArrayList<Tag>();
 	private Long id;
 	private QuestionInformationBuilder informationBuilder;
+	private ClockProvider clockProvider;
 
 	public QuestionBuilder() {
 		informationBuilder = new QuestionInformationBuilder();
@@ -62,6 +65,11 @@ public class QuestionBuilder extends ModelBuilder{
 		this.id = id;
 		return this;
 	}
+
+	public QuestionBuilder withClockProvider(ClockProvider clockProvider) {
+		this.clockProvider = clockProvider;
+		return this;
+	}
 	
 	public Question build(){
 		QuestionInformation questionInformation = 
@@ -71,7 +79,10 @@ public class QuestionBuilder extends ModelBuilder{
 				.withTags(tags)
 				.withComment(comment)
 				.build();
-		Question q = new Question(questionInformation, author);
+		if(clockProvider == null) {
+			clockProvider = new SystemUtcClockProvider();
+		}
+		Question q = new Question(clockProvider, questionInformation, author);
 		setId(q, id);
 		clear();
 		return q;

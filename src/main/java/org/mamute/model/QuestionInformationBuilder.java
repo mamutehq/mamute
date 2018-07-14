@@ -1,5 +1,8 @@
 package org.mamute.model;
 
+import org.mamute.providers.ClockProvider;
+import org.mamute.providers.SystemUtcClockProvider;
+
 import static java.util.Arrays.asList;
 import static org.mamute.model.MarkedText.notMarked;
 
@@ -14,6 +17,7 @@ public class QuestionInformationBuilder {
 	private String comment;
 	private List<Tag> tags;
     private UpdateStatus status;
+    private ClockProvider clockProvider = new SystemUtcClockProvider();
     
     public QuestionInformationBuilder() {
 		clear();
@@ -53,9 +57,14 @@ public class QuestionInformationBuilder {
 		this.comment = comment;
 		return this;
 	}
+
+	public QuestionInformationBuilder withClockProvider(ClockProvider clockProvider) {
+    	this.clockProvider = clockProvider;
+    	return this;
+	}
 	
 	public QuestionInformation build() {
-		QuestionInformation questionInformation = new QuestionInformation(title, description, new LoggedUser(author, null), tags, comment);
+		QuestionInformation questionInformation = new QuestionInformation(clockProvider, title, description, new LoggedUser(author, null), tags, comment);
 		if (status != null)
 			questionInformation.setInitStatus(status);
 		clear();

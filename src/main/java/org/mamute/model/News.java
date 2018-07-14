@@ -1,10 +1,14 @@
 package org.mamute.model;
 
-import static javax.persistence.FetchType.EAGER;
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.Cascade;
+import org.mamute.infra.NotFoundException;
+import org.mamute.model.interfaces.Moderatable;
+import org.mamute.model.interfaces.RssContent;
+import org.mamute.model.interfaces.ViewCountable;
+import org.mamute.model.interfaces.Votable;
+import org.mamute.model.interfaces.Watchable;
+import org.mamute.model.watch.Watcher;
+import org.owasp.html.HtmlPolicyBuilder;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -14,21 +18,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.mamute.infra.NotFoundException;
-import org.mamute.model.interfaces.Moderatable;
-import org.mamute.model.interfaces.RssContent;
-import org.mamute.model.interfaces.ViewCountable;
-import org.mamute.model.interfaces.Votable;
-import org.mamute.model.interfaces.Watchable;
-import org.mamute.model.watch.Watcher;
-import org.mamute.providers.SessionFactoryCreator;
-import org.owasp.html.HtmlPolicyBuilder;
+import static javax.persistence.FetchType.EAGER;
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
-@Entity
+//@Entity
 public class News extends Moderatable implements Post, ViewCountable, Watchable, RssContent, ReputationEventContext {
 	@Id
 	@GeneratedValue
@@ -43,11 +40,9 @@ public class News extends Moderatable implements Post, ViewCountable, Watchable,
 	@Cascade(SAVE_UPDATE)
 	private List<NewsInformation> history = new ArrayList<>();
 	
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private final DateTime createdAt = new DateTime();
+	private final LocalDateTime createdAt = LocalDateTime.now();
 
-	@Type(type = SessionFactoryCreator.JODA_TIME_TYPE)
-	private DateTime lastUpdatedAt = new DateTime();
+	private LocalDateTime lastUpdatedAt = LocalDateTime.now();
 
 	@ManyToOne
 	private User lastTouchedBy = null;
@@ -135,7 +130,7 @@ public class News extends Moderatable implements Post, ViewCountable, Watchable,
 	}
 
 	@Override
-	public DateTime getLastUpdatedAt() {
+	public LocalDateTime getLastUpdatedAt() {
 		return lastUpdatedAt;
 	}
 
@@ -145,7 +140,7 @@ public class News extends Moderatable implements Post, ViewCountable, Watchable,
 	}
 
 	@Override
-	public DateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
@@ -202,7 +197,7 @@ public class News extends Moderatable implements Post, ViewCountable, Watchable,
 
 	private void touchedBy(User author) {
 		this.lastTouchedBy = author;
-		this.lastUpdatedAt = new DateTime();
+		this.lastUpdatedAt = LocalDateTime.now();
 	}
 
 	@Override

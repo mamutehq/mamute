@@ -7,12 +7,13 @@ import org.mamute.model.News;
 import org.mamute.model.NewsInformation;
 import org.mamute.model.SanitizedText;
 import org.mamute.model.User;
+import org.mamute.providers.SystemUtcClockProvider;
 
 public class NewsBuilder extends ModelBuilder {
 	private String title = "default news";
 	private MarkedText description = MarkedText.notMarked("default news default news default news");
 	private String comment = "blablaba";
-	private User author = new User(SanitizedText.fromTrustedText("author"), "newsauthor@gmail.com");
+	private User author = new User(new SystemUtcClockProvider(), SanitizedText.fromTrustedText("author"), "newsauthor@gmail.com");
 	private LoggedUser loggedUser = null;
 	private Long id = null;
 	

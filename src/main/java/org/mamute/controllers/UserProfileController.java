@@ -1,28 +1,45 @@
 package org.mamute.controllers;
 
 import br.com.caelum.brutauth.auth.annotations.CustomBrutauthRules;
-import br.com.caelum.vraptor.*;
+import br.com.caelum.vraptor.Controller;
+import br.com.caelum.vraptor.Delete;
+import br.com.caelum.vraptor.Get;
+import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.environment.Environment;
 import br.com.caelum.vraptor.hibernate.extra.Load;
 import br.com.caelum.vraptor.observer.upload.UploadedFile;
 import br.com.caelum.vraptor.routes.annotation.Routed;
-
 import org.joda.time.DateTime;
 import org.mamute.brutauth.auth.rules.LoggedRule;
 import org.mamute.brutauth.auth.rules.ModeratorOnlyRule;
-import org.mamute.dao.*;
+import org.mamute.dao.AnswerDAO;
+import org.mamute.dao.AttachmentDao;
+import org.mamute.dao.CommentDAO;
+import org.mamute.dao.FlaggableDAO;
+import org.mamute.dao.PaginatableDAO;
+import org.mamute.dao.QuestionDAO;
+import org.mamute.dao.ReputationEventDAO;
+import org.mamute.dao.TagDAO;
+import org.mamute.dao.UserDAO;
+import org.mamute.dao.WatcherDAO;
 import org.mamute.dao.WithUserPaginatedDAO.OrderType;
 import org.mamute.dto.UserPersonalInfo;
 import org.mamute.factory.MessageFactory;
 import org.mamute.filesystem.AttachmentsFileStorage;
 import org.mamute.filesystem.ImageStore;
 import org.mamute.infra.ClientIp;
-import org.mamute.model.*;
+import org.mamute.model.Attachment;
+import org.mamute.model.LoggedUser;
+import org.mamute.model.MarkedText;
+import org.mamute.model.SanitizedText;
+import org.mamute.model.User;
 import org.mamute.validators.UserPersonalInfoValidator;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import static br.com.caelum.vraptor.view.Results.http;
 import static br.com.caelum.vraptor.view.Results.json;
@@ -121,9 +138,9 @@ public class UserProfileController extends BaseController{
 	}
 	
 	@Post
-	public void editProfile(@Load User user, SanitizedText name, String email, 
-			SanitizedText website, SanitizedText location, DateTime birthDate, MarkedText description,
-			boolean isSubscribed, boolean receiveAllUpdates) {
+	public void editProfile(@Load User user, SanitizedText name, String email,
+							SanitizedText website, SanitizedText location, LocalDateTime birthDate, MarkedText description,
+							boolean isSubscribed, boolean receiveAllUpdates) {
 		if (!user.getId().equals(currentUser.getCurrent().getId())){
 			result.redirectTo(ListController.class).home(null);
 			return;
