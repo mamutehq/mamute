@@ -4,7 +4,13 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <include file="db/changelog/M000FirstMigration.xml"/>
-    <include file="db/changelog/M001CreateTableNewsletterSentLog.xml"/>
+    <include file="db/changelog/M000FirstMigration.xml" />
+    <include file="db/changelog/M001CreateTableNewsletterSentLog.xml" />
+    <include file="db/changelog/M002CreateTableTagPage.xml" />
+    <include file="db/changelog/M003AddIndexesToTagPage.xml" />
+    <include file="db/changelog/M004CreateTableLastUpvote.xml" />
+    <include file="db/changelog/M005UpdateInvisibleQuestion.xml" />
+    <include file="db/changelog/M006CreateTableQuestionInteraction.xml" />
+
 </databaseChangeLog>
 
