@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <databaseChangeLog
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-	<changeSet id="6" author="vicenthy">
-		<createTable tableName="Question_Interactions">
-			<column name="Question_id" type="bigint">
-				<constraints nullable="false" primaryKey="true"/>
-			</column>
-			<column name="userInteractions_id" type="bigint">
-				<constraints nullable="false" primaryKey="true" />
-			</column>
-		</createTable>
-		
-		<addForeignKeyConstraint constraintName="FK_nydo4x8ey7gnhhwg1gqmikwo6" 
-								 referencedTableName="Users" 
-								 baseColumnNames="userInteractions_id" 
-								 baseTableName="Question_Interactions" 
-								 referencedColumnNames="id"/>
+    <changeSet id="6" author="vicenthy">
+        <createTable tableName="Question_Interactions">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="userInteractions_id" type="bigint">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+        </createTable>
 
-		<addForeignKeyConstraint constraintName="FK_plnjd89r1mncrtf1vfj65pspt" 
-								referencedTableName="Question" 
-								baseColumnNames="Question_id" 
-								baseTableName="Question_Interactions" 
-								referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="FK_nydo4x8ey7gnhhwg1gqmikwo6"
+                                 referencedTableName="Users"
+                                 baseColumnNames="userInteractions_id"
+                                 baseTableName="Question_Interactions"
+                                 referencedColumnNames="id"/>
 
+        <addForeignKeyConstraint constraintName="FK_plnjd89r1mncrtf1vfj65pspt"
+                                 referencedTableName="Question"
+                                 baseColumnNames="Question_id"
+                                 baseTableName="Question_Interactions"
+                                 referencedColumnNames="id"/>
 
-		<rollback>
-			<dropTable tableName="Question_Interactions"/>
-		</rollback>
-		
-		
-	</changeSet>
+        <rollback>
+            <dropTable tableName="Question_Interactions"/>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
