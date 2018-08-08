@@ -19,13 +19,15 @@ import org.mamute.model.watch.Watcher;
 import org.mamute.providers.ClockProvider;
 import org.mamute.providers.SystemUtcClockProvider;
 
-import javax.enterprise.inject.Vetoed;
 import javax.persistence.Cacheable;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -55,15 +57,15 @@ import static org.mamute.validators.UserPersonalInfoValidator.WEBSITE_MIN_LENGTH
 @Table(name="Users")
 @SQLDelete(sql = "update Users set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-//@Entity
-@Vetoed
+@Entity
 public class User implements Identifiable {
+	@Transient
 	private final ClockProvider clockProvider;
 
 	private final LocalDateTime createdAt;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotEmpty(message = NAME_REQUIRED)
@@ -113,7 +115,7 @@ public class User implements Identifiable {
 	
 	@OneToMany(mappedBy = "watcher")
 	private final List<Watcher> watches = new ArrayList<>();
-	
+
 	private LocalDateTime lastUpvote;
 
 	@ManyToOne

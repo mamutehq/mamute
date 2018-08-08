@@ -297,4 +297,47 @@
                 referencedTableName="Users"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.LoginMethod" author="cstroe">
+        <createTable tableName="LoginMethod">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="serviceEmail" type="varchar(100)"/>
+            <column name="token" type="varchar(255)"/>
+            <column name="type" type="varchar(255)"/>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="FK_l0vhdtw8ymw1rrxq9usrqjh4x"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_l0vhdtw8ymw1rrxq9usrqjh4x"
+                baseTableName="LoginMethod"
+                baseColumnNames="user_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Watchers" author="cstroe">
+        <createTable tableName="Watcher">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="watcher_id" type="bigint">
+                <constraints foreignKeyName="FK_hobtys3mefri57vry8w6o8xyq"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_hobtys3mefri57vry8w6o8xyq"
+                baseTableName="Watcher"
+                baseColumnNames="watcher_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>

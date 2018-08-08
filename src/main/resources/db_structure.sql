@@ -146,25 +146,6 @@ CREATE TABLE `Flag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `LoginMethod`
---
-
-DROP TABLE IF EXISTS `LoginMethod`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `LoginMethod` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `serviceEmail` varchar(100) DEFAULT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_l0vhdtw8ymw1rrxq9usrqjh4x` (`user_id`),
-  CONSTRAINT `FK_l0vhdtw8ymw1rrxq9usrqjh4x` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `News`
 --
 
@@ -448,24 +429,6 @@ CREATE TABLE `Vote` (
   KEY `FK_6nch3y92lphrbsh0o5c7o0jov` (`author_id`),
   CONSTRAINT `FK_6nch3y92lphrbsh0o5c7o0jov` FOREIGN KEY (`author_id`) REFERENCES `Users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Watcher`
---
-
-DROP TABLE IF EXISTS `Watcher`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Watcher` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL,
-  `createdAt` datetime DEFAULT NULL,
-  `watcher_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_hobtys3mefri57vry8w6o8xyq` (`watcher_id`),
-  CONSTRAINT `FK_hobtys3mefri57vry8w6o8xyq` FOREIGN KEY (`watcher_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
