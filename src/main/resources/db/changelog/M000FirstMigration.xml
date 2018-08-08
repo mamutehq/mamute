@@ -4,5 +4,297 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <!-- This migration is intentionally empty -->
+    <!-- This migration is based off db_structure.sql -->
+
+    <changeSet id="0.Users" author="cstroe">
+        <createTable tableName="Users">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="about" type="varchar(500)"/>
+            <column name="birthDate" type="datetime"/>
+            <column name="confirmedEmail" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="email" type="varchar(100)"/>
+            <column name="forgotPasswordToken" type="varchar(255)"/>
+            <column name="isBanned" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isSubscribed" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="karma" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="varchar(100)"/>
+            <column name="markedAbout" type="varchar(600)"/>
+            <column name="moderator" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+            <column name="nameLastTouchedAt" type="datetime"/>
+            <column name="photoUri" type="varchar(255)"/>
+            <column name="realName" type="varchar(100)"/>
+            <column name="sluggedName" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="website" type="varchar(200)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="0.Question" author="cstroe">
+        <createTable tableName="Question">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="answerCount" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="lastUpdatedAt" type="datetime"/>
+            <column name="invisible" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="views" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voteCount" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints foreignKeyName="FK_a3dib35x299yvhfk7pau0kw5w"/>
+            </column>
+            <column name="information_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_i2xt9jcwfauudnswun94neqyg"/>
+            </column>
+            <column name="lastTouchedBy_id" type="bigint">
+                <constraints foreignKeyName="FK_9d3cyy648wfruj9t7556wqgjr"/>
+            </column>
+            <column name="solution_id" type="bigint">
+                <constraints foreignKeyName="FK_liw3djybv5je7ra806bsipg68"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="0.QuestionInformation" author="cstroe">
+        <createTable tableName="QuestionInformation">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comment" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" type="varchar(255)"/>
+            <column name="markedDescription" type="text"/>
+            <column name="moderatedAt" type="datetime"/>
+            <column name="sluggedTitle" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)"/>
+            <column name="title" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_9nfk2kchvyn69e7gdh798gf"/>
+            </column>
+            <column name="moderatedBy_id" type="bigint">
+                <constraints foreignKeyName="FK_t1oox0xh74vlikcvhxd5k2kq1"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints foreignKeyName="FK_pl1drgbxhfd4hbmd3smwa3svl"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="0.Answer" author="cstroe">
+        <createTable tableName="Answer">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="lastUpdatedAt" type="datetime"/>
+            <column name="invisible" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voteCount" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints foreignKeyName="FK_3q5s4b88xp78n3c49dtxfs97e"/>
+            </column>
+            <column name="information_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_dshhxt02iww0fxkl2li8l3ao2"/>
+            </column>
+            <column name="lastTouchedBy_id" type="bigint">
+                <constraints foreignKeyName="FK_drifk8pp2s7wsh57nvwna9m1g"/>
+            </column>
+            <column name="question_id" type="bigint">
+                <constraints foreignKeyName="FK_10g8xii7lw9kq0kcsobgmtw72"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="0.AnswerInformation" author="cstroe">
+        <createTable tableName="AnswerInformation">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comment" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" type="varchar(255)"/>
+            <column name="markedDescription" type="text"/>
+            <column name="moderatedAt" type="datetime"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="answer_id" type="bigint">
+                <constraints foreignKeyName="FK_lecgqmqj00d06wb8nwaq60rpr"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_237rcoro0n05xyxjga1ip7pd8"/>
+            </column>
+            <column name="moderatedBy_id" type="bigint">
+                <constraints foreignKeyName="FK_dbuximcggdn5k2j9svvpwtxrm"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="0.Constraints" author="cstroe">
+        <addForeignKeyConstraint
+                baseTableName="Question"
+                baseColumnNames="lastTouchedBy_id"
+                constraintName="FK_9d3cyy648wfruj9t7556wqgjr"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Question"
+                baseColumnNames="author_id"
+                constraintName="FK_a3dib35x299yvhfk7pau0kw5w"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Question"
+                baseColumnNames="information_id"
+                constraintName="FK_i2xt9jcwfauudnswun94neqyg"
+                referencedTableName="QuestionInformation"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Question"
+                baseColumnNames="solution_id"
+                constraintName="FK_liw3djybv5je7ra806bsipg68"
+                referencedTableName="Answer"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="QuestionInformation"
+                baseColumnNames="author_id"
+                constraintName="FK_9nfk2kchvyn69e7gdh798gf"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="QuestionInformation"
+                baseColumnNames="question_id"
+                constraintName="FK_pl1drgbxhfd4hbmd3smwa3svl"
+                referencedTableName="Question"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="QuestionInformation"
+                baseColumnNames="moderatedBy_id"
+                constraintName="FK_t1oox0xh74vlikcvhxd5k2kq1"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Answer"
+                baseColumnNames="question_id"
+                constraintName="FK_10g8xii7lw9kq0kcsobgmtw72"
+                referencedTableName="Question"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Answer"
+                baseColumnNames="author_id"
+                constraintName="FK_3q5s4b88xp78n3c49dtxfs97e"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Answer"
+                baseColumnNames="lastTouchedBy_id"
+                constraintName="FK_drifk8pp2s7wsh57nvwna9m1g"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Answer"
+                baseColumnNames="information_id"
+                constraintName="FK_dshhxt02iww0fxkl2li8l3ao2"
+                referencedTableName="AnswerInformation"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="AnswerInformation"
+                baseColumnNames="author_id"
+                constraintName="FK_237rcoro0n05xyxjga1ip7pd8"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="AnswerInformation"
+                baseColumnNames="moderatedBy_id"
+                constraintName="FK_dbuximcggdn5k2j9svvpwtxrm"
+                referencedTableName="Users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="AnswerInformation"
+                baseColumnNames="answer_id"
+                constraintName="FK_lecgqmqj00d06wb8nwaq60rpr"
+                referencedTableName="Answer"
+                referencedColumnNames="id"/>
+
+    </changeSet>
+
+    <changeSet id="0.Tag" author="cstroe">
+        <createTable tableName="Tag">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" uniqueConstraintName="UK_24642shpebunaq3ggshotv9hk"/>
+            </column>
+            <column name="usageCount" type="bigint"/>
+            <column name="author_id" type="bigint">
+                <constraints foreignKeyName="FK_9a9b8a968n0ejs6yikpgo563r"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Tag"
+                columnNames="name"
+                constraintName="UK_24642shpebunaq3ggshotv9hk"/>
+
+        <addForeignKeyConstraint
+                baseTableName="Tag"
+                baseColumnNames="author_id"
+                constraintName="FK_9a9b8a968n0ejs6yikpgo563r"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>

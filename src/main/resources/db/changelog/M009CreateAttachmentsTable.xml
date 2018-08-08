@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="9" author="cstroe">
+        <createTable tableName="Attachment">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="ip" type="varchar(255)"/>
+            <column name="mime" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="owner_id" type="bigint"/>
+        </createTable>
+
+        <createTable tableName="Question_Attachment">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attachments_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="Attachment" indexName="FK_enrbut32jkvqv2ttop49nkcb4">
+            <column name="owner_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                baseTableName="Attachment"
+                baseColumnNames="owner_id"
+                constraintName="FK_enrbut32jkvqv2ttop49nkcb4"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+
+        <addUniqueConstraint
+                tableName="Question_Attachment"
+                columnNames="attachments_id"
+                constraintName="UK_7y9vgsl3nbmms94toj87g69lu" />
+
+        <createIndex tableName="Question_Attachment" indexName="FK_7y9vgsl3nbmms94toj87g69lu">
+            <column name="attachments_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                baseTableName="Question_Attachment"
+                baseColumnNames="attachments_id"
+                constraintName="FK_7y9vgsl3nbmms94toj87g69lu"
+                referencedTableName="Attachment"
+                referencedColumnNames="id" />
+
+        <createIndex tableName="Question_Attachment" indexName="FK_ib0aqkj0a4a4l9ku9oai3lw9w">
+            <column name="Question_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                baseTableName="Question_Attachment"
+                baseColumnNames="Question_id"
+                constraintName="FK_ib0aqkj0a4a4l9ku9oai3lw9w"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <rollback>
+            <dropTable tableName="Question_Interactions"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
