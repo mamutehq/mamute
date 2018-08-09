@@ -87,17 +87,17 @@
                 <constraints nullable="false"/>
             </column>
             <column name="createdAt" type="datetime"/>
-            <column name="description" type="text">
+            <column name="description" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="varchar(255)"/>
-            <column name="markedDescription" type="text"/>
+            <column name="markedDescription" type="longtext"/>
             <column name="moderatedAt" type="datetime"/>
             <column name="sluggedTitle" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="varchar(255)"/>
-            <column name="title" type="text">
+            <column name="title" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="author_id" type="bigint">
