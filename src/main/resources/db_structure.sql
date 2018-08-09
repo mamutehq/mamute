@@ -16,24 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `News_Votes`
---
-
-DROP TABLE IF EXISTS `News_Votes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `News_Votes` (
-  `News_id` bigint(20) NOT NULL,
-  `votes_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_mecjpg8cg90p1ry4sg4rckb09` (`votes_id`),
-  KEY `FK_mecjpg8cg90p1ry4sg4rckb09` (`votes_id`),
-  KEY `FK_rqhl3hox4wntf7oc9y4af5cgv` (`News_id`),
-  CONSTRAINT `FK_mecjpg8cg90p1ry4sg4rckb09` FOREIGN KEY (`votes_id`) REFERENCES `Vote` (`id`),
-  CONSTRAINT `FK_rqhl3hox4wntf7oc9y4af5cgv` FOREIGN KEY (`News_id`) REFERENCES `News` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `News_Watchers`
 --
 

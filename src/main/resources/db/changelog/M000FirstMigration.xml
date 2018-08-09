@@ -906,4 +906,34 @@
                 referencedTableName="News"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.News_Votes" author="cstroe">
+        <createTable tableName="News_Votes">
+            <column name="News_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_rqhl3hox4wntf7oc9y4af5cgv"/>
+            </column>
+            <column name="votes_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_mecjpg8cg90p1ry4sg4rckb09"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="News_Votes"
+                columnNames="votes_id"
+                constraintName="UK_mecjpg8cg90p1ry4sg4rckb09"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_mecjpg8cg90p1ry4sg4rckb09"
+                baseTableName="News_Votes"
+                baseColumnNames="votes_id"
+                referencedTableName="Vote"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_rqhl3hox4wntf7oc9y4af5cgv"
+                baseTableName="News_Votes"
+                baseColumnNames="News_id"
+                referencedTableName="News"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
