@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="12" author="cstroe">
+        <addColumn tableName="Users">
+            <column name="avatarImage_id" type="bigint"/>
+        </addColumn>
+
+        <createIndex tableName="Users" indexName="FK_gvmhe2prumyg00npgdawfu7la">
+            <column name="avatarImage_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                constraintName="FK_gvmhe2prumyg00npgdawfu7la"
+                baseTableName="Users"
+                baseColumnNames="avatarImage_id"
+                referencedTableName="Attachment"
+                referencedColumnNames="id" />
+    </changeSet>
+</databaseChangeLog>

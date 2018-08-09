@@ -5,12 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="3" author="vicenthy">
-        <addForeignKeyConstraint
-                constraintName="FK_jcmikqbikgwump3qo3fnqbext"
-                baseTableName="TagPage"
-                baseColumnNames="tag_id"
-                referencedTableName="Tag"
-                referencedColumnNames="id" />
+    <changeSet id="8" author="cstroe">
+        <dropColumn tableName="Users" columnName="realName"/>
     </changeSet>
 </databaseChangeLog>
