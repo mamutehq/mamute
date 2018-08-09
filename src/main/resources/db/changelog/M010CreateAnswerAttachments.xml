@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="10" author="cstroe">
+        <createTable tableName="Answer_Attachment">
+            <column name="Answer_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attachments_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="Answer_Attachment" columnNames="Answer_id,attachments_id"/>
+
+        <addUniqueConstraint tableName="Answer_Attachment" columnNames="attachments_id" constraintName="UK_m8lisjgd2lw0uy50bxngkvi5o"/>
+
+        <createIndex tableName="Answer_Attachment" indexName="FK_m8lisjgd2lw0uy50bxngkvi5o">
+            <column name="attachments_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                constraintName="FK_m8lisjgd2lw0uy50bxngkvi5o"
+                baseTableName="Answer_Attachment"
+                baseColumnNames="attachments_id"
+                referencedTableName="Attachment"
+                referencedColumnNames="id" />
+        
+        <createIndex tableName="Answer_Attachment" indexName="FK_2r3h5i8jc5w2kqqhnhhlvenht">
+            <column name="Answer_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint
+                constraintName="FK_2r3h5i8jc5w2kqqhnhhlvenht"
+                baseTableName="Answer_Attachment"
+                baseColumnNames="Answer_id"
+                referencedTableName="Answer"
+                referencedColumnNames="id" />
+    </changeSet>
+</databaseChangeLog>

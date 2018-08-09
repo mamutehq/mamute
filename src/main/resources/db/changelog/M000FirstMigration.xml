@@ -87,17 +87,17 @@
                 <constraints nullable="false"/>
             </column>
             <column name="createdAt" type="datetime"/>
-            <column name="description" type="text">
+            <column name="description" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="varchar(255)"/>
-            <column name="markedDescription" type="text"/>
+            <column name="markedDescription" type="longtext"/>
             <column name="moderatedAt" type="datetime"/>
             <column name="sluggedTitle" type="text">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="varchar(255)"/>
-            <column name="title" type="text">
+            <column name="title" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="author_id" type="bigint">
@@ -149,11 +149,11 @@
                 <constraints nullable="false"/>
             </column>
             <column name="createdAt" type="datetime"/>
-            <column name="description" type="text">
+            <column name="description" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="varchar(255)"/>
-            <column name="markedDescription" type="text"/>
+            <column name="markedDescription" type="longtext"/>
             <column name="moderatedAt" type="datetime"/>
             <column name="status" type="varchar(255)"/>
             <column name="answer_id" type="bigint">
@@ -338,6 +338,405 @@
                 baseTableName="Watcher"
                 baseColumnNames="watcher_id"
                 referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Vote" author="cstroe">
+        <createTable tableName="Vote">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="lastUpdatedAt" type="datetime"/>
+            <column name="type" type="varchar(255)"/>
+            <column name="author_id" type="bigint">
+                <constraints foreignKeyName="FK_6nch3y92lphrbsh0o5c7o0jov"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_6nch3y92lphrbsh0o5c7o0jov"
+                baseTableName="Vote"
+                baseColumnNames="author_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Flag" author="cstroe">
+        <createTable tableName="Flag">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="reason" type="text"/>
+            <column name="type" type="varchar(255)"/>
+            <column name="author_id" type="bigint">
+                <constraints foreignKeyName="FK_lumgu8dnorkynxw1l039ovm8q"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_lumgu8dnorkynxw1l039ovm8q"
+                baseTableName="Flag"
+                baseColumnNames="author_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.ReputationEvent" author="cstroe">
+        <createTable tableName="ReputationEvent">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="context_type" type="varchar(255)"/>
+            <column name="context_id" type="bigint"/>
+            <column name="date" type="datetime"/>
+            <column name="karmaReward" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)"/>
+            <column name="user_id" type="bigint">
+                <constraints foreignKeyName="FK_gbu6jo147pal18b3q3blpr0of"/>
+            </column>
+        </createTable>
+
+
+        <addForeignKeyConstraint
+                constraintName="FK_gbu6jo147pal18b3q3blpr0of"
+                baseTableName="ReputationEvent"
+                baseColumnNames="user_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Comment" author="cstroe">
+        <createTable tableName="Comment">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comment" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="htmlComment" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastUpdatedAt" type="datetime"/>
+            <column name="invisible" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voteCount" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_j94pith5sd971k29j6ysxuk7"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_j94pith5sd971k29j6ysxuk7"
+                baseTableName="Comment"
+                baseColumnNames="author_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Question_Comments" author="cstroe">
+        <createTable tableName="Question_Comments">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ugo8aiwohTeitouwa6auzaFa"/>
+            </column>
+            <column name="comments_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_haebahJaisi7soo3naichaxe"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Comments"
+                columnNames="comments_id"
+                constraintName="UK_Sahp4poo3ohreiz9iej6isai"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_ugo8aiwohTeitouwa6auzaFa"
+                baseTableName="Question_Comments"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_haebahJaisi7soo3naichaxe"
+                baseTableName="Question_Comments"
+                baseColumnNames="comments_id"
+                referencedTableName= "Comment"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Question_Flags" author="cstroe">
+        <createTable tableName="Question_Flags">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ftntexa7hxbaqo2i2yg4i0yr3"/>
+            </column>
+            <column name="flags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_a8brcb8bpevccipiyplquqqjv"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Flags"
+                columnNames="flags_id"
+                constraintName="UK_a8brcb8bpevccipiyplquqqjv"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_ftntexa7hxbaqo2i2yg4i0yr3"
+                baseTableName="Question_Flags"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_a8brcb8bpevccipiyplquqqjv"
+                baseTableName="Question_Flags"
+                baseColumnNames="flags_id"
+                referencedTableName= "Flag"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Question_Votes" author="cstroe">
+        <createTable tableName="Question_Votes">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_24u6uwfjr8s8pfk7oyfw8u4o4"/>
+            </column>
+            <column name="votes_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_p5sgssf0gw0br66mvu9cctlmq"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Votes"
+                columnNames="votes_id"
+                constraintName="UK_p5sgssf0gw0br66mvu9cctlmq"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_24u6uwfjr8s8pfk7oyfw8u4o4"
+                baseTableName="Question_Votes"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_p5sgssf0gw0br66mvu9cctlmq"
+                baseTableName="Question_Votes"
+                baseColumnNames="votes_id"
+                referencedTableName= "Vote"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Question_Watchers" author="cstroe">
+        <createTable tableName="Question_Watchers">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_pu72rhjonka0flev96adthdp0"/>
+            </column>
+            <column name="watchers_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_5twinfe7e6g09gaowkeah0498"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Watchers"
+                columnNames="watchers_id"
+                constraintName="UK_5twinfe7e6g09gaowkeah0498"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_pu72rhjonka0flev96adthdp0"
+                baseTableName="Question_Watchers"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_5twinfe7e6g09gaowkeah0498"
+                baseTableName="Question_Watchers"
+                baseColumnNames="watchers_id"
+                referencedTableName= "Watcher"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Answer_Flags" author="cstroe">
+        <createTable tableName="Answer_Flags">
+            <column name="Answer_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_6lq2gt46y9974igmh0jxo666"/>
+            </column>
+            <column name="flags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_9y4wu81bq6tdthk881o8twros"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="Answer_Flags" columnNames="flags_id" constraintName="UK_9y4wu81bq6tdthk881o8twros"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_6lq2gt46y9974igmh0jxo666"
+                baseTableName="Answer_Flags"
+                baseColumnNames="Answer_id"
+                referencedTableName="Answer"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_9y4wu81bq6tdthk881o8twros"
+                baseTableName="Answer_Flags"
+                baseColumnNames="flags_id"
+                referencedTableName="Flag"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Answer_Comments" author="cstroe">
+        <createTable tableName="Answer_Comments">
+            <column name="Answer_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_5c40gkw8p92hpuy5nnothdhw5"/>
+            </column>
+            <column name="comments_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_731ugn0r28nit0o73yytcw5oh"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Answer_Comments"
+                columnNames="comments_id"
+                constraintName="UK_731ugn0r28nit0o73yytcw5oh"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_5c40gkw8p92hpuy5nnothdhw5"
+                baseTableName="Answer_Comments"
+                baseColumnNames="Answer_id"
+                referencedTableName="Answer"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_731ugn0r28nit0o73yytcw5oh"
+                baseTableName="Answer_Comments"
+                baseColumnNames="comments_id"
+                referencedTableName="Comment"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Answer_Votes" author="cstroe">
+        <createTable tableName="Answer_Votes">
+            <column name="Answer_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_qpawvfihxtc49opw1q5le336l"/>
+            </column>
+            <column name="votes_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_5ya5d072g3h38tvb9brj7bs8o"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Answer_Votes"
+                columnNames="votes_id"
+                constraintName="UK_5ya5d072g3h38tvb9brj7bs8o" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_5ya5d072g3h38tvb9brj7bs8o"
+                baseTableName="Answer_Votes"
+                baseColumnNames="votes_id"
+                referencedTableName="Vote"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_qpawvfihxtc49opw1q5le336l"
+                baseTableName="Answer_Votes"
+                baseColumnNames="Answer_id"
+                referencedTableName="Answer"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0." author="cstroe">
+        <createTable tableName="Comment_Flags">
+            <column name="Comment_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_g45y0rm9o8k7uyoih84rrccra"/>
+            </column>
+            <column name="flags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_gkehc29f3h04bua96bjurv4vd"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Comment_Flags"
+                columnNames="flags_id"
+                constraintName="UK_gkehc29f3h04bua96bjurv4vd"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_g45y0rm9o8k7uyoih84rrccra"
+                baseTableName="Comment_Flags"
+                baseColumnNames="Comment_id"
+                referencedTableName="Comment"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_gkehc29f3h04bua96bjurv4vd"
+                baseTableName="Comment_Flags"
+                baseColumnNames="flags_id"
+                referencedTableName="Flag"
+                referencedColumnNames="id" />
+    </changeSet>
+
+    <changeSet id="0.Comment_Votes" author="cstroe">
+        <createTable tableName="Comment_Votes">
+            <column name="Comment_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_obxdv4j0ph2swt8r81dx8h0yw"/>
+            </column>
+            <column name="votes_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_dtgxtqffciorpdsjdshnkbpw6"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Comment_Votes"
+                columnNames="votes_id"
+                constraintName="UK_dtgxtqffciorpdsjdshnkbpw6"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_dtgxtqffciorpdsjdshnkbpw6"
+                baseTableName="Comment_Votes"
+                baseColumnNames="votes_id"
+                referencedTableName="Vote"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_obxdv4j0ph2swt8r81dx8h0yw"
+                baseTableName="Comment_Votes"
+                baseColumnNames="Comment_id"
+                referencedTableName="Comment"
+                referencedColumnNames="id" />
+    </changeSet>
+
+
+
+    <changeSet id="0.QuestionInformation_Tag" author="cstroe">
+        <createTable tableName="QuestionInformation_Tag">
+            <column name="QuestionInformation_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_7u4x47xa5gdhmt650curhu3kx"/>
+            </column>
+            <column name="tags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_nv1tmcost5jqejnlb6u0wrypo"/>
+            </column>
+            <column name="tag_order" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="QuestionInformation_Tag"
+                       columnNames="QuestionInformation_id,tag_order"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_7u4x47xa5gdhmt650curhu3kx"
+                baseTableName="QuestionInformation_Tag"
+                baseColumnNames="QuestionInformation_id"
+                referencedTableName="QuestionInformation"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_nv1tmcost5jqejnlb6u0wrypo"
+                baseTableName="QuestionInformation_Tag"
+                baseColumnNames="tags_id"
+                referencedTableName="Tag"
                 referencedColumnNames="id" />
     </changeSet>
 </databaseChangeLog>

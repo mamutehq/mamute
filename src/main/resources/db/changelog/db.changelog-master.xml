@@ -13,6 +13,8 @@
     <include file="db/changelog/M006CreateTableQuestionInteraction.xml" />
     <include file="db/changelog/M008RemoveColumnRealNameFromUser.xml" />
     <include file="db/changelog/M009CreateAttachmentsTable.xml" />
+    <include file="db/changelog/M010CreateAnswerAttachments.xml" />
+    <include file="db/changelog/M011AddDeleteColumns.xml" />
     <include file="db/changelog/M012AddUserAvatar.xml" />
     <include file="db/changelog/M013AddReceiveAllUpdatesToUser.xml" />
     <include file="db/changelog/M014AddUserDeleteColumn.xml" />

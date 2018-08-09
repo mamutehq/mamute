@@ -13,7 +13,9 @@ import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -31,10 +33,10 @@ import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="cache")
 @SQLDelete(sql = "update Answer set deleted = true, question_id=NULL where id = ?")
 @Where(clause = "deleted = 0")
-//@Entity
+@Entity
 public class Answer extends Moderatable implements Post, Notifiable {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private final LocalDateTime createdAt = LocalDateTime.now();
@@ -76,6 +78,11 @@ public class Answer extends Moderatable implements Post, Notifiable {
 	private final ModerationOptions moderationOptions = new ModerationOptions();
 
 	@OneToMany
+	@JoinTable(
+			name = "Answer_Attachment",
+			joinColumns = { @JoinColumn(name = "Answer_id") },
+			inverseJoinColumns = { @JoinColumn(name = "attachments_id") }
+	)
 	private Set<Attachment> attachments = new HashSet<>();
 
 	private boolean deleted;

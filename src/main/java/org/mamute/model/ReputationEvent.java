@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,12 +20,13 @@ import java.time.LocalDateTime;
 
 @SQLDelete(sql = "update ReputationEvent set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-//@Entity
+@Entity
 public class ReputationEvent {
 
 	public static final ReputationEvent IGNORED_EVENT = new ReputationEvent(EventType.IGNORED, null, null);
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
