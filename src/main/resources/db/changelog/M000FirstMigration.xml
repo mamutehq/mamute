@@ -791,4 +791,59 @@
                 referencedTableName="Users"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.NewsInformation" author="cstroe">
+        <createTable tableName="NewsInformation">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comment" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime" defaultValue="null"/>
+            <column name="description" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" type="varchar(255)" defaultValue="null"/>
+            <column name="markedDescription" type="longtext"/>
+            <column name="moderatedAt" type="datetime" defaultValue="null"/>
+            <column name="sluggedTitle" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)" defaultValue="null"/>
+            <column name="title" type="longtext">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_n3hxv49li2jcopaj6dio6b8b6"/>
+            </column>
+            <column name="moderatedBy_id" type="bigint" defaultValue="null">
+                <constraints foreignKeyName="FK_fppkwwg6svwefnnni9ygaefg2"/>
+            </column>
+            <column name="news_id" type="bigint" defaultValue="null">
+                <constraints foreignKeyName="FK_b942i5pshr99wwqdk03d98ofg"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_b942i5pshr99wwqdk03d98ofg"
+                baseTableName="NewsInformation"
+                baseColumnNames="news_id"
+                referencedTableName="News"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_fppkwwg6svwefnnni9ygaefg2"
+                baseTableName="NewsInformation"
+                baseColumnNames="moderatedBy_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_n3hxv49li2jcopaj6dio6b8b6"
+                baseTableName="NewsInformation"
+                baseColumnNames="author_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
