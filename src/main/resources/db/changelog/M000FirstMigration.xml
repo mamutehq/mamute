@@ -443,27 +443,27 @@
     <changeSet id="0.Question_Comments" author="cstroe">
         <createTable tableName="Question_Comments">
             <column name="Question_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="FK_ugo8aiwohTeitouwa6auzaFa"/>
+                <constraints nullable="false" foreignKeyName="FK_fm57yvrnidsyeuvls0he5c9pk"/>
             </column>
             <column name="comments_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="FK_haebahJaisi7soo3naichaxe"/>
+                <constraints nullable="false" foreignKeyName="FK_6jsfvsef241a3ldcck6pid4vi"/>
             </column>
         </createTable>
 
         <addUniqueConstraint
                 tableName="Question_Comments"
                 columnNames="comments_id"
-                constraintName="UK_Sahp4poo3ohreiz9iej6isai"/>
+                constraintName="UK_6jsfvsef241a3ldcck6pid4vi"/>
 
         <addForeignKeyConstraint
-                constraintName="FK_ugo8aiwohTeitouwa6auzaFa"
+                constraintName="FK_fm57yvrnidsyeuvls0he5c9pk"
                 baseTableName="Question_Comments"
                 baseColumnNames="Question_id"
                 referencedTableName="Question"
                 referencedColumnNames="id" />
 
         <addForeignKeyConstraint
-                constraintName="FK_haebahJaisi7soo3naichaxe"
+                constraintName="FK_6jsfvsef241a3ldcck6pid4vi"
                 baseTableName="Question_Comments"
                 baseColumnNames="comments_id"
                 referencedTableName= "Comment"
