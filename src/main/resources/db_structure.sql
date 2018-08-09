@@ -16,24 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `News_Watchers`
---
-
-DROP TABLE IF EXISTS `News_Watchers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `News_Watchers` (
-  `News_id` bigint(20) NOT NULL,
-  `watchers_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_m5koj8lugxy5pp42xk656vqln` (`watchers_id`),
-  KEY `FK_m5koj8lugxy5pp42xk656vqln` (`watchers_id`),
-  KEY `FK_bywcu6iha3jaici2oiljml8ho` (`News_id`),
-  CONSTRAINT `FK_bywcu6iha3jaici2oiljml8ho` FOREIGN KEY (`News_id`) REFERENCES `News` (`id`),
-  CONSTRAINT `FK_m5koj8lugxy5pp42xk656vqln` FOREIGN KEY (`watchers_id`) REFERENCES `Watcher` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `UserSession`
 --
 

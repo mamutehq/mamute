@@ -936,4 +936,34 @@
                 referencedTableName="News"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.News_Watchers" author="cstroe">
+        <createTable tableName="News_Watchers">
+            <column name="News_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_bywcu6iha3jaici2oiljml8ho"/>
+            </column>
+            <column name="watchers_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_m5koj8lugxy5pp42xk656vqln"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="News_Watchers"
+                columnNames="watchers_id"
+                constraintName="UK_m5koj8lugxy5pp42xk656vqln"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_m5koj8lugxy5pp42xk656vqln"
+                baseTableName="News_Watchers"
+                baseColumnNames="watchers_id"
+                referencedTableName="Watcher"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_bywcu6iha3jaici2oiljml8ho"
+                baseTableName="News_Watchers"
+                baseColumnNames="News_id"
+                referencedTableName="News"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
