@@ -739,4 +739,56 @@
                 referencedTableName="Tag"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.News" author="cstroe">
+        <createTable tableName="News">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="approved" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="createdAt" type="datetime"/>
+            <column name="lastUpdatedAt" type="datetime"/>
+            <column name="invisible" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="views" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voteCount" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint" defaultValue="null">
+                <constraints foreignKeyName="FK_e3k3kapw96m39ma7uus1r6f7m"/>
+            </column>
+            <column name="information_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_5qrrq79ar6t4p4vf4djvqf63i"/>
+            </column>
+            <column name="lastTouchedBy_id" type="bigint" defaultValue="null">
+                <constraints foreignKeyName="FK_glms254gw9a4kv5qh3ptijiqd"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_5qrrq79ar6t4p4vf4djvqf63i"
+                baseTableName="News"
+                baseColumnNames="information_id"
+                referencedTableName="NewsInformation"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_e3k3kapw96m39ma7uus1r6f7m"
+                baseTableName="News"
+                baseColumnNames="author_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_glms254gw9a4kv5qh3ptijiqd"
+                baseTableName="News"
+                baseColumnNames="lastTouchedBy_id"
+                referencedTableName="Users"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>

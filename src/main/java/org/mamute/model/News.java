@@ -25,7 +25,7 @@ import java.util.List;
 import static javax.persistence.FetchType.EAGER;
 import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
-//@Entity
+@Entity
 public class News extends Moderatable implements Post, ViewCountable, Watchable, RssContent, ReputationEventContext {
 	@Id
 	@GeneratedValue

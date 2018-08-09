@@ -16,34 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `News`
---
-
-DROP TABLE IF EXISTS `News`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `News` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `approved` tinyint(1) NOT NULL,
-  `createdAt` datetime DEFAULT NULL,
-  `lastUpdatedAt` datetime DEFAULT NULL,
-  `invisible` tinyint(1) NOT NULL,
-  `views` bigint(20) NOT NULL,
-  `voteCount` bigint(20) NOT NULL,
-  `author_id` bigint(20) DEFAULT NULL,
-  `information_id` bigint(20) NOT NULL,
-  `lastTouchedBy_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_e3k3kapw96m39ma7uus1r6f7m` (`author_id`),
-  KEY `FK_5qrrq79ar6t4p4vf4djvqf63i` (`information_id`),
-  KEY `FK_glms254gw9a4kv5qh3ptijiqd` (`lastTouchedBy_id`),
-  CONSTRAINT `FK_5qrrq79ar6t4p4vf4djvqf63i` FOREIGN KEY (`information_id`) REFERENCES `NewsInformation` (`id`),
-  CONSTRAINT `FK_e3k3kapw96m39ma7uus1r6f7m` FOREIGN KEY (`author_id`) REFERENCES `Users` (`id`),
-  CONSTRAINT `FK_glms254gw9a4kv5qh3ptijiqd` FOREIGN KEY (`lastTouchedBy_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `NewsInformation`
 --
 
