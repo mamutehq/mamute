@@ -876,4 +876,34 @@
                 referencedTableName="News"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.News_Flags" author="cstroe">
+        <createTable tableName="News_Flags">
+            <column name="News_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_fr0qqkoqj2rai6g9epq0iw4wu"/>
+            </column>
+            <column name="flags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_s0ugdfyknbgui197dcioqqovi"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="News_Flags"
+                columnNames="flags_id"
+                constraintName="UK_s0ugdfyknbgui197dcioqqovi"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_s0ugdfyknbgui197dcioqqovi"
+                baseTableName="News_Flags"
+                baseColumnNames="flags_id"
+                referencedTableName="Flag"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_fr0qqkoqj2rai6g9epq0iw4wu"
+                baseTableName="News_Flags"
+                baseColumnNames="News_id"
+                referencedTableName="News"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
