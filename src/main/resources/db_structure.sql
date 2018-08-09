@@ -184,24 +184,6 @@ CREATE TABLE `Question_Comments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `Question_Flags`
---
-
-DROP TABLE IF EXISTS `Question_Flags`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Question_Flags` (
-  `Question_id` bigint(20) NOT NULL,
-  `flags_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_a8brcb8bpevccipiyplquqqjv` (`flags_id`),
-  KEY `FK_a8brcb8bpevccipiyplquqqjv` (`flags_id`),
-  KEY `FK_ftntexa7hxbaqo2i2yg4i0yr3` (`Question_id`),
-  CONSTRAINT `FK_a8brcb8bpevccipiyplquqqjv` FOREIGN KEY (`flags_id`) REFERENCES `Flag` (`id`),
-  CONSTRAINT `FK_ftntexa7hxbaqo2i2yg4i0yr3` FOREIGN KEY (`Question_id`) REFERENCES `Question` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `Question_Votes`
 --
 

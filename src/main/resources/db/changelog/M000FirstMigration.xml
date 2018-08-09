@@ -470,6 +470,36 @@
                 referencedColumnNames="id" />
     </changeSet>
 
+    <changeSet id="0.Question_Flags" author="cstroe">
+        <createTable tableName="Question_Flags">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ftntexa7hxbaqo2i2yg4i0yr3"/>
+            </column>
+            <column name="flags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_a8brcb8bpevccipiyplquqqjv"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Flags"
+                columnNames="flags_id"
+                constraintName="UK_a8brcb8bpevccipiyplquqqjv"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_ftntexa7hxbaqo2i2yg4i0yr3"
+                baseTableName="Question_Flags"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_a8brcb8bpevccipiyplquqqjv"
+                baseTableName="Question_Flags"
+                baseColumnNames="flags_id"
+                referencedTableName= "Flag"
+                referencedColumnNames="id" />
+    </changeSet>
+
     <changeSet id="0.Answer_Flags" author="cstroe">
         <createTable tableName="Answer_Flags">
             <column name="Answer_id" type="bigint">
