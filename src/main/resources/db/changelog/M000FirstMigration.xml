@@ -530,6 +530,36 @@
                 referencedColumnNames="id" />
     </changeSet>
 
+    <changeSet id="0.Question_Watchers" author="cstroe">
+        <createTable tableName="Question_Watchers">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_pu72rhjonka0flev96adthdp0"/>
+            </column>
+            <column name="watchers_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_5twinfe7e6g09gaowkeah0498"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Watchers"
+                columnNames="watchers_id"
+                constraintName="UK_5twinfe7e6g09gaowkeah0498"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_pu72rhjonka0flev96adthdp0"
+                baseTableName="Question_Watchers"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_5twinfe7e6g09gaowkeah0498"
+                baseTableName="Question_Watchers"
+                baseColumnNames="watchers_id"
+                referencedTableName= "Watcher"
+                referencedColumnNames="id" />
+    </changeSet>
+
     <changeSet id="0.Answer_Flags" author="cstroe">
         <createTable tableName="Answer_Flags">
             <column name="Answer_id" type="bigint">

@@ -184,24 +184,6 @@ CREATE TABLE `Question_Comments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `Question_Watchers`
---
-
-DROP TABLE IF EXISTS `Question_Watchers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Question_Watchers` (
-  `Question_id` bigint(20) NOT NULL,
-  `watchers_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_5twinfe7e6g09gaowkeah0498` (`watchers_id`),
-  KEY `FK_5twinfe7e6g09gaowkeah0498` (`watchers_id`),
-  KEY `FK_pu72rhjonka0flev96adthdp0` (`Question_id`),
-  CONSTRAINT `FK_5twinfe7e6g09gaowkeah0498` FOREIGN KEY (`watchers_id`) REFERENCES `Watcher` (`id`),
-  CONSTRAINT `FK_pu72rhjonka0flev96adthdp0` FOREIGN KEY (`Question_id`) REFERENCES `Question` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `UserSession`
 --
 
