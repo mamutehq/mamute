@@ -16,24 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `News_Comments`
---
-
-DROP TABLE IF EXISTS `News_Comments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `News_Comments` (
-  `News_id` bigint(20) NOT NULL,
-  `comments_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_5rrh2dvs1cy19pliwyvb8w8u7` (`comments_id`),
-  KEY `FK_5rrh2dvs1cy19pliwyvb8w8u7` (`comments_id`),
-  KEY `FK_dcofc609g7loixe8pcm3myemd` (`News_id`),
-  CONSTRAINT `FK_5rrh2dvs1cy19pliwyvb8w8u7` FOREIGN KEY (`comments_id`) REFERENCES `Comment` (`id`),
-  CONSTRAINT `FK_dcofc609g7loixe8pcm3myemd` FOREIGN KEY (`News_id`) REFERENCES `News` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `News_Flags`
 --
 

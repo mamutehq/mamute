@@ -846,4 +846,34 @@
                 referencedTableName="Users"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.News_Comments" author="cstroe">
+        <createTable tableName="News_Comments">
+            <column name="News_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_dcofc609g7loixe8pcm3myemd"/>
+            </column>
+            <column name="comments_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_5rrh2dvs1cy19pliwyvb8w8u7"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="News_Comments"
+                columnNames="comments_id"
+                constraintName="UK_5rrh2dvs1cy19pliwyvb8w8u7"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_5rrh2dvs1cy19pliwyvb8w8u7"
+                baseTableName="News_Comments"
+                baseColumnNames="comments_id"
+                referencedTableName="Comment"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_dcofc609g7loixe8pcm3myemd"
+                baseTableName="News_Comments"
+                baseColumnNames="News_id"
+                referencedTableName="News"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
