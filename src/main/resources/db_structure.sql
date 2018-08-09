@@ -147,25 +147,6 @@ CREATE TABLE `News_Watchers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `QuestionInformation_Tag`
---
-
-DROP TABLE IF EXISTS `QuestionInformation_Tag`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `QuestionInformation_Tag` (
-  `QuestionInformation_id` bigint(20) NOT NULL,
-  `tags_id` bigint(20) NOT NULL,
-  `tag_order` int(11) NOT NULL,
-  PRIMARY KEY (`QuestionInformation_id`,`tag_order`),
-  KEY `FK_nv1tmcost5jqejnlb6u0wrypo` (`tags_id`),
-  KEY `FK_7u4x47xa5gdhmt650curhu3kx` (`QuestionInformation_id`),
-  CONSTRAINT `FK_7u4x47xa5gdhmt650curhu3kx` FOREIGN KEY (`QuestionInformation_id`) REFERENCES `QuestionInformation` (`id`),
-  CONSTRAINT `FK_nv1tmcost5jqejnlb6u0wrypo` FOREIGN KEY (`tags_id`) REFERENCES `Tag` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `Question_Comments`
 --
 

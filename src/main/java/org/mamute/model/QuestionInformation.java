@@ -18,6 +18,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -76,6 +78,10 @@ public class QuestionInformation implements Information, Taggable {
 	@OrderColumn(name = "tag_order")
 	@ManyToMany
 	@OptionallyEmptyTags(message = "question.errors.tags.empty")
+	@JoinTable(name = "QuestionInformation_Tag",
+			joinColumns = @JoinColumn(name = "QuestionInformation_id"),
+			inverseJoinColumns = @JoinColumn(name = "tags_id")
+	)
 	private List<Tag> tags = new ArrayList<>();
 	
 	@Lob

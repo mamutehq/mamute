@@ -706,4 +706,37 @@
                 referencedTableName="Comment"
                 referencedColumnNames="id" />
     </changeSet>
+
+
+
+    <changeSet id="0.QuestionInformation_Tag" author="cstroe">
+        <createTable tableName="QuestionInformation_Tag">
+            <column name="QuestionInformation_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_7u4x47xa5gdhmt650curhu3kx"/>
+            </column>
+            <column name="tags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_nv1tmcost5jqejnlb6u0wrypo"/>
+            </column>
+            <column name="tag_order" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="QuestionInformation_Tag"
+                       columnNames="QuestionInformation_id,tag_order"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_7u4x47xa5gdhmt650curhu3kx"
+                baseTableName="QuestionInformation_Tag"
+                baseColumnNames="QuestionInformation_id"
+                referencedTableName="QuestionInformation"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_nv1tmcost5jqejnlb6u0wrypo"
+                baseTableName="QuestionInformation_Tag"
+                baseColumnNames="tags_id"
+                referencedTableName="Tag"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
