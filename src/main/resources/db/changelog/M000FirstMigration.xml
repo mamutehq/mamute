@@ -556,4 +556,34 @@
                 referencedTableName="Flag"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0.Comment_Votes" author="cstroe">
+        <createTable tableName="Comment_Votes">
+            <column name="Comment_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_obxdv4j0ph2swt8r81dx8h0yw"/>
+            </column>
+            <column name="votes_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_dtgxtqffciorpdsjdshnkbpw6"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Comment_Votes"
+                columnNames="votes_id"
+                constraintName="UK_dtgxtqffciorpdsjdshnkbpw6"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_dtgxtqffciorpdsjdshnkbpw6"
+                baseTableName="Comment_Votes"
+                baseColumnNames="votes_id"
+                referencedTableName="Vote"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_obxdv4j0ph2swt8r81dx8h0yw"
+                baseTableName="Comment_Votes"
+                baseColumnNames="Comment_id"
+                referencedTableName="Comment"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
