@@ -149,11 +149,11 @@
                 <constraints nullable="false"/>
             </column>
             <column name="createdAt" type="datetime"/>
-            <column name="description" type="text">
+            <column name="description" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="varchar(255)"/>
-            <column name="markedDescription" type="text"/>
+            <column name="markedDescription" type="longtext"/>
             <column name="moderatedAt" type="datetime"/>
             <column name="status" type="varchar(255)"/>
             <column name="answer_id" type="bigint">
@@ -413,11 +413,11 @@
             <column name="id" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="comment" type="text">
+            <column name="comment" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="createdAt" type="datetime"/>
-            <column name="htmlComment" type="text">
+            <column name="htmlComment" type="longtext">
                 <constraints nullable="false"/>
             </column>
             <column name="lastUpdatedAt" type="datetime"/>
