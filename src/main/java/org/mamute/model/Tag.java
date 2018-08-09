@@ -1,29 +1,26 @@
 package org.mamute.model;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.time.LocalDateTime;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-import org.mamute.providers.SessionFactoryCreator;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.time.LocalDateTime;
 
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_ONLY, region="cache")
-//@Entity
+@Entity
 public class Tag {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(unique = true, nullable = false)

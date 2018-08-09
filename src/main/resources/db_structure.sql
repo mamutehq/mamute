@@ -16,82 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Answer_Comments`
---
-
-DROP TABLE IF EXISTS `Answer_Comments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Answer_Comments` (
-  `Answer_id` bigint(20) NOT NULL,
-  `comments_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_731ugn0r28nit0o73yytcw5oh` (`comments_id`),
-  KEY `FK_731ugn0r28nit0o73yytcw5oh` (`comments_id`),
-  KEY `FK_5c40gkw8p92hpuy5nnothdhw5` (`Answer_id`),
-  CONSTRAINT `FK_5c40gkw8p92hpuy5nnothdhw5` FOREIGN KEY (`Answer_id`) REFERENCES `Answer` (`id`),
-  CONSTRAINT `FK_731ugn0r28nit0o73yytcw5oh` FOREIGN KEY (`comments_id`) REFERENCES `Comment` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Answer_Flags`
---
-
-DROP TABLE IF EXISTS `Answer_Flags`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Answer_Flags` (
-  `Answer_id` bigint(20) NOT NULL,
-  `flags_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_9y4wu81bq6tdthk881o8twros` (`flags_id`),
-  KEY `FK_9y4wu81bq6tdthk881o8twros` (`flags_id`),
-  KEY `FK_6lq2gt46y9974igmh0jxo666` (`Answer_id`),
-  CONSTRAINT `FK_6lq2gt46y9974igmh0jxo666` FOREIGN KEY (`Answer_id`) REFERENCES `Answer` (`id`),
-  CONSTRAINT `FK_9y4wu81bq6tdthk881o8twros` FOREIGN KEY (`flags_id`) REFERENCES `Flag` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Answer_Votes`
---
-
-DROP TABLE IF EXISTS `Answer_Votes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Answer_Votes` (
-  `Answer_id` bigint(20) NOT NULL,
-  `votes_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_5ya5d072g3h38tvb9brj7bs8o` (`votes_id`),
-  KEY `FK_5ya5d072g3h38tvb9brj7bs8o` (`votes_id`),
-  KEY `FK_qpawvfihxtc49opw1q5le336l` (`Answer_id`),
-  CONSTRAINT `FK_5ya5d072g3h38tvb9brj7bs8o` FOREIGN KEY (`votes_id`) REFERENCES `Vote` (`id`),
-  CONSTRAINT `FK_qpawvfihxtc49opw1q5le336l` FOREIGN KEY (`Answer_id`) REFERENCES `Answer` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Comment`
---
-
-DROP TABLE IF EXISTS `Comment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Comment` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `comment` longtext NOT NULL,
-  `createdAt` datetime DEFAULT NULL,
-  `htmlComment` longtext NOT NULL,
-  `lastUpdatedAt` datetime DEFAULT NULL,
-  `invisible` tinyint(1) NOT NULL,
-  `voteCount` bigint(20) NOT NULL,
-  `author_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_j94pith5sd971k29j6ysxuk7` (`author_id`),
-  CONSTRAINT `FK_j94pith5sd971k29j6ysxuk7` FOREIGN KEY (`author_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `Comment_Flags`
 --
 
@@ -125,24 +49,6 @@ CREATE TABLE `Comment_Votes` (
   CONSTRAINT `FK_dtgxtqffciorpdsjdshnkbpw6` FOREIGN KEY (`votes_id`) REFERENCES `Vote` (`id`),
   CONSTRAINT `FK_obxdv4j0ph2swt8r81dx8h0yw` FOREIGN KEY (`Comment_id`) REFERENCES `Comment` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Flag`
---
-
-DROP TABLE IF EXISTS `Flag`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Flag` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `reason` longtext,
-  `type` varchar(255) DEFAULT NULL,
-  `author_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_lumgu8dnorkynxw1l039ovm8q` (`author_id`),
-  CONSTRAINT `FK_lumgu8dnorkynxw1l039ovm8q` FOREIGN KEY (`author_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,31 +274,6 @@ CREATE TABLE `Question_Watchers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `ReputationEvent`
---
-
-DROP TABLE IF EXISTS `ReputationEvent`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ReputationEvent` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `context_type` varchar(255) DEFAULT NULL,
-  `context_id` bigint(20) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
-  `karmaReward` int(11) NOT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_gbu6jo147pal18b3q3blpr0of` (`user_id`),
-  CONSTRAINT `FK_gbu6jo147pal18b3q3blpr0of` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Tag`
---
-
---
 -- Table structure for table `UserSession`
 --
 
@@ -410,25 +291,6 @@ CREATE TABLE `UserSession` (
   KEY `FK_g1vcu7yf9bjb3kj31y3ghw0jg` (`user_id`),
   CONSTRAINT `FK_g1vcu7yf9bjb3kj31y3ghw0jg` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `Vote`
---
-
-DROP TABLE IF EXISTS `Vote`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Vote` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createdAt` datetime DEFAULT NULL,
-  `lastUpdatedAt` datetime DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `author_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_6nch3y92lphrbsh0o5c7o0jov` (`author_id`),
-  CONSTRAINT `FK_6nch3y92lphrbsh0o5c7o0jov` FOREIGN KEY (`author_id`) REFERENCES `Users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

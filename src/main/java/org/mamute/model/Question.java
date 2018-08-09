@@ -21,13 +21,16 @@ import org.mamute.providers.SystemUtcClockProvider;
 import javax.annotation.Nullable;
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,10 +48,10 @@ import static org.mamute.sanitizer.QuotesSanitizer.sanitize;
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE, region="cache")
 @SQLDelete(sql = "update Question set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-//@Entity
+@Entity
 public class Question extends Moderatable implements Post, Taggable, ViewCountable, Watchable, RssContent, ReputationEventContext {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = EAGER)
@@ -115,6 +118,7 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 
 	private boolean deleted;
 
+	@Transient
 	private final ClockProvider clockProvider;
     
 	/**

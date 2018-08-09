@@ -12,14 +12,17 @@ import org.mamute.validators.OptionallyEmptyTags;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ import static javax.persistence.FetchType.EAGER;
 import static org.mamute.infra.NormalizerBrutal.toSlug;
 	
 @Cacheable
-//@Entity
+@Entity
 public class QuestionInformation implements Information, Taggable {
 
 	private static final int COMMENT_MIN_LENGTH = 5;
@@ -38,7 +41,7 @@ public class QuestionInformation implements Information, Taggable {
 	public static final int TITLE_MIN_LENGTH = 15;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Lob
@@ -86,6 +89,7 @@ public class QuestionInformation implements Information, Taggable {
 	@ManyToOne
 	private Question question;
 
+	@Transient
 	private final ClockProvider clockProvider;
 	/**
 	 * @deprecated hibernate only

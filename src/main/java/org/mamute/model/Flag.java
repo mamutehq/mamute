@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -13,11 +14,11 @@ import org.hibernate.annotations.Where;
 
 @SQLDelete(sql = "update Flag set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-//@Entity
+@Entity
 public class Flag {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Type(type = "text")

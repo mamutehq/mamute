@@ -11,12 +11,15 @@ import org.mamute.providers.ClockProvider;
 import org.mamute.providers.SystemUtcClockProvider;
 
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +27,7 @@ import java.util.List;
 
 @SQLDelete(sql = "update Comment set deleted = true where id = ?")
 @Where(clause = "deleted = 0")
-//@Entity
+@Entity
 public class Comment implements Notifiable, Votable, Flaggable {
     
 	public static final int COMMENT_MIN_LENGTH = 15;
@@ -32,7 +35,8 @@ public class Comment implements Notifiable, Votable, Flaggable {
     public static final String ERROR_LENGTH = "comment.errors.length";
 	private static final int COMMENT_MAX_LENGTH = 600;
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Lob
@@ -67,6 +71,7 @@ public class Comment implements Notifiable, Votable, Flaggable {
 
 	private boolean deleted;
 
+	@Transient
 	private final ClockProvider clockProvider;
 
 	/**
