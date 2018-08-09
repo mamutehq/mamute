@@ -771,13 +771,6 @@
         </createTable>
 
         <addForeignKeyConstraint
-                constraintName="FK_5qrrq79ar6t4p4vf4djvqf63i"
-                baseTableName="News"
-                baseColumnNames="information_id"
-                referencedTableName="NewsInformation"
-                referencedColumnNames="id" />
-
-        <addForeignKeyConstraint
                 constraintName="FK_e3k3kapw96m39ma7uus1r6f7m"
                 baseTableName="News"
                 baseColumnNames="author_id"
@@ -824,6 +817,13 @@
                 <constraints foreignKeyName="FK_b942i5pshr99wwqdk03d98ofg"/>
             </column>
         </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="FK_5qrrq79ar6t4p4vf4djvqf63i"
+                baseTableName="News"
+                baseColumnNames="information_id"
+                referencedTableName="NewsInformation"
+                referencedColumnNames="id" />
 
         <addForeignKeyConstraint
                 constraintName="FK_b942i5pshr99wwqdk03d98ofg"

@@ -3,7 +3,6 @@ package org.mamute.model;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
 import org.mamute.model.interfaces.Moderatable;
 
 import javax.persistence.Cacheable;
@@ -12,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -22,7 +22,7 @@ import static javax.persistence.FetchType.EAGER;
 import static org.mamute.infra.NormalizerBrutal.toSlug;
 
 @Cacheable
-//@Entity
+@Entity
 public class NewsInformation implements Information{
 	private static final int COMMENT_MIN_LENGTH = 5;
 	public static final int DESCRIPTION_MIN_LENGTH = 30;
@@ -30,7 +30,7 @@ public class NewsInformation implements Information{
 	public static final int TITLE_MIN_LENGTH = 15;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Lob
