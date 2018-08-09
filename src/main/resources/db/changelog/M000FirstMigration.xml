@@ -500,6 +500,36 @@
                 referencedColumnNames="id" />
     </changeSet>
 
+    <changeSet id="0.Question_Votes" author="cstroe">
+        <createTable tableName="Question_Votes">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_24u6uwfjr8s8pfk7oyfw8u4o4"/>
+            </column>
+            <column name="votes_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_p5sgssf0gw0br66mvu9cctlmq"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Votes"
+                columnNames="votes_id"
+                constraintName="UK_p5sgssf0gw0br66mvu9cctlmq"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_24u6uwfjr8s8pfk7oyfw8u4o4"
+                baseTableName="Question_Votes"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_p5sgssf0gw0br66mvu9cctlmq"
+                baseTableName="Question_Votes"
+                baseColumnNames="votes_id"
+                referencedTableName= "Vote"
+                referencedColumnNames="id" />
+    </changeSet>
+
     <changeSet id="0.Answer_Flags" author="cstroe">
         <createTable tableName="Answer_Flags">
             <column name="Answer_id" type="bigint">
