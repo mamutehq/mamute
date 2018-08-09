@@ -439,7 +439,37 @@
                 referencedTableName="Users"
                 referencedColumnNames="id" />
     </changeSet>
-    
+
+    <changeSet id="0.Question_Comments" author="cstroe">
+        <createTable tableName="Question_Comments">
+            <column name="Question_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_ugo8aiwohTeitouwa6auzaFa"/>
+            </column>
+            <column name="comments_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_haebahJaisi7soo3naichaxe"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Question_Comments"
+                columnNames="comments_id"
+                constraintName="UK_Sahp4poo3ohreiz9iej6isai"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_ugo8aiwohTeitouwa6auzaFa"
+                baseTableName="Question_Comments"
+                baseColumnNames="Question_id"
+                referencedTableName="Question"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_haebahJaisi7soo3naichaxe"
+                baseTableName="Question_Comments"
+                baseColumnNames="comments_id"
+                referencedTableName= "Comment"
+                referencedColumnNames="id" />
+    </changeSet>
+
     <changeSet id="0.Answer_Flags" author="cstroe">
         <createTable tableName="Answer_Flags">
             <column name="Answer_id" type="bigint">

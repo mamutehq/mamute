@@ -112,6 +112,10 @@ public class Question extends Moderatable implements Post, Taggable, ViewCountab
 	private final Set<User> userInteractions = new HashSet<>();
 
 	@OneToMany
+	@JoinTable(name = "Question_Attachment",
+			joinColumns = @JoinColumn(name = "Question_id"),
+			inverseJoinColumns = @JoinColumn(name = "attachments_id")
+	)
 	private Set<Attachment> attachments = new HashSet<>();
 	
     public static final long SPAM_BOUNDARY = -5;
