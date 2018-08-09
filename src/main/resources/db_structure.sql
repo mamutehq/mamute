@@ -16,24 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Comment_Flags`
---
-
-DROP TABLE IF EXISTS `Comment_Flags`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Comment_Flags` (
-  `Comment_id` bigint(20) NOT NULL,
-  `flags_id` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_gkehc29f3h04bua96bjurv4vd` (`flags_id`),
-  KEY `FK_gkehc29f3h04bua96bjurv4vd` (`flags_id`),
-  KEY `FK_g45y0rm9o8k7uyoih84rrccra` (`Comment_id`),
-  CONSTRAINT `FK_g45y0rm9o8k7uyoih84rrccra` FOREIGN KEY (`Comment_id`) REFERENCES `Comment` (`id`),
-  CONSTRAINT `FK_gkehc29f3h04bua96bjurv4vd` FOREIGN KEY (`flags_id`) REFERENCES `Flag` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `Comment_Votes`
 --
 

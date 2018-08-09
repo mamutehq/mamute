@@ -526,4 +526,34 @@
                 referencedTableName="Answer"
                 referencedColumnNames="id" />
     </changeSet>
+
+    <changeSet id="0." author="cstroe">
+        <createTable tableName="Comment_Flags">
+            <column name="Comment_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_g45y0rm9o8k7uyoih84rrccra"/>
+            </column>
+            <column name="flags_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_gkehc29f3h04bua96bjurv4vd"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="Comment_Flags"
+                columnNames="flags_id"
+                constraintName="UK_gkehc29f3h04bua96bjurv4vd"/>
+
+        <addForeignKeyConstraint
+                constraintName="FK_g45y0rm9o8k7uyoih84rrccra"
+                baseTableName="Comment_Flags"
+                baseColumnNames="Comment_id"
+                referencedTableName="Comment"
+                referencedColumnNames="id" />
+
+        <addForeignKeyConstraint
+                constraintName="FK_gkehc29f3h04bua96bjurv4vd"
+                baseTableName="Comment_Flags"
+                baseColumnNames="flags_id"
+                referencedTableName="Flag"
+                referencedColumnNames="id" />
+    </changeSet>
 </databaseChangeLog>
