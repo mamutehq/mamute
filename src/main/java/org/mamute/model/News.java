@@ -13,6 +13,7 @@ import org.owasp.html.HtmlPolicyBuilder;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
@@ -25,10 +26,10 @@ import java.util.List;
 import static javax.persistence.FetchType.EAGER;
 import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
-//@Entity
+@Entity
 public class News extends Moderatable implements Post, ViewCountable, Watchable, RssContent, ReputationEventContext {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(optional = false, fetch = EAGER)
