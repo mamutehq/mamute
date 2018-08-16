@@ -80,6 +80,34 @@
 
     <div th:insert="~{header :: main}"></div>
 
+    <section class="about-banner">
+        <span class="minimize-banner icon-minus"></span>
+        <div class="about-content tell-me-more">
+            <h3 class="about-title title"
+                th:text="#{about.home_banner.welcome('Mamute')}">
+                Welcome to Mamute!
+            </h3>
+            <div class="about-text"
+                th:utext="#{about.home_banner.text('Mamute')}">
+                <p>
+                    <strong class="bold-it">Mamute</strong> is a
+                    website for asking and answering objective questions.
+                </p>
+            </div>
+            <a href="/about"
+                th:text="#{about.home_banner.text.link('Mamute')}">
+                Learn more about Mamute and its rules.
+            </a>
+        </div>
+        <div class="about-content how-it-works">
+            <ul>
+                <div th:include="~{howItWorksItem :: main ('icon-comment', #{about.home_banner.how_it_works.anyone_ask})}"></div>
+                <div th:include="~{howItWorksItem :: main ('icon-chat-empty', #{about.home_banner.how_it_works.anyone_answer})}"></div>
+                <div th:include="~{howItWorksItem :: main ('icon-users', #{about.home_banner.how_it_works.answers_raise_up})}"></div>
+            </ul>
+        </div>
+    </section>
+
     <p>Mamute!</p>
 
 </body>
