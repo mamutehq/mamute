@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="tabText (tabName, tabText)">
+    <a th:href="|/top/${tabName}|" th:text="${tabText}">tabText</a>
+</div>
+
+<div th:fragment="main">
+    <!--
+        <div class="subheader">
+            <div th:replace="~{mainTags :: main ('main-tags-header', 'main-tags-text')}"></div>
+
+            <h2 class="title page-title">title</h2>
+            <div th:replace="~{tabs :: main (~{::tabText ('tab1', 'tab1')})}"></div>
+            <div th:replace="~{tabs :: main (~{::tabText ('tab2', 'tab2')})}"></div>
+            <div th:replace="~{tabs :: main (~{::tabText ('tab2', 'tab2')})}"></div>
+        </div>
+    -->
+</div>
+
+</body>
+
+</html>

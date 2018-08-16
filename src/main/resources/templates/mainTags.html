@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="main (tagClass, tagClassLi)">
+    <ol th:class="|main-tags ${tagClass}|">
+        <!-- TODO: iterate through a list of tags -->
+        <li>
+            <a th:class="|main-tags-current ${tagClassLi} main-tags-sprite main-tags-java|"
+               th:href="|/tag/java|">java</a>
+        </li>
+    </ol>
+</div>
+
+</body>
+
+</html>
