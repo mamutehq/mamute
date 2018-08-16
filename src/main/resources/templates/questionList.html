@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+
+<!-- TODO: Pass tag along
+<div th:fragment="main (tag)">-->
+<div th:fragment="main">
+    <div th:replace="~{rssTagHeader :: main}"></div>
+
+    <!--<div th:replace="~{tagTabs :: main(${tag})"></div>-->
+
+    <!--<c:if test="${not empty questions}">
+        <ol class="question-list">
+            <c:forEach var="question" items="${questions}">
+                <tags:questionListItem question="${question}"/>
+            </c:forEach>
+        </ol>
+    </c:if>-->
+
+    <h2 class="title section-title"
+        th:text="#{questions.empty_list}">No questions found!</h2>
+
+    <!--<tags:pagination url="${currentUrl}" currentPage="${currentPage}" totalPages="${totalPages}" delta="2"/>-->
+</div>
+
+</body>
+
+</html>

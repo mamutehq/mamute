@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="main (tag)">
+    <span th:text="#{tag_list.title}"></span>
+    <a th:href="|/tag/${tag.name}|" th:text="${tag.name}">
+        tagName
+    </a>
+
+    <a th:href="|/tag/${tag.name}/sobre|"
+       th:text="#{about.link}">
+        ${t['about.link']}
+    </a>
+
+    <a th:href="|/ranking/${tag.uriName}|"
+       th:title="|#{users.ranking.tag.title} ${tag.name}|"
+       class="icon-award"
+       th:text="#{users.ranking.tag}">users.ranking.tag</a>
+</div>
+
+</body>
+
+</html>

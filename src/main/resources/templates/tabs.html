@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="main (body)">
+    <div class="subheader subheader-with-tab">
+        <h2 class="title page-title">
+            titleKey
+        </h2>
+        <h2 class="title page-title">
+            title
+        </h2>
+
+        <div class="tabs tabs-tag">
+            <th:block th:replace="${body}"/>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
