@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="main">
+    <form class="search-form" action="/search" method="get">
+        <input class="text-input" name="query" placeholder="search" type="text" />
+        <input type="submit" value="go" />
+    </form>
+</div>
+
+</body>
+
+</html>

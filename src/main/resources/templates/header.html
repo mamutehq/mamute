@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="main">
+    <header class="header clear">
+        <section class="first-header">
+            <div class="container header-container">
+                <a class="logo big-logo sprite"
+                   href="/">Mamute</a>
+                <nav class="nav main-nav piped-nav">
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a class="button current" href="/">
+                                Questions
+                            </a>
+                        </li>
+                        <li class="nav-item menu-unanswered">
+                            <a class="button unanswered" href="/unanswered">
+                                Unanswered
+                            </a>
+                        </li>
+                        <li class="nav-item menu-rank">
+                            <a class="button" href="/ranking">
+                                Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/news">
+                                News
+                            </a>
+                        </li>
+                        <li class="ask nav-item">
+                            <a class="button ask-a-question" href='/ask'>
+                                Ask Question
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+
+        <section class="second-header">
+            <div class="container">
+                <section class="user-area">
+                    <nav class="nav">
+                        <ul class="nav-items">
+                            <li class="nav-item user-item">
+                                <a class="login" href="/login">
+                                    Sign in
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="signup" href="/sign-up">
+                                    Sign up
+                                </a>
+                            </li>
+                            <!--<c:if test="${currentUser.loggedIn}">
+                                <li class="nav-item user-item">
+                                    <tags:userProfileLink user="${currentUser.current}" htmlClass="user-name">
+                                        <jsp:attribute name="before">
+                                            <img class="user-image menu-user-image" src="${currentUser.current.getSmallPhoto(env.get('gravatar.avatar.url'))}"/>
+                                        </jsp:attribute>
+                                        <jsp:attribute name="after">
+                                            <span class="reputation" >(${currentUser.current.karma})</span>
+                                        </jsp:attribute>
+                                    </tags:userProfileLink>
+                                </li>
+                                <c:if test="${currentUser.canModerate(environmentKarma)}">
+                                    <li class="nav-item">
+                                        <a href="${linkTo[HistoryController].history}">
+                                            ${t['moderation.link']} (${pendingForModeratorCount})
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${currentUser.isModerator()}">
+                                    <li class="nav-item">
+                                        <a href="${linkTo[ModeratorsNewsletterJob].execute}">
+                                            ${t['moderation.newsletterJob']}
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:if test="${!env.supports('feature.logout_concealed')}">
+                                    <li class="nav-item">
+                                        <a class="logout" href="${linkTo[AuthController].logout}">
+                                            ${t['auth.logout_link']}
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </c:if>-->
+                            <li class="nav-item">
+                                <a class="about" href="/about">
+                                    About
+                                </a>
+                            </li>
+                            <!--                        <c:if test="${currentUser.loggedIn && env.supports('feature.intro')}">
+                                                        <li class="nav-item">
+                                                            <a class="intro ${currentUser.current.karma <= 12 ? 'new-users' : ''}" href="#">${t['metas.intro.title']}</a>
+                                                        </li>
+                                                    </c:if>-->
+                            <li class="nav-item">
+                                <a href="#"	class="search-dropdown dropdown-trigger"
+                                   data-target-id="dropdown-search-form">search</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div th:include="~{searchForm :: main}"></div>
+                </section>
+            </div>
+            <div class="container dropdown-target" id="dropdown-search-form">
+                <div th:include="~{searchForm :: main}"></div>
+            </div>
+        </section>
+    </header>
+</div>
+
+</body>
+
+</html>
