@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="main (siteName)">
+    <footer class="footer dark-footer">
+        <div class="container">
+            <div class="footer-muted-message" th:text="${siteName}">Mamute</div>
+            <span class="footer-menu">
+                <a href="/unsolved" class="unsolved-link" th:text="#{menu.unsolved}">Unsolved</a>
+                <a href="/unanswered" th:text="#{menu.unanswered}">Unanswered</a>
+            </span>
+            <span class="footer-vraptor">
+                Powered by: <a href="http://www.vraptor.org/" th:text="#{footer.vraptor}">VRaptor</a>
+                and <a href="http://www.mamute.org/" th:text="#{footer.mamute}">Mamute</a>
+            </span>
+            <span class="footer-muted-message"></span>
+        </div>
+    </footer>
+</div>
+
+</body>
+
+</html>
