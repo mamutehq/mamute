@@ -16,7 +16,7 @@ public abstract class SolrTestCase extends CDITestCase {
 
 	static {
 		try {
-			solrServer = cdiBasedContainer.instanceFor(SolrServer.class);
+			//solrServer = cdiBasedContainer.instanceFor(SolrServer.class);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new RuntimeException(e);
@@ -25,12 +25,12 @@ public abstract class SolrTestCase extends CDITestCase {
 
 	@AfterClass
 	public static void cleanup() throws IOException {
-		solrServer.shutdown();
+		//solrServer.shutdown();
 	}
 
 	@After
 	public void afterSolr() throws IOException, SolrServerException {
-		solrServer.deleteByQuery("*:*");
+		//solrServer.deleteByQuery("*:*");
 	}
 
 }
