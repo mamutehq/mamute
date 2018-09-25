@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragment/head :: main('Mamute :: Login')}"></head>
+
+<body>
+    <header th:replace="~{header :: main}"></header>
+    <div class="container">
+        <h2 class="title page-title subheader">Login</h2>
+
+        <div class="login-or-signup">
+            <div class="login">
+                <div th:replace="~{fragment/loginForm :: main}"></div>
+            </div>
+            <div class="signup">
+                <div th:replace="~{fragment/signupForm :: main}"></div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragment/footer :: main('Mamute')}"></div>
+</body>
+
+</html>
