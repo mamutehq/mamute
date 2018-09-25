@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: main('Mamute :: Ask Question')}"></head>
+<body>
+    <header th:replace="~{header :: main}"></header>
+    <div class="container">
+        <div th:replace="~{fragment/questionForm :: main}"></div>
+    </div>
+    <div th:replace="~{fragment/footer :: main('Mamute')}"></div>
+</body>
+</html>
