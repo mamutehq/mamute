@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="main">
+    <form class="validated-form user-form" action="/login" method="POST">
+        <!--<tags:socialLoginMethods buttonContent="auth"/>-->
+
+        <!--<c:set var="extraClass" value="${env.supports('feature.auth.db')? 'email' : ''}" />-->
+        <!--<c:set var="type" value="${env.supports('feature.auth.db')? 'email' : 'text'}" />-->
+        <label for="email" th:text="#{signup.form.email.label}">Email</label>
+        <input type="email" name="email" class="required text-input email"
+               th:placeholder="#{signup.form.email.placeholder}"/>
+
+        <label for="password" th:text="#{signup.form.password.label}">Password</label>
+        <input name="password" type="password" class="required text-input"
+               th:placeholder="#{signup.form.password.placeholder}"/>
+
+        <!--<c:if test="${env.supports('feature.auth.db')}">
+            <a href="${linkTo[ForgotPasswordController].forgotPasswordForm}" class="forgot-password">
+                ${t['forgot_password.link.text']}
+            </a>
+        </c:if>-->
+
+        <!--<input name="redirectUrl" value="${redirectUrl}" type="hidden"/>-->
+        <input class="post-submit big-submit submit" type="submit" value="Login"/>
+
+    </form>
+</div>
+</body>
+</html>

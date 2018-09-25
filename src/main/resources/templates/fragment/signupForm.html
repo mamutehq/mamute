@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="main">
+    <form action="/sign-up" method="POST" class="validated-form user-form">
+        <!--<tags:socialLoginMethods buttonContent="signup"/>-->
+
+        <label for="name" th:text="#{signup.form.username.label}">Name</label>
+        <input id="name" type="text" name="name" class="required text-input" maxlength="100" value="${name}? '' : ${name}"/>
+
+        <label for="email" th:text="#{signup.form.email.label}">Email</label>
+        <input id="email" type="email" name="email" class="required text-input email" maxlength="100" value="${email}" />
+
+        <label for="password" th:text="#{signup.form.password.label}">Password</label>
+        <input id="password" name="password" type="password" minlength="6" maxlength="100" class="required text-input"/>
+
+        <label for="password-confirmation" th:text="#{signup.form.confirm_password.label}">Password confirmation</label>
+        <input id="password-confirmation" name="passwordConfirmation" type="password" minlength="6" maxlength="100" class="required text-input"/>
+
+        <span>
+            <span th:text="#{signup.form.usage_terms.text}">By signing up in this website you are also agreeing with </span>
+            <a href="${linkTo[SignupController].showUsageTerms}"
+               th:text="#{signup.form.usage_terms.link_content}">usage terms</a>
+        </span>
+
+        <input class="post-submit big-submit submit" type="submit" th:value="#{signup.form.submit.label}"/>
+
+    </form>
+</div>
+</body>
+</html>
