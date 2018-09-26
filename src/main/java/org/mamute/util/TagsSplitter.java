@@ -1,59 +1,30 @@
 package org.mamute.util;
 
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.Collections2.transform;
-import static java.util.Arrays.asList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
-import br.com.caelum.vraptor.environment.Property;
-
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-
+@Service
 public class TagsSplitter {
+    private final TagsSplitterProperties properties;
 
-	private final String regex;
+    @Autowired
+    public TagsSplitter(TagsSplitterProperties properties) {
+        this.properties = properties;
+    }
 
-	/**
-	 * @deprecated CDI eyes only
-	 */
-	public TagsSplitter() {
-		this("");
-	}
-	
-	@Inject
-	public TagsSplitter(@Property("tags.splitter.regex") String regex) {
-		this.regex = regex;
-	}
-	
-	public List<String> splitTags(String tagNames) {
-		List<String> tags = tagNames == null ? new ArrayList<String>() : asList(tagNames.split(regex));
-		Collection<String> trimmed = transform(tags, trim());
-		Collection<String> notEmpty = filter(trimmed, filterEmpty());
-		return new ArrayList<>(notEmpty);
-	}
+    public List<String> splitTags(String tagNames) {
+        if(tagNames == null) {
+            return new ArrayList<>();
+        }
 
-	private Predicate<String> filterEmpty() {
-		return new Predicate<String>() {
-			@Override
-			public boolean apply(String input) {
-				return !input.isEmpty();
-			}
-		};
-	}
-
-	private Function<String, String> trim() {
-		return new Function<String, String>() {
-			@Override
-			public String apply(String input) {
-				return input.trim();
-			}
-		};
-	}
-	
+        return Arrays.stream(tagNames.split(properties.getRegex()))
+                .map(String::trim)
+                .filter(t -> !t.isEmpty())
+                .collect(Collectors.toList());
+    }
 }

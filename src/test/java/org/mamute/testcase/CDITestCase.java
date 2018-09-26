@@ -14,9 +14,9 @@ public abstract class CDITestCase extends TestCase{
 
 	static{
 		System.setProperty(ENVIRONMENT_PROPERTY, "test");
-		CdiContainer cdiContainer = new CdiContainer();
-		cdiContainer.start();
-		cdiBasedContainer = CDI.current().select(CDIBasedContainer.class).get();
+		//CdiContainer cdiContainer = new CdiContainer();
+		//cdiContainer.start();
+		//cdiBasedContainer = CDI.current().select(CDIBasedContainer.class).get();
 	}
 	
 }
