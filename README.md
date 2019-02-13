@@ -1,6 +1,16 @@
 Mamute QA [![Build Status](https://travis-ci.org/mamutehq/mamute.svg?branch=master)](https://travis-ci.org/mamutehq/mamute)
 ======
 
+## Status of Project
+
+This project is a fork from the original [Mamute](https://github.com/caelum/mamute) code, with the goal to use Spring Boot as the web framework in order to continue the project.  The database layer was converted to Liquibase, but the controllers and the views have not been converted.
+
+As I have limited time to work on this fork of Mamute, you should consider this project **dormant**.  It can be continued in the future if interest generates around it.
+
+## Related Projects
+
+The [manmosu](https://github.com/JamesSullivan/manmosu) project completely re-implemented Mamute in Scala with the Play Framework and continued adding features.  Make sure you check it out.
+
 ## Requirements
 
 This project makes use of the following technologies to simplify setup:
